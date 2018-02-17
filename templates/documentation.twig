@@ -1,0 +1,35 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block meta %}
+    <base href="/{{ version }}/{{ language }}/">
+  {% endblock %}
+
+{% block content %}
+    <div class="flex">
+        <div class="flex-c-1 wf p-2">
+            <h2>On this page</h2>
+            {{ toc|raw }}
+
+            <h2>Navigation</h2>
+            <ul>
+                <li>Foo</li>
+                <li>Bar</li>
+            </ul>
+
+            {% if versions|length > 1 %}
+                <h2>Versions</h2>
+                <ul>
+                    {% for version in versions %}
+                        <li><a href="{{ version.uri }}">{{ version.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="flex-c-4 wf p-2">
+            <h1>{{ meta.title }}</h1>
+            {{ parsed|raw }}
+        </div>
+    </div>
+{% endblock %}

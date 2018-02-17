@@ -1,0 +1,119 @@
+.container {
+  max-width: 1280px;
+  margin: 2em auto 0;
+}
+
+header {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  padding: 2em 0;
+
+  .logo {
+    flex: 1;
+  }
+  .menu {
+    flex: 2;
+    text-align: right;
+    padding-top: 2em;
+
+    a {
+      padding: 2em;
+
+    }
+  }
+}
+
+.content-container {
+
+}
+
+.wf-image {
+  background-image: url('imgwf.png');
+  background-size: 100% 100%;
+  vertical-align: middle;
+
+  > * {
+    background-color: rgba(255,255,255, 0.6);
+  }
+}
+.wf-inline-blocks {
+  > * {
+    display: inline-block;
+    height: 100%;
+  }
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.wf-btn {
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 0.5em;
+  display: inline-block;
+
+  &.full {
+    display: block;
+    width: 100%;
+  }
+}
+
+.flex {
+  display: flex;
+  margin: 5em 0;
+
+  > * > .wf-image {
+    height: 100%;
+  }
+}
+.flex-c-1 {
+  flex: 1;
+}
+.flex-c-2 {
+  flex: 2;
+}
+.flex-c-3 {
+  flex: 3;
+}
+.flex-c-4 {
+  flex: 3;
+}
+ul {
+  padding-left: 3em;
+  padding-bottom: 1em;
+  li {
+  }
+}
+h1,h2,h3,h4,h5,h6 {
+  padding-top: 0.5em;
+}
+.p-1 {
+  padding: 1em;
+}
+.p-2 {
+  padding: 2em;
+}
+.p-3 {
+  padding: 3em;
+}
+.p-4 {
+  padding: 4em;
+}
+body.light a {
+  color: blue;
+  text-decoration: underline;
+  &:hover, &:active {
+    color: darkblue;
+  }
+}
+
+.bg-grey {
+  background-color: #eee;
+}
+#footerfooter {
+  max-width: 1280px;
+  margin: 0 auto;
+}

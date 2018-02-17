@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Welcome to the MODX Documentation{% endblock %}</title>
+    {% block meta %}{% endblock %}
+
+    <link rel="stylesheet" href="/assets/wireframe/wf.css">
+    <link rel="stylesheet" href="/assets/wireframe/app.css">
+</head>
+<body class="light">
+
+<header class="wf-bottom">
+    <div class="logo">
+        <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200">
+    </div>
+    <nav class="menu">
+        <a href="/">Documentation</a>
+        <a href="https://modx.org/">MODX.org</a>
+        <a href="https://forum.modx.com/">Forum</a>
+        <a href="https://slack.modx.org/">Slack</a>
+    </nav>
+</header>
+
+{% block container %}
+<div class="container">
+    <div class="content-container">
+        {% block content %}
+            <h1>{{ page.title }}</h1>
+            <p style="font-size: 1.1em;">{{ page.introduction }}</p>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+</body>
+</html>
