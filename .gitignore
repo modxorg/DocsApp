@@ -3,7 +3,7 @@
 !/logs/README.md
 .idea/
 environment.php
-cache/
+cache/*
 !cache/.gitkeep
-doc-sources/
+doc-sources/*
 !doc-sources/.gitkeep
