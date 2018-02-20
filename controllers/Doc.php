@@ -19,6 +19,7 @@ class Doc extends Base
     protected $basePath;
     protected $baseUri;
     protected $file;
+    protected $version;
     protected $language;
     protected $docPath;
 
@@ -28,6 +29,7 @@ class Doc extends Base
         if (!file_exists($path) || !is_dir($path)) {
             throw new NotFoundException($this->request, $this->response);
         }
+        $this->version = $version;
         $this->setVariable('version', $version);
         $this->basePath = $path;
         $this->baseUri = '/' . $version;
@@ -71,6 +73,7 @@ class Doc extends Base
         $this->setLanguage($request->getAttribute('language'));
         $this->setDocPath($request->getAttribute('path'));
         $this->getVersions();
+        $this->getNavigation();
         return true;
     }
 
@@ -145,5 +148,98 @@ class Doc extends Base
         }
 
         $this->setVariable('versions', $versions);
+    }
+
+    public function getNavigation()
+    {
+        $nav = $this->getNavigationForParent($this->basePath);
+
+        $out = $this->container->view->fetch('partials/nav.twig', ['children' => $nav]);
+
+        $this->setVariable('nav', $out);
+    }
+
+    public function getNavigationForParent($path, $level = 1)
+    {
+        $nav = [];
+        $dir = new DirectoryIterator($path);
+        foreach ($dir as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+
+            $filePath = $file->getPathname();
+            $filePath = strpos($filePath, '.md') !== false ? substr($filePath, 0, strpos($filePath, '.md')) : $filePath;
+            $relativeFilePath = str_replace($this->basePath, '', $filePath);
+
+            if ($file->isFile()) {
+                if ($file->getFilename() === 'index.md') {
+                    continue;
+                }
+                $current = [
+                    'title' => $this->getTitle($file),
+                    'uri' => $this->container->router->pathFor('documentation', [
+                        'language' => $this->language,
+                        'version' => $this->version,
+                        'path' => $relativeFilePath,
+                    ]),
+                    'classes' => 'item',
+                    'level' => $level,
+                ];
+
+                if (strpos($this->file, $relativeFilePath) !== false) {
+                    $current['classes'] .= ' active';
+                }
+
+                if (is_dir($filePath . '/')) {
+                    $current['classes'] .= ' has-children';
+                    $current['children'] = $this->getNavigationForParent($filePath . '/', $level + 1);
+                }
+                $nav[] = $current;
+            }
+
+            // We handle directories slightly differently
+            elseif ($file->isDir()) {
+                if (file_exists($file->getPathname() . '/index.md')) {
+                    $indexFile = new \SplFileInfo($file->getPathname() . '/index.md');
+                    $current = [
+                        'title' => $this->getTitle($indexFile),
+                        'uri' => $this->container->router->pathFor('documentation', [
+                            'language' => $this->language,
+                            'version' => $this->version,
+                            'path' => $relativeFilePath,
+                        ]),
+                        'classes' => 'item has-children',
+                        'level' => $level,
+                    ];
+                    if (strpos($this->file, $relativeFilePath) !== false) {
+                        $current['classes'] .= ' active';
+                    }
+                    $current['children'] = $this->getNavigationForParent($file->getPathname(), $level + 1);
+                    $nav[] = $current;
+                }
+            }
+
+        }
+
+        return $nav;
+    }
+
+    private function getTitle(\SplFileInfo $file)
+    {
+        // Parse the front matter from the file
+        $fileContents = $file->isFile() ? file_get_contents($file->getPathname()) : false;
+//        if (!$fileContents && file_exists($file->getPathname() . '/index.md')) {
+//            $fileContents = file_get_contents($file->getPathname() . '/index.md');
+//        }
+
+        $obj = YamlFrontMatter::parse($fileContents);
+        $title = $obj->matter('title');
+        if (empty($title)) {
+            $name = $file->getFilename();
+            $title = strpos($name, '.md') !== false ? substr($name, 0, strpos($name, '.md')) : $name;
+            $title = implode(' ', explode('-', $title));
+        }
+        return $title;
     }
 }

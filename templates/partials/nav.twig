@@ -1,0 +1,12 @@
+<ul class="nav-menu-wrapper">
+{% for item in children %}
+    <li class="nav-item-{{ item.level }} {{ item.classes }}">
+        <a href="{{ item.uri }}">
+            {{ item.title }}
+        </a>
+        {% if item.children|length > 0 %}
+            {% include "partials/nav.twig" with { children: item.children } %}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
