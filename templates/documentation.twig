@@ -4,7 +4,7 @@
 
 {% block meta %}
     <base href="/{{ version }}/{{ language }}/">
-  {% endblock %}
+{% endblock %}
 
 {% block content %}
     <div class="flex">
@@ -17,18 +17,20 @@
                 <li>Foo</li>
                 <li>Bar</li>
             </ul>
-
-            {% if versions|length > 1 %}
-                <h2>Versions</h2>
-                <ul>
-                    {% for version in versions %}
-                        <li><a href="{{ version.uri }}">{{ version.title }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
         </div>
         <div class="flex-c-4 wf p-2">
             <h1>{{ meta.title }}</h1>
+            {% if versions|length > 1 %}
+                <p>
+                    <small>
+                        <em>Other versions of this documentation:
+                            {% for version in versions %}
+                                <a href="{{ version.uri }}">{{ version.title }}</a>
+                            {% endfor %}
+                        </em>
+                    </small>
+                </p>
+            {% endif %}
             {{ parsed|raw }}
         </div>
     </div>
