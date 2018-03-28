@@ -82,7 +82,7 @@ class Doc extends Base
         $request = $request
             ->withAttribute('version', 'current')
             ->withAttribute('language', 'en')
-            ->withAttribute('path', '/');
+            ->withAttribute('path', 'index');
 
         return $this->get($request, $response, $args);
     }
