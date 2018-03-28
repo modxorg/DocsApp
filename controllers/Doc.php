@@ -77,6 +77,16 @@ class Doc extends Base
         return true;
     }
 
+    public function home(Request $request, Response $response, array $args = array())
+    {
+        $request = $request
+            ->withAttribute('version', 'current')
+            ->withAttribute('language', 'en')
+            ->withAttribute('path', '/');
+
+        return $this->get($request, $response, $args);
+    }
+
     public function get(Request $request, Response $response, array $args = array())
     {
         $init = $this->initialize($request, $response, $args);
