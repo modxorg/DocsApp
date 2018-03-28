@@ -47,6 +47,7 @@ abstract class Base
         $this->setArguments($args);
         $this->setVariable('args', $args);
         $this->setVariable('_env', $_ENV);
+        $this->setVariable('settings', $this->container->get('settings'));
         $revision = 'dev';
         $projectDir = $this->container->get('settings')['project_root'];
         if (file_exists($projectDir . '.revision'))  {
