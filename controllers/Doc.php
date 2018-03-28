@@ -32,7 +32,7 @@ class Doc extends Base
         $this->version = $version;
         $this->setVariable('version', $version);
         $this->basePath = $path;
-        $this->baseUri = '/' . $version;
+        $this->baseUri = $this->container->get('settings')['directory'] . $version;
     }
 
     public function setLanguage($language)
