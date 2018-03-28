@@ -1,0 +1,12 @@
+[submodule "doc-sources/current"]
+	path = doc-sources/current
+	url = https://github.com/Mark-H/Docs.git
+	branch = 2.x
+[submodule "doc-sources/3.x"]
+	path = doc-sources/3.x
+	url = https://github.com/Mark-H/Docs.git
+	branch = 3.x
+[submodule "doc-sources/2.x"]
+	path = doc-sources/2.x
+	url = https://github.com/Mark-H/Docs.git
+	branch = 2.x

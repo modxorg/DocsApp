@@ -5,5 +5,3 @@
 environment.php
 cache/*
 !cache/.gitkeep
-doc-sources/*
-!doc-sources/.gitkeep
