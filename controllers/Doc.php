@@ -152,7 +152,7 @@ class Doc extends Base
             if (file_exists($file . '.md') || file_exists($file . '/index.md')) {
                 $versions[] = [
                     'title' => $fileinfo->getFilename(),
-                    'uri' => '/' . $fileinfo->getFilename() . '/' . $this->language . '/' . $this->docPath,
+                    'uri' => $this->container->get('settings')['directory'] . $fileinfo->getFilename() . '/' . $this->language . '/' . $this->docPath,
                 ];
             }
         }
