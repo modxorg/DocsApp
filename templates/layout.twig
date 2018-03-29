@@ -9,6 +9,7 @@
     {% block meta %}{% endblock %}
 
     <link rel="stylesheet" href="{{ settings.directory }}assets/wireframe/app.css">
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
 
@@ -37,6 +38,8 @@
     </div>
 </div>
 {% endblock %}
+
+{% block scripts %}{% endblock %}
 
 </body>
 </html>

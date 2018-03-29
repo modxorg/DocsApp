@@ -60,17 +60,6 @@ header {
     padding: 3px;
   }
 }
-@media (min-width: 768px) {
-  .single-column {
-    margin: 0 auto;
-    max-width: 90%;
-  }
-}
-@media (min-width: 1080px) {
-  .single-column {
-    max-width: 80%;
-  }
-}
 
 
 .text-center {
@@ -81,23 +70,63 @@ header {
 }
 
 .flex {
-  display: flex;
-
   > * > .wf-image {
     height: 100%;
   }
 }
-.flex-c-1 {
-  flex: 1;
+
+@media (min-width: 768px) {
+  .content-container {
+    display: flex;
+  }
+
+  .content {
+    flex: 2 0 60%;
+    max-width: 60%;
+  }
+  .sidebar {
+    flex: 1 0 40%;
+    max-width: 40%;
+  }
+  .single-column {
+    margin: 0 auto;
+    max-width: 90%;
+    .content {
+      max-width: 100%;
+    }
+  }
 }
-.flex-c-2 {
-  flex: 2;
+@media (min-width: 1080px) {
+  .single-column {
+    max-width: 80%;
+  }
 }
-.flex-c-3 {
-  flex: 3;
+@media (min-width: 1280px) {
+  .content {
+    flex: 3 0 70%;
+    max-width: 70%;
+  }
+  .sidebar {
+    flex: 1 0 30%;
+    max-width: 30%;
+  }
+  .single-column {
+    max-width: 70%;
+  }
 }
-.flex-c-4 {
-  flex: 3;
+@media (min-width: 1460px) {
+  .container {
+    max-width: 1440px;
+  }
+  .content {
+    flex: 3 0 80%;
+    max-width: 80%;
+  }
+  .sidebar {
+    flex: 1 0 20%;
+    max-width: 20%;
+  }
+
 }
 ul {
   padding-left: 1.5em;
@@ -160,6 +189,13 @@ p, pre {
   line-height: 1.5rem;
   margin-top: 1.5rem;
   margin-bottom: 0;
+}
+pre, code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+pre {
+  overflow-x: scroll;
 }
 ul,
 ol {
