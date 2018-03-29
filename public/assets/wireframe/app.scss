@@ -74,7 +74,6 @@ header {
     height: 100%;
   }
 }
-
 @media (min-width: 768px) {
   .content-container {
     display: flex;
@@ -257,17 +256,28 @@ h5 {
 h6 {
   font-size: 0.3535rem;
 }
-/* Tables */
+
 table {
-  margin-top: 1.5rem;
-  border-spacing: 0px;
+  border: 1px solid #aaa;
   border-collapse: collapse;
+  margin-top: 1.5rem;
+  max-width: 100%;
+  border-radius: 5px;
+
+  thead {
+    background-color: #eee;
+    text-align: left;
+  }
+
+  tr {
+
+  }
+  td, th {
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #ccc;
+  }
 }
-table td,
-table th {
-  padding: 0;
-  line-height: 33px;
-}
+
 /* Code blocks */
 code {
   vertical-align: baseline;
