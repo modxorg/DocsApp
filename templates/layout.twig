@@ -14,7 +14,9 @@
 
 <header>
     <div class="logo">
-        <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200">
+        <a href="{{ path_for('home') }}" title="MODX Documentation">
+            <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200" alt="MODX Logo">
+        </a>
     </div>
     <nav class="menu">
         {% for item in topnav %}
