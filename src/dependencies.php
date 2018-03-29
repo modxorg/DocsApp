@@ -28,3 +28,11 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+// custom not found handler that handles redirects and old URIs
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $nf = new \MODXDocs\Controllers\NotFound($c);
+        return $nf->get($request, $response);
+    };
+};

@@ -75,9 +75,9 @@ class Doc extends Base
         parent::initialize($request, $response, $args);
         $this->setVersion($request->getAttribute('version'));
         $this->setLanguage($request->getAttribute('language'));
+        $this->getTopNavigation();
         $this->setDocPath($request->getAttribute('path'));
         $this->getVersions();
-        $this->getTopNavigation();
         $this->getNavigation();
         return true;
     }
@@ -270,10 +270,6 @@ class Doc extends Base
     {
         // Parse the front matter from the file
         $fileContents = $file->isFile() ? file_get_contents($file->getPathname()) : false;
-//        if (!$fileContents && file_exists($file->getPathname() . '/index.md')) {
-//            $fileContents = file_get_contents($file->getPathname() . '/index.md');
-//        }
-
         $obj = YamlFrontMatter::parse($fileContents);
         $title = $obj->matter('title');
         if (empty($title)) {

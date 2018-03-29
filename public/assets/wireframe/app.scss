@@ -40,7 +40,7 @@ header {
 }
 .sidebar {
   padding: 2em 2em 2em 0;
-  opacity: 0.8;
+  opacity: 0.6;
   transition: opacity 0.5s;
 
   &:hover, &:focus, &:focus-within {
@@ -60,6 +60,18 @@ header {
     padding: 3px;
   }
 }
+@media (min-width: 768px) {
+  .single-column {
+    margin: 0 auto;
+    max-width: 90%;
+  }
+}
+@media (min-width: 1080px) {
+  .single-column {
+    max-width: 80%;
+  }
+}
+
 
 .text-center {
   text-align: center;
@@ -252,11 +264,19 @@ code {
     height: 100%;
   }
 }
-.wf-btn {
-  background-color: #ccc;
+.btn {
+  background-color: #4187c8;
+  color: #fff;
+  border: 2px solid transparent;
   border-radius: 5px;
-  padding: 0.5em;
+  padding: 0.5em 1em;
   display: inline-block;
+  text-decoration: none;
+
+  &:hover, &:focus {
+    border-color: #0b1b6b;
+    color: #fff;
+  }
 
   &.full {
     display: block;
