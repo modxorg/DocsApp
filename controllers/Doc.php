@@ -31,6 +31,8 @@ class Doc extends Base
         }
         $this->version = $version;
         $this->setVariable('version', $version);
+        $this->setVariable('version_branch', $version === 'current' ? '2.x' : $version);
+
         $this->basePath = $path;
         $this->baseUri = $this->container->get('settings')['directory'] . $version;
     }
@@ -64,6 +66,8 @@ class Doc extends Base
         }
         $this->docPath = $path;
         $this->file = $file;
+        $this->setVariable('doc_path', $this->docPath);
+        $this->setVariable('file_path', $this->file);
     }
 
     public function initialize(Request $request, Response $response, array $args = array())

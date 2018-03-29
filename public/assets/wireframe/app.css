@@ -1,3 +1,16 @@
+/* Basic Reset */
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+/* Prevent certain elements from using their default border/bg styles */
+form, input, textarea, table, button, select, optgroup, option {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border-image: url("noise.png") 2 stretch; }
+
 .container {
   max-width: 1280px;
   margin: 2em auto 0; }
@@ -5,27 +18,30 @@
 header {
   max-width: 1280px;
   margin: 0 auto;
+  padding: 1.5rem 0;
   display: flex;
-  padding: 2em 0; }
+  vertical-align: middle; }
   header .logo {
     flex: 1; }
   header .menu {
     flex: 2;
-    text-align: right;
-    padding-top: 2em; }
+    text-align: right; }
     header .menu a {
-      padding: 1em; }
+      padding: 0.5em 1em;
+      display: inline-block; }
 
-.wf-image {
-  background-image: url("imgwf.png");
-  background-size: 100% 100%;
-  vertical-align: middle; }
-  .wf-image > * {
-    background-color: rgba(255, 255, 255, 0.6); }
+.sidebar {
+  padding: 2em 2em 2em 0;
+  opacity: 0.8;
+  transition: opacity 0.5s; }
+  .sidebar:hover, .sidebar:focus, .sidebar:focus-within {
+    opacity: 1; }
 
-.wf-inline-blocks > * {
-  display: inline-block;
-  height: 100%; }
+.content {
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  border: 1px solid #bbb; }
 
 .text-center {
   text-align: center; }
@@ -33,18 +49,8 @@ header {
 .text-right {
   text-align: right; }
 
-.wf-btn {
-  background-color: #ccc;
-  border-radius: 5px;
-  padding: 0.5em;
-  display: inline-block; }
-  .wf-btn.full {
-    display: block;
-    width: 100%; }
-
 .flex {
-  display: flex;
-  margin: 5em 0; }
+  display: flex; }
   .flex > * > .wf-image {
     height: 100%; }
 
@@ -61,11 +67,8 @@ header {
   flex: 3; }
 
 ul {
-  padding-left: 3em;
+  padding-left: 1.5em;
   padding-bottom: 1em; }
-
-h1, h2, h3, h4, h5, h6 {
-  padding-top: 0.5em; }
 
 .p-1 {
   padding: 1em; }
@@ -79,10 +82,11 @@ h1, h2, h3, h4, h5, h6 {
 .p-4 {
   padding: 4em; }
 
-body.light a {
+a {
+  color: #333;
   color: blue;
   text-decoration: underline; }
-  body.light a:hover, body.light a:active {
+  a:hover, a:active {
     color: darkblue; }
 
 .bg-grey {
@@ -97,5 +101,147 @@ body.light a {
   .nav-menu-wrapper > li.active > a {
     font-weight: bold;
     text-decoration: none; }
+
+/*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */
+/* Setup */
+html {
+  font-family: 'Helvetica Neue', serif;
+  font-size: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+  background-color: #eee; }
+
+p, pre {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0; }
+
+ul,
+ol {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem; }
+
+ul li,
+ol li {
+  line-height: 1.5rem; }
+
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+  margin-top: 0;
+  margin-bottom: 0; }
+
+blockquote {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem; }
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: sans-serif;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  line-height: 1.5rem; }
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 0; }
+
+h1 {
+  font-size: 4.242rem;
+  line-height: 4.5rem;
+  margin-top: 3rem; }
+
+h2 {
+  font-size: 2.828rem;
+  line-height: 3rem;
+  margin-top: 3rem; }
+
+h3 {
+  font-size: 1.414rem; }
+
+h4 {
+  font-size: 0.707rem; }
+
+h5 {
+  font-size: 0.4713333333333333rem; }
+
+h6 {
+  font-size: 0.3535rem; }
+
+/* Tables */
+table {
+  margin-top: 1.5rem;
+  border-spacing: 0px;
+  border-collapse: collapse; }
+
+table td,
+table th {
+  padding: 0;
+  line-height: 33px; }
+
+/* Code blocks */
+code {
+  vertical-align: baseline; }
+
+/* Leading paragraph text */
+.lead {
+  font-size: 1.414rem; }
+
+/* Hug the block above you */
+.hug {
+  margin-top: 0; }
+
+/* Wireframing stuff  */
+.wf-image {
+  background-image: url("imgwf.png");
+  background-size: 100% 100%;
+  vertical-align: middle; }
+  .wf-image > * {
+    background-color: rgba(255, 255, 255, 0.6); }
+
+.wf-inline-blocks > * {
+  display: inline-block;
+  height: 100%; }
+
+.wf-btn {
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 0.5em;
+  display: inline-block; }
+  .wf-btn.full {
+    display: block;
+    width: 100%; }
+
+/* Wireframe Borders */
+[class*='wf'], [class*='wf-child'] > * {
+  border: 0px solid #aaa;
+  border-image: url("noise.png") 2 stretch; }
+
+/* All sides */
+.wf, .wf-child > * {
+  border-width: 2px; }
+
+/* Single sides */
+.wf-top, .wf-child-top > * {
+  border-top-width: 2px; }
+
+.wf-right, .wf-child-right > * {
+  border-right-width: 2px; }
+
+.wf-bottom, .wf-child-bottom > * {
+  border-bottom-width: 2px; }
+
+.wf-left, .wf-child-left > * {
+  border-left-width: 2px; }
 
 /*# sourceMappingURL=app.css.map */

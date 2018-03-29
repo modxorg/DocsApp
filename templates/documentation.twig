@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="flex">
-        <div class="flex-c-1 wf p-2">
+        <div class="sidebar flex-c-1">
             <h2>On this page</h2>
             {{ toc|raw }}
 
@@ -19,15 +19,19 @@
             {% endif %}
             {{ nav|raw }}
         </div>
-        <div class="flex-c-4 wf p-2">
+        <div class="content flex-c-4 p-2">
             <h1>{{ meta.title }}</h1>
             {% if versions|length > 1 %}
                 <p>
                     <small>
-                        <em>Other versions of this documentation:
+                        <em>
+                            Other versions:
                             {% for version in versions %}
                                 <a href="{{ version.uri }}">{{ version.title }}</a>
                             {% endfor %}
+                            &mdash;
+                            Found a problem with this page?
+                            Please <a href="https://github.com/Mark-H/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}" target="_blank" rel="noopener">improve the documentation</a> or <a href="https://github.com/Mark-H/Docs/issues/new" target="_blank" rel="noopener">create an issue</a>.
                         </em>
                     </small>
                 </p>

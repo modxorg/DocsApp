@@ -8,12 +8,11 @@
     <title>{% block title %}Welcome to the MODX Documentation{% endblock %}</title>
     {% block meta %}{% endblock %}
 
-    <link rel="stylesheet" href="{{ settings.directory }}assets/wireframe/wf.css">
     <link rel="stylesheet" href="{{ settings.directory }}assets/wireframe/app.css">
 </head>
-<body class="light">
+<body>
 
-<header class="wf-bottom">
+<header>
     <div class="logo">
         <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200">
     </div>
@@ -28,8 +27,10 @@
 <div class="container">
     <div class="content-container">
         {% block content %}
-            <h1>{{ page.title }}</h1>
-            <p style="font-size: 1.1em;">{{ page.introduction }}</p>
+            <div class="content">
+                <h1>{{ page.title }}</h1>
+                <p style="font-size: 1.1em;">{{ page.introduction }}</p>
+            </div>
         {% endblock %}
     </div>
 </div>
