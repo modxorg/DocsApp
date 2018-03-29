@@ -173,7 +173,12 @@ class Doc extends Base
         $docPath = explode('/', $this->docPath);
         $menuPath = $this->basePath . $docPath[0];
         if (file_exists($menuPath) && is_dir($menuPath)) {
-            $item = $this->getNavItem(new \SplFileInfo($menuPath . '/index.md'), $docPath[0]);
+            if (file_exists($menuPath . '.md')) {
+                $item = $this->getNavItem(new \SplFileInfo($menuPath . '.md'), $docPath[0]);
+            }
+            else {
+                $item = $this->getNavItem(new \SplFileInfo($menuPath . '/index.md'), $docPath[0]);
+            }
             $this->setVariable('current_nav_parent', $item);
             $nav = $this->getNavigationForParent($menuPath);
         }
