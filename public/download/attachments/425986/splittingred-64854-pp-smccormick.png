@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+            <title>Log In - MODX Documentation</title>
+    
+        
+
+                        
+    
+
+            
+<meta id="confluence-context-path" name="confluence-context-path" content="">
+<meta id="atlassian-token" name="atlassian-token" content="yDQkFgKlUd">
+
+<script type="text/javascript">
+    // Deprecated global variables. To be removed in a future version of Confluence.
+    var contextPath = '';
+</script>
+
+    
+
+<!-- include system css resources -->
+<link type="text/css" rel="stylesheet" href="/s/1911/69/2/_/download/superbatch/css/batch.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/s/1911/69/2/_/download/superbatch/css/batch.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/1911/69/2/_/download/superbatch/css/batch.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/1911/69/1.0/_/download/resources/confluence.web.resources:aui-forms/confluence-forms.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/s/1911/69/1.0/_/download/batch/confluence.web.resources:aui-forms/confluence.web.resources:aui-forms.css?ieonly=true" media="all">
+<![endif]-->
+
+<!-- end system css resources -->
+
+    <link rel="stylesheet" href="/s/1911/69/69/_/styles/combined.css" type="text/css">
+
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="robots" content="noarchive">
+    <meta name="confluence-request-time" content="1369070478015">
+
+<meta name="loggedInUsername" content="">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/1911/69/_/images/logo/confluence_16.png">
+
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch/osd.action" title="MODX Documentation"/>
+
+        <!-- include system javascript resources -->
+                        
+    
+    <script type="text/javascript" src="/s/1911/69/2/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/1911/69/1.0/_/download/batch/confluence.web.resources:login/confluence.web.resources:login.js" ></script>
+<script type="text/javascript" src="/s/1911/69/1.2/_/download/batch/com.atlassian.confluence.plugins.doctheme:splitter/com.atlassian.confluence.plugins.doctheme:splitter.js" ></script>
+<script type="text/javascript" src="/s/1911/69/1.0/_/download/batch/legacy.confluence.web.resources:prototype/legacy.confluence.web.resources:prototype.js" ></script>
+
+    <!-- end system javascript resources -->
+
+    <link type="text/css" rel="stylesheet" href="http://misc.modx.com/confluence/docs.css" />
+<link type="text/css" rel="stylesheet" href="http://misc.modx.com/confluence/syntaxhighlighter/css/all.css" />
+<!--<script type="text/javascript" src="http://misc.modx.com/js/jquery-1.3.2.min.js"></script>-->
+<script type="text/javascript" src="http://misc.modx.com/confluence/syntaxhighlighter/js/all.js"></script>
+<script type="text/javascript" src="http://misc.modx.com/confluence/loadcode.js"></script>
+<link type="text/css" rel="stylesheet" href="http://misc.modx.com/confluence/promo/ad.css" />
+
+    
+</head>
+
+<body             onload="placeFocus()"
+     id="com-atlassian-confluence" class="theme-documentation login">
+<div id="full-height-container">
+<!-- CODE FOR AD THAT SEEMS TO BE INSERTABLE DIRECTLY AFTER OPEN BODY TAG IN CONFLUENCE THEME ADMIN -->
+<a href="https://modxcloud.com/signup/lab-account.html?utm_source=rtfm&utm_medium=banner&utm_campaign=one_percent%2B" class="modx-cloud-link">
+    <div class="modx-cloud-ad-wrap">
+        <div class="modx-cloud-ad">
+            <div class="logo-wrap">
+                <img src="http://misc.modx.com/confluence/promo/modx-cloud-logo.png" alt="MODX Cloud" width="161" height="40">
+            </div>
+            <p>The Most Productive MODX Learning Playground Ever</p>
+            <span class="faux-btn">
+                Claim Free Lab Account
+            </span>
+
+        </div>
+    </div>
+</a>
+<!-- END OF AD -->
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="statusDialogHeading" value="What are you working on?">
+    <input type="hidden" id="statusDialogAccessibilityLabel" value="Enter your status (140 character limit)">
+    <input type="hidden" id="statusDialogLatestLabel" value="Last update:">
+    <input type="hidden" id="statusDialogUpdateButtonLabel" value="Update">
+    <input type="hidden" id="statusDialogCancelButtonLabel" value="Cancel">
+</fieldset>
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="globalSettingsAttachmentMaxSize" value="10485760">
+    <input type="hidden" id="userLocale" value="en_GB">
+    <input type="hidden" id="staticResourceUrlPrefix" value="/s/1911/69/_">
+    <input type="hidden" id="contextPath" value="">
+</fieldset>
+
+    
+<div id="header" class="sectionbottom ">
+        <form id="quick-search" class="quick-search" method="get" action="/dosearchsite.action">
+        <fieldset>
+            <legend>Quick Search</legend>
+            <input class="quick-search-query" id="quick-search-query" type="text" accessKey="q" autocomplete="off" name="queryString" size="25" />
+            <input class="quick-search-submit" id="quick-search-submit" type="submit" value="Search" />
+            <div class="aui-dd-parent quick-nav-drop-down"><!-- Quick nav appears here --></div>
+        </fieldset>
+        <fieldset class="hidden parameters">
+            <input type="hidden" id="quickNavEnabled" value="true" />
+                    </fieldset>
+    </form>
+    <ul id="header-menu-bar" class="ajs-menu-bar">
+                        
+            <li class="normal ajs-menu-item">
+        <a id="browse-menu-link" class="browse trigger ajs-menu-title" href="#"><span><span>Browse</span></span></a>         <div class="hidden ajs-drop-down">
+                        <ul  id="browse-menu-link-global"                 class="section-global first">
+                                        <li>
+        
+            
+    
+    <a  id="gadget-directory-link" href="#"  class="user-item administration-link"   title="Browse gadgets provided by Confluence">
+                   <span>Confluence Gadgets</span></a>        </li>
+                            </ul>
+                    </div>
+    </li>
+                                                             <li class="ajs-menu-item normal">
+    
+        
+    
+    <a  id="login-link" href="/login.action"  class="user-item login-link"   title="Browse gadgets provided by Confluence">
+                   <span>Log In</span></a>        </li>
+                                <li class="normal ajs-menu-item">
+            <div id="splitter-button" class="hidden" title="Sidebar"></div>
+        </li>
+
+    </ul>
+    
+</div>
+
+
+<div id="main" >
+    
+    
+    
+    <h1 id="title-heading" class="pagetitle">
+                    <a href="/homepage.action"><img class="global logo"  src="/download/attachments/9109505/global.logo?version=2&amp;modificationDate=1356105314000" alt="Your Home Page"></a>        
+		<span id="title-text">
+					            <a href="/homepage.action">MODX Documentation</a>
+    				</span>
+    </h1>
+
+    
+
+    
+    
+    
+    <div id="login-container">
+                    
+                                                                                                             
+    <form     name="loginform" method="POST" action="/dologin.action" class="aui login-form-container">
+
+<fieldset class="compact-form-fields">
+                    
+
+    <legend class="assistive"><span>Log in to Confluence</span></legend>
+                                                                    
+
+<div class="field-group
+        ">
+    <label id="os_username-label" for="os_username">
+Username
+</label>
+            <input type="text" name="os_username" id="os_username"                                   class="text   "              data-focus="0"     />
+                      
+</div>                        
+
+<div class="field-group">
+    <label id="os_password-label" for="os_password">
+    Password
+        </label>
+    <input type="password" name="os_password" id="os_password"                                   class="password "                   />
+                  </div>                        
+<div class="group">
+    
+<div class="checkbox">
+    <input type="checkbox" class="checkbox" value="true" name="os_cookie"
+                id="os_cookie">
+    <label for="os_cookie">Remember me</label>
+    </div>
+</div>
+                        <div class="field-group form-buttons compact-form-buttons">
+                            <input id="loginButton" name="login" type="submit" value="Log In" />
+                                                    </div>
+                    
+
+                                            <input type="hidden" name="os_destination" value="/download/attachments/425986/splittingred-64854-pp-smccormick.png?version=1&amp;modificationDate=1247284681000"/>
+                                    </fieldset>
+
+</form>                            </div>
+    <br class="clear">
+</div>
+
+<div id="footer">
+                                                <p class="license license-opensource">
+                  Powered by a free <b>Atlassian Confluence Open Source Project License</b> granted to MODx CMS / xPDO. <a href="http://www.atlassian.com/c/conf/11461">Evaluate Confluence today</a>.<br>
+                </p>
+                        
+    <ul id="poweredby">
+        <li class="noprint">Powered by <a href="http://www.atlassian.com/software/confluence" class="hover-footer-link">Atlassian Confluence</a> 3.3, the <a href="http://www.atlassian.com/software/confluence/tour/enterprise-wiki.jsp" class="hover-footer-link">Enterprise Wiki</a></li>
+        <li class="print-only">Printed by Atlassian Confluence 3.3, the Enterprise Wiki.</li>        
+        <li class="noprint"> &nbsp; |&nbsp; <a href="http://jira.atlassian.com/secure/BrowseProject.jspa?id=10470" class="hover-footer-link">Report a bug</a></li>
+        <li class="noprint"> &nbsp;|&nbsp; <a href="http://www.atlassian.com/about/connected.jsp?s_kwcid=Confluence-stayintouch" class="hover-footer-link">Atlassian News</a></li>
+    </ul>
+
+    
+
+            <script type="text/javascript"> 
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+<script type="text/javascript"> 
+    try{ 
+        var pageTracker = _gat._getTracker("UA-71684-1");
+        pageTracker._trackPageview();
+ 
+    } catch(err) {} 
+ 
+</script>
+    </div>    <!-- include system javascript resources -->
+                        
+    
+    
+    <!-- end system javascript resources -->
+</div>
+</body>
+</html>
