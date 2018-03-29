@@ -18,10 +18,9 @@
         <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200">
     </div>
     <nav class="menu">
-        <a href="/">Documentation</a>
-        <a href="https://modx.org/">MODX.org</a>
-        <a href="https://forum.modx.com/">Forum</a>
-        <a href="https://slack.modx.org/">Slack</a>
+        {% for item in topnav %}
+            <a href="{{ item.uri }}" class="nav-item">{{ item.title }}</a>
+        {% endfor %}
     </nav>
 </header>
 

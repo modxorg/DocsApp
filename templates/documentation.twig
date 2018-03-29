@@ -12,7 +12,11 @@
             <h2>On this page</h2>
             {{ toc|raw }}
 
-            <h2>Navigation</h2>
+            {% if current_nav_parent %}
+                <h2><a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a></h2>
+            {% else %}
+                <h2>Navigation</h2>
+            {% endif %}
             {{ nav|raw }}
         </div>
         <div class="flex-c-4 wf p-2">

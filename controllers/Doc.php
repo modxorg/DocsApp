@@ -73,6 +73,7 @@ class Doc extends Base
         $this->setLanguage($request->getAttribute('language'));
         $this->setDocPath($request->getAttribute('path'));
         $this->getVersions();
+        $this->getTopNavigation();
         $this->getNavigation();
         return true;
     }
@@ -160,19 +161,42 @@ class Doc extends Base
         $this->setVariable('versions', $versions);
     }
 
+    public function getTopNavigation()
+    {
+        $topNav = $this->getNavigationForParent($this->basePath, 1, 1);
+        $this->setVariable('topnav', $topNav);
+    }
+
     public function getNavigation()
     {
-        $nav = $this->getNavigationForParent($this->basePath);
+        // Make the navigation dependent on the current parent (administration, developing, xpdo, etc)
+        $docPath = explode('/', $this->docPath);
+        $menuPath = $this->basePath . $docPath[0];
+        if (file_exists($menuPath) && is_dir($menuPath)) {
+            $item = $this->getNavItem(new \SplFileInfo($menuPath . '/index.md'), $docPath[0]);
+            $this->setVariable('current_nav_parent', $item);
+            $nav = $this->getNavigationForParent($menuPath);
+        }
+        // Fall back to listing 2 levels deep on home pages
+        else {
+            $nav = $this->getNavigationForParent($this->basePath, 1, 2);
+        }
 
         $out = $this->container->view->fetch('partials/nav.twig', ['children' => $nav]);
 
         $this->setVariable('nav', $out);
     }
 
-    public function getNavigationForParent($path, $level = 1)
+    public function getNavigationForParent($path, $level = 1, $maxDepth = 10)
     {
         $nav = [];
-        $dir = new DirectoryIterator($path);
+        try {
+            $dir = new DirectoryIterator($path);
+        }
+        catch (\Exception $e) {
+            $this->logger->addError('Exception ' . get_class($e) . ' fetching navigation for ' . $path . ': ' . $e->getMessage());
+            return $nav;
+        }
         foreach ($dir as $file) {
             if ($file->isDot()) {
                 continue;
@@ -182,28 +206,17 @@ class Doc extends Base
             $filePath = strpos($filePath, '.md') !== false ? substr($filePath, 0, strpos($filePath, '.md')) : $filePath;
             $relativeFilePath = str_replace($this->basePath, '', $filePath);
 
-            if ($file->isFile()) {
+            if ($file->isFile() && $file->getExtension() === 'md') {
                 if ($file->getFilename() === 'index.md') {
                     continue;
                 }
-                $current = [
-                    'title' => $this->getTitle($file),
-                    'uri' => $this->container->router->pathFor('documentation', [
-                        'language' => $this->language,
-                        'version' => $this->version,
-                        'path' => $relativeFilePath,
-                    ]),
-                    'classes' => 'item',
-                    'level' => $level,
-                ];
 
-                if (strpos($this->file, $relativeFilePath) !== false) {
-                    $current['classes'] .= ' active';
-                }
+                $current = $this->getNavItem($file, $relativeFilePath);
+                $current['level'] = $level;
 
-                if (is_dir($filePath . '/')) {
+                if ($level < $maxDepth && is_dir($filePath . '/')) {
                     $current['classes'] .= ' has-children';
-                    $current['children'] = $this->getNavigationForParent($filePath . '/', $level + 1);
+                    $current['children'] = $this->getNavigationForParent($filePath . '/', $level + 1, $maxDepth);
                 }
                 $nav[] = $current;
             }
@@ -211,21 +224,12 @@ class Doc extends Base
             // We handle directories slightly differently
             elseif ($file->isDir()) {
                 if (file_exists($file->getPathname() . '/index.md')) {
-                    $indexFile = new \SplFileInfo($file->getPathname() . '/index.md');
-                    $current = [
-                        'title' => $this->getTitle($indexFile),
-                        'uri' => $this->container->router->pathFor('documentation', [
-                            'language' => $this->language,
-                            'version' => $this->version,
-                            'path' => $relativeFilePath,
-                        ]),
-                        'classes' => 'item has-children',
-                        'level' => $level,
-                    ];
-                    if (strpos($this->file, $relativeFilePath) !== false) {
-                        $current['classes'] .= ' active';
+                    $current = $this->getNavItem(new \SplFileInfo($file->getPathname() . '/index.md'), $relativeFilePath);
+                    $current['level'] = $level;
+                    $current['classes'] .= ' has-children';
+                    if ($level < $maxDepth) {
+                        $current['children'] = $this->getNavigationForParent($file->getPathname(), $level + 1, $maxDepth);
                     }
-                    $current['children'] = $this->getNavigationForParent($file->getPathname(), $level + 1);
                     $nav[] = $current;
                 }
             }
@@ -233,6 +237,24 @@ class Doc extends Base
         }
 
         return $nav;
+    }
+
+    private function getNavItem(\SplFileInfo $file, $relativeFilePath)
+    {
+        $current = [
+            'title' => $this->getTitle($file),
+            'uri' => $this->container->router->pathFor('documentation', [
+                'language' => $this->language,
+                'version' => $this->version,
+                'path' => $relativeFilePath,
+            ]),
+            'classes' => 'item',
+        ];
+        if (strpos($this->file, $relativeFilePath) !== false) {
+            $current['classes'] .= ' active';
+        }
+
+        return $current;
     }
 
     private function getTitle(\SplFileInfo $file)
