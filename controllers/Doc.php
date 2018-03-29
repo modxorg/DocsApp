@@ -122,7 +122,7 @@ class Doc extends Base
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addExtension(new TableExtension());
         $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link',
-            new LinkRenderer($this->baseUri)
+            new LinkRenderer($this->baseUri, $this->docPath)
         );
         $markdown = new CommonMarkConverter([
             'html_input' => 'allow',

@@ -8,11 +8,13 @@ use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 
 class LinkRenderer implements InlineRendererInterface
 {
-    private $host;
+    protected $baseUri;
+    protected $currentDoc;
 
-    public function __construct($baseUri)
+    public function __construct($baseUri, $currentDoc)
     {
         $this->baseUri = $baseUri;
+        $this->currentDoc = $currentDoc;
     }
 
     public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
@@ -32,6 +34,9 @@ class LinkRenderer implements InlineRendererInterface
             $attrs['class'] = 'external-link';
             $attrs['target'] = '_blank';
             $attrs['rel'] = 'noreferrer noopener';
+        }
+        elseif (strpos($url, '#') === 0) {
+            $url = $this->baseUri . $this->currentDoc . $url;
         }
         else {
             if (strpos($url, '/') !== 0) {
