@@ -1,9 +1,14 @@
 <?php
 return [
     'settings' => [
+        'base_dir' => dirname(__DIR__),
+        'docs_dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'doc-sources',
+        'template_dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates',
+        'cache_dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'cache',
+
         'host' => 'docs.modx.local',
         'directory' => '/',
-        'docSources' => __DIR__ . '/doc-sources/',
+
         'displayErrorDetails' => true, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 

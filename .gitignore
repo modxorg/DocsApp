@@ -2,7 +2,6 @@
 /logs/*
 !/logs/README.md
 .idea/
-environment.php
 cache/*
 !cache/.gitkeep
 public/.htaccess

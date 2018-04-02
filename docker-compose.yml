@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      - docker=1
+      - COMPOSER_ALLOW_SUPERUSER=1
+    volumes:
+      - .:/var/www/html

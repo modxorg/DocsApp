@@ -1,18 +1,10 @@
 <?php
+namespace MODXDocs\Views;
 
-namespace MODXDocs\Controllers;
-
-use DirectoryIterator;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
-use MODXDocs\Helpers\LinkRenderer;
-use Webuni\CommonMark\TableExtension\TableExtension;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
-use TOC\MarkupFixer;
-use TOC\TocGenerator;
+
 
 class NotFound extends Doc
 {
@@ -49,15 +41,9 @@ class NotFound extends Doc
         return $this->render('notfound.twig');
     }
 
-    public function getTopNavigation()
-    {
-        $topNav = $this->getNavigationForParent($this->basePath, 1, 1);
-        $this->setVariable('topnav', $topNav);
-    }
-
     private function findNewUri($uri)
     {
-        $dir = new DirectoryIterator($this->container->get('settings')['docSources']);
+        $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDir() || $fileinfo->isDot()) {
                 continue;

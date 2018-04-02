@@ -1,10 +1,12 @@
 <?php
 namespace MODXDocs\Helpers;
+
 use League\CommonMark\ElementRendererInterface;
 use League\CommonMark\HtmlElement;
 use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+
 
 class LinkRenderer implements InlineRendererInterface
 {
@@ -23,32 +25,36 @@ class LinkRenderer implements InlineRendererInterface
             throw new \InvalidArgumentException('Incompatible inline type: ' . get_class($inline));
         }
 
-        $attrs = array();
+        $attributes = [
+            'href' => $this->getHref($inline->getUrl())
+        ];
 
-        if (isset($inline->attributes['title'])) {
-            $attrs['title'] = $htmlRenderer->escape($inline->data['title'], true);
+        if (isset($inline->attributes['title']) and strlen($inline->attributes['title']) > 0) {
+            $attributes['title'] = $htmlRenderer->escape($inline->data['title'], true);
         }
 
-        $url = $inline->getUrl();
-        if ($this->isExternalUrl($url)) {
-            $attrs['class'] = 'external-link';
-            $attrs['target'] = '_blank';
-            $attrs['rel'] = 'noreferrer noopener';
+        if (static::isExternalUrl($inline->getUrl())) {
+            $attributes['class'] = 'external-link';
+            $attributes['target'] = '_blank';
+            $attributes['rel'] = 'noreferrer noopener';
         }
-        elseif (strpos($url, '#') === 0) {
-            $url = $this->baseUri . $this->currentDoc . $url;
-        }
-        else {
-            if (strpos($url, '/') !== 0) {
-                $url = $this->baseUri . $url;
-            }
-        }
-        $attrs['href'] = $url;
 
-        return new HtmlElement('a', $attrs, $htmlRenderer->renderInlines($inline->children()));
+        return new HtmlElement('a', $attributes, $htmlRenderer->renderInlines($inline->children()));
     }
 
-    private function isExternalUrl($url)
+    private function getHref($url) {
+        if (static::isExternalUrl($url)) {
+            return $url;
+        }
+
+        if (strpos($url, '#') === 0) {
+            return $this->baseUri . $this->currentDoc . $url;
+        }
+
+        return $this->baseUri . $url;
+    }
+
+    private static function isExternalUrl($url)
     {
         return preg_match('#^(?:[a-z]+:)?//|^mailto:#', $url);
     }

@@ -15,3 +15,5 @@ Version-specific copies of the documentation should go into the `/doc-sources` d
 4. Edit environment.php in your favorite file editor. Set the appropriate hostname and directory. 
 5. Point a webserver, running at least PHP 7.1, to the `/public` directory. 
 6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required.
+=======
+Version-specific copies of the documentation should go into the `/doc-sources` directory. Then point a webserver at the `/public` directory to browse the documentation.
