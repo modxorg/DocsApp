@@ -15,3 +15,10 @@ Version-specific copies of the documentation should go into the `/doc-sources` d
 4. Edit environment.php in your favorite file editor. Set the appropriate hostname and directory. 
 5. Point a webserver, running at least PHP 7.1, to the `/public` directory. 
 6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required.
+
+## Building assets
+
+From the root of the project first load the dependencies with `npm install`. 
+
+Then use `npm build:css` to build the styles or `npm run watch:css` to watch for changes to the sass files in `public/assets/scss/` and automatically build them.
+

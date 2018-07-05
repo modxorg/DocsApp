@@ -1,0 +1,21 @@
+{
+  "name": "@markh/docsapp",
+  "description": "DocsApp assets for MODX",
+  "version": "1.0.0",
+  "dependencies": {
+    "autoprefixer": "^8.4.1",
+    "concat": "^1.0.3",
+    "node-sass": "^4.9.0",
+    "parallelshell": "^3.0.2",
+    "uglify-js": "^3.3.24",
+    "watch": "^1.0.2"
+  },
+  "scripts": {
+    "build": "parallelshell \"npm run build:js\" \"npm run build:css\"",
+    "build:js": "uglifyjs public/assets/js/file1.js public/assets/js/file2.js --compress --mangle --source-map \"root='../',url=main.min.js.map\" --output public/dist/main.min.js",
+    "build:css": "node-sass --source-map public/assets/dist/ --output-style compressed public/assets/scss/app.scss public/assets/dist/app.min.css",
+    "watch": "parallelshell \"npm run watch:js\" \"npm run watch:css\"",
+    "watch:js": "watch \"npm run build:js\" js",
+    "watch:css": "watch \"npm run build:css\" public/assets/scss"
+  }
+}

@@ -6,3 +6,4 @@ environment.php
 cache/*
 !cache/.gitkeep
 public/.htaccess
+node_modules/

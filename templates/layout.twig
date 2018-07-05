@@ -8,22 +8,24 @@
     <title>{% block title %}Welcome to the MODX Documentation{% endblock %} | MODX Documentation</title>
     {% block meta %}{% endblock %}
 
-    <link rel="stylesheet" href="{{ settings.directory }}assets/wireframe/app.css">
+    <link rel="stylesheet" href="{{ settings.directory }}assets/dist/app.min.css">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <a href="{{ path_for('home') }}" title="MODX Documentation">
-            <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200" alt="MODX Logo">
-        </a>
+    <div class="container">
+        <div class="logo">
+            <a href="{{ path_for('home') }}" title="MODX Documentation">
+                <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200" alt="MODX Logo">
+            </a>
+        </div>
+        <nav class="menu">
+            {% for item in topnav %}
+                <a href="{{ item.uri }}" class="nav-item">{{ item.title }}</a>
+            {% endfor %}
+        </nav>
     </div>
-    <nav class="menu">
-        {% for item in topnav %}
-            <a href="{{ item.uri }}" class="nav-item">{{ item.title }}</a>
-        {% endfor %}
-    </nav>
 </header>
 
 {% block container %}

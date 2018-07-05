@@ -1,13 +1,12 @@
 /* Basic Reset */
 *, *:before, *:after { margin: 0; padding: 0; box-sizing: border-box; }
-
-
-/* Prevent certain elements from using their default border/bg styles */
-form, input, textarea, table, button, select, optgroup, option {
-  font: inherit; color: inherit; background: transparent;
-  border-image: url('noise.png') 2 stretch;
+body {
+  background: #fefefe;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  padding-top: 100px; // for fixed header
 }
-
 
 .container {
   max-width: 1280px;
@@ -15,11 +14,20 @@ form, input, textarea, table, button, select, optgroup, option {
 }
 
 header {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1.5rem 0;
-  display: flex;
-  vertical-align: middle;
+  position: fixed;
+  height: 100px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fefefe;
+
+  .container {
+    //max-width: 1280px;
+    //margin: 0 auto;
+    padding: 1.5rem 0;
+    display: flex;
+    vertical-align: middle;
+  }
 
   .logo {
     flex: 1;
@@ -30,7 +38,13 @@ header {
 
     a {
       padding: 0.5em 1em;
-      display: inline-block;
+      color: #7a838a;
+      text-decoration: none;
+      font-size: .875rem;
+
+      &:hover {
+        color: #0F1214;
+      }
     }
   }
 }
@@ -40,19 +54,25 @@ header {
 }
 .sidebar {
   padding: 2em 2em 2em 0;
-  opacity: 0.6;
-  transition: opacity 0.5s;
-
-  &:hover, &:focus, &:focus-within {
-    opacity: 1;
+  position: fixed;
+  overflow-y: auto;
+  width: 30%;
+  top: 150px;
+  bottom: 0;
+}
+.sidebar-heading {
+  font-size: 1.5rem;
+  color: #333;
+  a {
+    text-decoration: none;
+    color: #333;
+    &:hover {
+      color: #222;
+    }
   }
 }
 .content {
-  background-color: #fff;
-  color: #333;
-  border-radius: 5px;
-  border: 1px solid #bbb;
-
+  margin-left: 30%;
   img {
     max-width: 100%;
     border: 1px solid #bbb;
@@ -118,12 +138,12 @@ header {
     max-width: 1440px;
   }
   .content {
-    flex: 3 0 80%;
-    max-width: 80%;
+    flex: 3 0 75%;
+    max-width: 75%;
   }
   .sidebar {
-    flex: 1 0 20%;
-    max-width: 20%;
+    flex: 1 0 25%;
+    max-width: 25%;
   }
 
 }
@@ -171,8 +191,34 @@ a {
     //  display: none;
     //}
   }
+  .item {
+    list-style-type: none;
+    line-height: 2rem;
+
+    a {
+      //padding: 0.5em 1em;
+      color: #7a838a;
+      text-decoration: none;
+
+      &:hover {
+        color: #0F1214;
+      }
+    }
+    .nav-item-1 {
+      font-size: 1rem;
+    }
+    .has-children {
+      font-weight: bold;
+    }
+    .nav-item-2 {
+      font-size: .875rem;
+    }
+  }
 }
 
+.sidebar-inner > .nav-menu-wrapper {
+  padding-left: 0;
+}
 
 
 /*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */

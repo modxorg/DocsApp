@@ -13,15 +13,14 @@
 {% endblock %}
 {% block content %}
     <div class="sidebar">
-        <h2>On this page</h2>
-        {{ toc|raw }}
-
-        {% if current_nav_parent %}
-            <h2><a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a></h2>
-        {% else %}
-            <h2>Navigation</h2>
-        {% endif %}
-        {{ nav|raw }}
+        <div class="sidebar-inner">
+            {% if current_nav_parent %}
+                <h2 class="sidebar-heading"><a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a></h2>
+            {% else %}
+                <h2 class="sidebar-heading">Navigation</h2>
+            {% endif %}
+            {{ nav|raw }}
+        </div>
     </div>
     <div class="content p-2">
         <h1>{{ meta.title }}</h1>
@@ -40,6 +39,10 @@
                 </small>
             </p>
         {% endif %}
+
+        <h2>On this page</h2>
+        {{ toc|raw }}
+
         {{ parsed|raw }}
     </div
 {% endblock %}
