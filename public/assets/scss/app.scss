@@ -1,10 +1,15 @@
 /* Basic Reset */
 *, *:before, *:after { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #fefefe;
+html {
+  font-family: 'Helvetica Neue', serif;
   font-size: 16px;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
   color: #333;
+  background: #fefefe;
+}
+body {
+  min-height: 100vh;
   padding-top: 100px; // for fixed header
 }
 
@@ -204,13 +209,13 @@ a {
         color: #0F1214;
       }
     }
-    .nav-item-1 {
-      font-size: 1rem;
-    }
-    .has-children {
+    &.has-children > a {
       font-weight: bold;
     }
-    .nav-item-2 {
+    &.nav-item-1 {
+      font-size: 1rem;
+    }
+    &.nav-item-2 {
       font-size: .875rem;
     }
   }
@@ -223,13 +228,6 @@ a {
 
 /*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */
 /* Setup */
-html {
-  font-family: 'Helvetica Neue', serif;
-  font-size: 100%;
-  -webkit-font-smoothing: antialiased;
-  color: #333;
-  background-color: #eee;
-}
 p, pre {
   line-height: 1.5rem;
   margin-top: 1.5rem;
