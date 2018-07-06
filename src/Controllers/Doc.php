@@ -3,9 +3,11 @@
 namespace MODXDocs\Controllers;
 
 use DirectoryIterator;
+use Knp\Menu\Matcher\Matcher;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use MODXDocs\Helpers\LinkRenderer;
+use MODXDocs\Helpers\TocRenderer;
 use Webuni\CommonMark\TableExtension\TableExtension;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
@@ -135,7 +137,11 @@ class Doc extends Base
 
         // Generate table of contents
         $tocGenerator = new TocGenerator();
-        $toc = $tocGenerator->getHtmlMenu($content, 2);
+        $renderer = new TocRenderer(new Matcher(), [
+            'currentClass'  => 'active',
+            'ancestorClass' => 'active_ancestor'
+        ], $this->docPath);
+        $toc = $tocGenerator->getHtmlMenu($content, 2, 6, $renderer);
         $this->setVariable('toc', $toc);
 
 

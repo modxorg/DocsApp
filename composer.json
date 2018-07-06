@@ -28,8 +28,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "MODXDocs\\Controllers\\": "controllers/",
-            "MODXDocs\\Helpers\\": "src/"
+            "MODXDocs\\": "src/"
         }
     },
     "config": {
