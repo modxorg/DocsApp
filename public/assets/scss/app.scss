@@ -155,6 +155,9 @@ header {
     flex: 1 0 15%;
     max-width: 15%;
     margin-left: 85%;
+    .page-toc-inner {
+      max-width: 15%;
+    }
   }
 }
 @media (min-width: 1460px) {
@@ -281,12 +284,12 @@ a {
 .page-toc-outside {
   display: none;
   position: absolute;
-  top: 2rem;
-  bottom: 0;
   right: 0;
-  overflow-y: scroll;
   .page-toc-inner {
     position: fixed;
+    overflow-y: scroll;
+    top: 175px;
+    bottom: 1rem;
   }
 }
 
