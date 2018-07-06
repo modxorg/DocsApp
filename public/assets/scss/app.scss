@@ -16,6 +16,7 @@ body {
 .container {
   max-width: 1280px;
   margin: 2em auto 0;
+  padding: 0 1rem;
 }
 
 header {
@@ -29,7 +30,7 @@ header {
 
   .container {
     margin: 0 auto;
-    padding: 1.5rem 0;
+    padding: 1.5rem 1rem;
     display: flex;
     vertical-align: middle;
   }
@@ -46,6 +47,7 @@ header {
       color: #7a838a;
       text-decoration: none;
       font-size: .875rem;
+      white-space: nowrap;
 
       &:hover {
         color: #0F1214;
@@ -55,7 +57,7 @@ header {
 }
 
 .content-container {
-
+  padding-bottom: 5rem;
 }
 .sidebar {
   padding: 2em 2em 2em 0;
@@ -95,83 +97,6 @@ header {
 .flex {
   > * > .wf-image {
     height: 100%;
-  }
-}
-@media (min-width: 768px) {
-  .content-container {
-    display: flex;
-  }
-
-  .content {
-    flex: 2 0 60%;
-    max-width: 60%;
-    margin-left: 40%;
-  }
-  .sidebar {
-    flex: 1 0 40%;
-    max-width: 40%;
-  }
-  .single-column {
-    margin: 0 auto;
-    max-width: 90%;
-    .content {
-      max-width: 100%;
-    }
-  }
-}
-@media (min-width: 1080px) {
-  .single-column {
-    max-width: 80%;
-  }
-  .content {
-    flex: 2 0 70%;
-    max-width: 70%;
-    margin-left: 30%;
-  }
-  .sidebar {
-    flex: 1 0 30%;
-    max-width: 30%;
-  }
-}
-@media (min-width: 1280px) {
-  .content {
-    flex: 3 0 60%;
-    max-width: 60%;
-    margin-left: 25%;
-  }
-  .sidebar {
-    flex: 1 0 25%;
-    max-width: 25%;
-  }
-  .single-column {
-    max-width: 70%;
-  }
-  .page-toc-inline {
-    display: none;
-  }
-  .page-toc-outside {
-    display: block !important;
-    width: 15%;
-    flex: 1 0 15%;
-    max-width: 15%;
-    margin-left: 85%;
-    .page-toc-inner {
-      max-width: 15%;
-    }
-  }
-}
-@media (min-width: 1460px) {
-  .container {
-    max-width: 1440px;
-  }
-  .content {
-    flex: 3 0 60%;
-    max-width: 60%;
-    margin-left: 25%;
-  }
-  .sidebar {
-    flex: 1 0 25%;
-    max-width: 25%;
   }
 }
 ul {
@@ -438,25 +363,6 @@ code {
   margin-top: 0;
 }
 
-/* Wireframing stuff  */
-
-
-
-.wf-image {
-  background-image: url('imgwf.png');
-  background-size: 100% 100%;
-  vertical-align: middle;
-
-  > * {
-    background-color: rgba(255,255,255, 0.6);
-  }
-}
-.wf-inline-blocks {
-  > * {
-    display: inline-block;
-    height: 100%;
-  }
-}
 .btn {
   background-color: #4187c8;
   color: #fff;
@@ -477,15 +383,108 @@ code {
   }
 }
 
-/* Wireframe Borders */
-[class*='wf'], [class*='wf-child'] > * {
-  border: 0px solid #aaa;
-  border-image: url('noise.png') 2 stretch;
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 0;
+  }
+  header {
+    position: relative;
+    height: auto;
+    .container {
+      display: block;
+      text-align: center;
+    }
+    .menu {
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      a {
+        flex: 1 0 33%;
+      }
+    }
+  }
+  .sidebar {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    padding: 0;
+  }
 }
-/* All sides */
-.wf, .wf-child > * { border-width: 2px; }
-/* Single sides */
-.wf-top, .wf-child-top > * { border-top-width: 2px; }
-.wf-right, .wf-child-right > * { border-right-width: 2px; }
-.wf-bottom, .wf-child-bottom > * { border-bottom-width: 2px; }
-.wf-left, .wf-child-left > * { border-left-width: 2px; }
+@media (min-width: 768px) {
+  .content-container {
+    display: flex;
+  }
+
+  .content {
+    flex: 2 0 60%;
+    max-width: 60%;
+    margin-left: 40%;
+  }
+  .sidebar {
+    flex: 1 0 40%;
+    max-width: 40%;
+  }
+  .single-column {
+    margin: 0 auto;
+    max-width: 90%;
+    .content {
+      max-width: 100%;
+    }
+  }
+}
+@media (min-width: 1080px) {
+  .single-column {
+    max-width: 80%;
+  }
+  .content {
+    flex: 2 0 70%;
+    max-width: 70%;
+    margin-left: 30%;
+  }
+  .sidebar {
+    flex: 1 0 30%;
+    max-width: 30%;
+  }
+}
+@media (min-width: 1280px) {
+  .content {
+    flex: 3 0 60%;
+    max-width: 60%;
+    margin-left: 25%;
+  }
+  .sidebar {
+    flex: 1 0 25%;
+    max-width: 25%;
+  }
+  .single-column {
+    max-width: 70%;
+  }
+  .page-toc-inline {
+    display: none;
+  }
+  .page-toc-outside {
+    display: block !important;
+    width: 15%;
+    flex: 1 0 15%;
+    max-width: 15%;
+    margin-left: 85%;
+    .page-toc-inner {
+      max-width: 15%;
+    }
+  }
+}
+@media (min-width: 1460px) {
+  .container {
+    max-width: 1440px;
+  }
+  .content {
+    flex: 3 0 60%;
+    max-width: 60%;
+    margin-left: 25%;
+  }
+  .sidebar {
+    flex: 1 0 25%;
+    max-width: 25%;
+  }
+}
