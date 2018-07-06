@@ -40,20 +40,24 @@
             </p>
         {% endif %}
 
+        {% if toc is not empty %}
         <div class="page-toc page-toc-inline">
             <div class="page-toc-inner">
                 <h2>Contents</h2>
                 {{ toc|raw }}
             </div>
         </div>
+        {% endif %}
 
         {{ parsed|raw }}
     </div>
 
-    <div class="page-toc page-toc-outside">
-        <div class="page-toc-inner">
-            <h2>Contents</h2>
-            {{ toc|raw }}
+    {% if toc is not empty %}
+        <div class="page-toc page-toc-outside">
+            <div class="page-toc-inner">
+                <h2>Contents</h2>
+                {{ toc|raw }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
