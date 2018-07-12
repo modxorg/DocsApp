@@ -1,59 +1,234 @@
-/* Basic Reset */
+/******************************************************************************
+SCSS VARIABLES
+******************************************************************************/
+$fontColor: #323232;
+$lightBg: #eceef0;
+$linkColor: #3780b3;
+$linkHoverColor: #214b68;
+
+$fontFamily: Ubuntu, sans-serif;
+$fontFamilyHeader: 'Ubuntu Condensed', Ubuntu, sans-serif;
+
+$darkBlue: #284569;
+$darkBlue1: #10243E;
+$lightBlue: #3780B3;
+
+$rowWidth: 1200px;
+
+/******************************************************************************
+RESET
+******************************************************************************/
 *, *:before, *:after { margin: 0; padding: 0; box-sizing: border-box; }
-html {
-  font-family: 'Helvetica Neue', serif;
-  font-size: 16px;
+
+/******************************************************************************
+ROOT STYLES
+******************************************************************************/
+body {
+  font-family: $fontFamily;
+  font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  color: #333;
-  background: #fefefe;
-}
-body {
+  color: $fontColor;
+  background: $lightBg;
   min-height: 100vh;
   padding-top: 100px; // for fixed header
 }
-
-.container {
-  max-width: 1280px;
-  margin: 2em auto 0;
-  padding: 0 1rem;
+a {
+  color: $linkColor;
+  text-decoration: none;
+  &:hover, &:active {
+    color: $linkHoverColor;
+  }
 }
 
-header {
+/*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */
+p, pre {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+pre, code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+pre {
+  overflow-x: scroll;
+}
+blockquote {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $fontFamilyHeader;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  line-height: 1.5rem;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+h2 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+h3 {
+  font-size: 1.1875rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+h4 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+h5 {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+h6 {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem; 
+}
+@media print, screen and (min-width: 40em) {
+  h1 {
+    font-size: 3rem; 
+  }
+  h2 {
+    font-size: 2.5rem; 
+  }
+  h3 {
+    font-size: 1.9375rem; 
+  }
+  h4 {
+    font-size: 1.5625rem; 
+  }
+  h5 {
+    font-size: 1.25rem; 
+  }
+  h6 {
+    font-size: 1rem; } 
+}
+table {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  max-width: 100%;
+  border-radius: 5px;
+  thead {
+    background-color: #eee;
+    text-align: left;
+  }
+  td, th {
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+/******************************************************************************
+MODULES
+******************************************************************************/
+
+/* Header Bar */
+.header {
   position: fixed;
   height: 100px;
   top: 0;
   left: 0;
   right: 0;
-  background: #fefefe;
+  background: $darkBlue;
   z-index: 1;
-
-  .container {
+  
+  &__inner {
     margin: 0 auto;
-    padding: 1.5rem 1rem;
+    padding: 1rem .5rem;
     display: flex;
-    vertical-align: middle;
+    align-items: center;
+    justify-content: space-between;
+    max-width: $rowWidth;
   }
 
-  .logo {
-    flex: 1;
+  &__logo {
+    flex: 0 0 auto;
   }
-  .menu {
-    flex: 2;
+
+  &__menu {
+    flex: 1 1 auto;
     text-align: right;
+  }
+}
 
-    a {
-      padding: 0.5em 1em;
-      color: #7a838a;
-      text-decoration: none;
-      font-size: .875rem;
-      white-space: nowrap;
 
-      &:hover {
-        color: #0F1214;
-      }
+
+.mainMenu {
+
+  &__wrap {
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    display: inline-block;
+
+  }
+
+  &__link {
+    padding: 0.5em 1em;
+    color: #ffffff;
+    text-decoration: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+    &:hover {
+      color: $lightBlue;
     }
   }
+}
+
+
+/* The MODX logo*/
+.logo {
+  width: 200px;
+
+  &__link {
+
+  }
+
+  &__img {
+    border: none;
+    outline: none;
+  }
+}
+
+
+
+
+
+
+.container {
+  position: relative;
+  max-width: 1280px;
+  margin: 2em auto 0;
+  padding: 0 1rem;
 }
 
 .content-container {
@@ -86,7 +261,9 @@ header {
   }
 }
 
-
+/******************************************************************************
+TYPOGRAPHY
+******************************************************************************/
 .text-center {
   text-align: center;
 }
@@ -94,34 +271,7 @@ header {
   text-align: right;
 }
 
-.flex {
-  > * > .wf-image {
-    height: 100%;
-  }
-}
-ul {
-  padding-left: 1.5em;
-  padding-bottom: 1em;
-}
-.p-1 {
-  padding: 1em;
-}
-.p-2 {
-  padding: 2em;
-}
-.p-3 {
-  padding: 3em;
-}
-.p-4 {
-  padding: 4em;
-}
-a {
-  color: blue;
-  text-decoration: underline;
-  &:hover, &:active {
-    color: darkblue;
-  }
-}
+
 
 .bg-grey {
   background-color: #eee;
@@ -203,9 +353,7 @@ a {
     }
   }
 }
-.container {
-  position: relative;
-}
+
 .page-toc-outside {
   display: none;
   position: absolute;
@@ -218,151 +366,15 @@ a {
   }
 }
 
-
-/*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */
-/* Setup */
-p, pre {
-  line-height: 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-}
-pre, code {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-pre {
-  overflow-x: scroll;
-}
-ul,
-ol {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-}
-ul li,
-ol li {
-  line-height: 1.5rem;
-}
-ul ul,
-ol ul,
-ul ol,
-ol ol {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-blockquote {
-  line-height: 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: sans-serif;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-  line-height: 1.5rem;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-h1 {
-  font-size: 1.5rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-
-h2 {
-  font-size: 1.25rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-h3 {
-  font-size: 1.1875rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-h4 {
-  font-size: 1.125rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-h5 {
-  font-size: 1.0625rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-h6 {
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; 
-}
-@media print, screen and (min-width: 40em) {
-  h1 {
-    font-size: 3rem; 
-  }
-  h2 {
-    font-size: 2.5rem; 
-  }
-  h3 {
-    font-size: 1.9375rem; 
-  }
-  h4 {
-    font-size: 1.5625rem; 
-  }
-  h5 {
-    font-size: 1.25rem; 
-  }
-  h6 {
-    font-size: 1rem; } 
-}
-
-
-table {
-  border: 1px solid #aaa;
-  border-collapse: collapse;
-  margin-top: 1.5rem;
-  max-width: 100%;
-  border-radius: 5px;
-
-  thead {
-    background-color: #eee;
-    text-align: left;
-  }
-
-  tr {
-
-  }
-  td, th {
-    padding: 0.5em 1em;
-    border-bottom: 1px solid #ccc;
-  }
-}
-
+/******************************************************************************
+CONTENT PARTS
+******************************************************************************/
 /* Code blocks */
-code {
-  vertical-align: baseline;
-}
+code { vertical-align: baseline; }
 /* Leading paragraph text */
-.lead {
-  font-size: 1.414rem;
-}
+.lead { font-size: 1.414rem; }
 /* Hug the block above you */
-.hug {
-  margin-top: 0;
-}
-
+.hug { margin-top: 0; }
 .btn {
   background-color: #4187c8;
   color: #fff;
@@ -371,120 +383,12 @@ code {
   padding: 0.5em 1em;
   display: inline-block;
   text-decoration: none;
-
   &:hover, &:focus {
     border-color: #0b1b6b;
     color: #fff;
   }
-
   &.full {
     display: block;
     width: 100%;
-  }
-}
-
-
-@media (max-width: 768px) {
-  body {
-    padding-top: 0;
-  }
-  header {
-    position: relative;
-    height: auto;
-    .container {
-      display: block;
-      text-align: center;
-    }
-    .menu {
-      text-align: center;
-      display: flex;
-      flex-wrap: wrap;
-      a {
-        flex: 1 0 33%;
-      }
-    }
-  }
-  .sidebar {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    padding: 0;
-  }
-}
-@media (min-width: 768px) {
-  .content-container {
-    display: flex;
-  }
-
-  .content {
-    flex: 2 0 60%;
-    max-width: 60%;
-    margin-left: 40%;
-  }
-  .sidebar {
-    flex: 1 0 40%;
-    max-width: 40%;
-  }
-  .single-column {
-    margin: 0 auto;
-    max-width: 90%;
-    .content {
-      max-width: 100%;
-    }
-  }
-}
-@media (min-width: 1080px) {
-  .single-column {
-    max-width: 80%;
-  }
-  .content {
-    flex: 2 0 70%;
-    max-width: 70%;
-    margin-left: 30%;
-  }
-  .sidebar {
-    flex: 1 0 30%;
-    max-width: 30%;
-  }
-}
-@media (min-width: 1280px) {
-  .content {
-    flex: 3 0 60%;
-    max-width: 60%;
-    margin-left: 25%;
-  }
-  .sidebar {
-    flex: 1 0 25%;
-    max-width: 25%;
-  }
-  .single-column {
-    max-width: 70%;
-  }
-  .page-toc-inline {
-    display: none;
-  }
-  .page-toc-outside {
-    display: block !important;
-    width: 15%;
-    flex: 1 0 15%;
-    max-width: 15%;
-    margin-left: 85%;
-    .page-toc-inner {
-      max-width: 15%;
-    }
-  }
-}
-@media (min-width: 1460px) {
-  .container {
-    max-width: 1440px;
-  }
-  .content {
-    flex: 3 0 60%;
-    max-width: 60%;
-    margin-left: 25%;
-  }
-  .sidebar {
-    flex: 1 0 25%;
-    max-width: 25%;
   }
 }

@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed" rel="stylesheet">
     <title>{% block title %}Welcome to the MODX Documentation{% endblock %} | MODX Documentation</title>
     {% block meta %}{% endblock %}
-
-    <link rel="stylesheet" href="{{ settings.directory }}assets/dist/app.min.css">
+    <link rel="stylesheet" href="{{ settings.directory }}assets/dist/app.css">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <div class="logo">
-            <a href="{{ path_for('home') }}" title="MODX Documentation">
-                <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200" alt="MODX Logo">
+<header class="header">
+    <div class="header__inner">
+        <div class="logo header__logo">
+            <a class="logo__link" href="{{ path_for('home') }}" title="MODX Documentation">
+                <img class="logo__img" src="https://modx.com/assets/design/css/images/modx-logo-color.svg" alt="MODX Logo">
             </a>
         </div>
-        <nav class="menu">
+        <nav class="header__menu mainMenu">
+            <ul class="mainMenu__wrap">
             {% for item in topnav %}
-                <a href="{{ item.uri }}" class="nav-item">{{ item.title }}</a>
+                <li class="mainMenu__item"><a class="mainMenu__link" href="{{ item.uri }}" class="nav-item">{{ item.title }}</a></li>
             {% endfor %}
+            </ul>
         </nav>
     </div>
 </header>
