@@ -31,15 +31,19 @@
 
 {% block container %}
 <div class="container">
-    <div class="content-container">
-        {% block content %}
-            <div class="content">
-                <h1>{{ page.title }}</h1>
-                <p style="font-size: 1.1em;">{{ page.introduction }}</p>
-            </div>
-        {% endblock %}
-    </div>
+    {% block content %}
+        <div class="content">
+            <h1>{{ page.title }}</h1>
+            <p>{{ page.introduction }}</p>
+        </div>
+    {% endblock %}
 </div>
+{% endblock %}
+
+{% block footer %}
+<footer>
+footer
+</footer>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

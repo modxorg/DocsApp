@@ -1,19 +1,27 @@
 /******************************************************************************
-SCSS VARIABLES
+VARIABLES
 ******************************************************************************/
-$fontColor: #323232;
+/*#region*/
+// General colors
 $lightBg: #eceef0;
-$linkColor: #3780b3;
-$linkHoverColor: #214b68;
-
-$fontFamily: Ubuntu, sans-serif;
-$fontFamilyHeader: 'Ubuntu Condensed', Ubuntu, sans-serif;
-
 $darkBlue: #284569;
 $darkBlue1: #10243E;
 $lightBlue: #3780B3;
 
+// Text colors
+$fontColor: #323232;
+$linkColor: #3780b3;
+$linkHoverColor: #214b68;
+
+/* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
+$rootFontSize: 18px;
+$fontFamily: Ubuntu, sans-serif;
+$fontFamilyHeader: 'Ubuntu Condensed', Ubuntu, sans-serif;
+
 $rowWidth: 1200px;
+$maxContentWidth: 45em;
+/*#endregion*/
+
 
 /******************************************************************************
 RESET
@@ -23,15 +31,15 @@ RESET
 /******************************************************************************
 ROOT STYLES
 ******************************************************************************/
+/*#region*/
 body {
   font-family: $fontFamily;
-  font-size: 15px;
+  font-size: $rootFontSize;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   color: $fontColor;
   background: $lightBg;
-  min-height: 100vh;
-  padding-top: 100px; // for fixed header
+  padding-top: 100px; // Room for fixed header
 }
 a {
   color: $linkColor;
@@ -40,8 +48,6 @@ a {
     color: $linkHoverColor;
   }
 }
-
-/*! Some generic typography, based on Typebase (http://devinhunt.github.io/typebase.css/) v0.1.0 | MIT License */
 p, pre {
   line-height: 1.5rem;
   margin-top: 1.5rem;
@@ -51,15 +57,12 @@ pre, code {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-pre {
-  overflow-x: scroll;
-}
+pre { overflow-x: scroll; }
 blockquote {
   line-height: 1.5rem;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
-/* Headings */
 h1,
 h2,
 h3,
@@ -67,67 +70,48 @@ h4,
 h5,
 h6 {
   font-family: $fontFamilyHeader;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-  line-height: 1.5rem;
+  line-height: 1;
   &:first-child {
     margin-top: 0;
   }
 }
 h1 {
   font-size: 1.5rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 h2 {
   font-size: 1.25rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 h3 {
   font-size: 1.1875rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 h4 {
   font-size: 1.125rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 h5 {
   font-size: 1.0625rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 h6 {
   font-size: 1rem;
-  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem; 
 }
 @media print, screen and (min-width: 40em) {
-  h1 {
-    font-size: 3rem; 
-  }
-  h2 {
-    font-size: 2.5rem; 
-  }
-  h3 {
-    font-size: 1.9375rem; 
-  }
-  h4 {
-    font-size: 1.5625rem; 
-  }
-  h5 {
-    font-size: 1.25rem; 
-  }
-  h6 {
-    font-size: 1rem; } 
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 1.9375rem; }
+  h4 { font-size: 1.5625rem; }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1rem; } 
 }
 table {
   border: 1px solid #aaa;
@@ -144,11 +128,13 @@ table {
     border-bottom: 1px solid #ccc;
   }
 }
+/*#endregion*/
+
 
 /******************************************************************************
 MODULES
 ******************************************************************************/
-
+/*#region*/
 /* Header Bar */
 .header {
   position: fixed;
@@ -158,7 +144,7 @@ MODULES
   right: 0;
   background: $darkBlue;
   z-index: 1;
-  
+
   &__inner {
     margin: 0 auto;
     padding: 1rem .5rem;
@@ -177,8 +163,6 @@ MODULES
     text-align: right;
   }
 }
-
-
 
 .mainMenu {
 
@@ -208,51 +192,63 @@ MODULES
 /* The MODX logo*/
 .logo {
   width: 200px;
-
   &__link {
-
   }
-
   &__img {
     border: none;
     outline: none;
   }
 }
 
-
-
-
-
-
+// Generic body container
 .container {
   position: relative;
-  max-width: 1280px;
-  margin: 2em auto 0;
-  padding: 0 1rem;
+  margin: 0;
+  padding: 0;
+  background-color: $lightBg;
 }
 
+// Two column split
 .content-container {
-  padding-bottom: 5rem;
+  display: flex;
+  justify-content: center;
 }
+
 .sidebar {
-  padding: 2em 2em 2em 0;
-  position: fixed;
-  overflow-y: auto;
-  top: 150px;
-  bottom: 0;
-}
-.sidebar-heading {
-  font-size: 1.5rem;
-  color: #333;
-  a {
-    text-decoration: none;
-    color: #333;
-    &:hover {
-      color: #222;
+  flex: 1 1 40%;
+  background-color: $lightBlue;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: -10px 0px 18px -10px inset rgba(0,0,0,.5);
+
+  &__inner {
+    flex: 0 1 auto;
+  }
+
+  &__heading {
+    font-size: 1.5rem;
+    color: #fff;
+    a {
+      text-decoration: none;
+      color: #fff;
+      &:hover {
+        color: #fcc;
+      }
     }
   }
 }
+
 .content {
+  flex: 2 1 60%;
+  box-shadow: 10px 0 7px -10px inset rgba(0,0,0,.6);
+  border-left: 1px solid #eaeaea;
+
+  &__inner {
+    max-width: $maxContentWidth;
+    padding: 20px 40px;
+  }
+
   img {
     max-width: 100%;
     border: 1px solid #bbb;
@@ -260,6 +256,8 @@ MODULES
     padding: 3px;
   }
 }
+/*#endregion*/
+
 
 /******************************************************************************
 TYPOGRAPHY
@@ -283,25 +281,26 @@ TYPOGRAPHY
 
 .nav-menu-wrapper {
   padding-bottom: 0;
+
+  > li { margin-left: 6px; }
   > li.active {
-    > a {
-      text-decoration: underline;
-    }
+    > a { text-decoration: underline; }
     //&.has-children ~ li:not(.active) {
     //  display: none;
     //}
   }
+
   .item {
     list-style-type: none;
-    line-height: 2rem;
 
     a {
-      //padding: 0.5em 1em;
-      color: #7a838a;
+      display: inline-block;
+      color: #fff;
       text-decoration: none;
+      padding: 2px;
 
       &:hover {
-        color: #0F1214;
+        color: #fff;
       }
     }
     &.has-children > a {
@@ -309,11 +308,16 @@ TYPOGRAPHY
     }
     &.nav-item-1 {
       font-size: 1rem;
+      margin-bottom: 1rem;
     }
     &.nav-item-2 {
-      font-size: .875rem;
+      font-size: .9rem;
     }
   }
+}
+
+.nav-menu-wrapper li:not(.has-children) a:hover {
+  background-color: rgba(255,255,255,.2);
 }
 
 .sidebar-inner > .nav-menu-wrapper {
@@ -367,7 +371,7 @@ TYPOGRAPHY
 }
 
 /******************************************************************************
-CONTENT PARTS
+ELEMENTS
 ******************************************************************************/
 /* Code blocks */
 code { vertical-align: baseline; }
