@@ -16,7 +16,7 @@
     <div class="header__inner">
         <div class="logo header__logo">
             <a class="logo__link" href="{{ path_for('home') }}" title="MODX Documentation">
-                <img class="logo__img" src="https://modx.com/assets/design/css/images/modx-logo-color.svg" alt="MODX Logo">
+                <img class="logo__img" src="{{settings.directory}}images/modx-docs-logo.svg" alt="MODX DOCS Logo">
             </a>
         </div>
         <nav class="header__menu mainMenu">
@@ -26,8 +26,18 @@
             {% endfor %}
             </ul>
         </nav>
+        <div class="header__hamburger" onclick="toggleMenu()"><img src="{{settings.directory}}images/menu.svg" alt="menu icon"></div>
     </div>
 </header>
+
+<script>
+
+function toggleMenu() {
+    menu = document.querySelector(".header__menu");
+    menu.classList.toggle("header__menu--active");
+}
+
+</script>
 
 {% block container %}
 <div class="container">
