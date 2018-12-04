@@ -2,12 +2,12 @@
   "name": "@markh/docsapp",
   "description": "DocsApp assets for MODX",
   "version": "1.0.0",
-  "dependencies": {
-    "autoprefixer": "^8.4.1",
+  "devDependencies": {
+    "autoprefixer": "^8.6.5",
     "concat": "^1.0.3",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.10.0",
     "parallelshell": "^3.0.2",
-    "uglify-js": "^3.3.24",
+    "uglify-js": "^3.4.9",
     "watch": "^1.0.2"
   },
   "scripts": {
