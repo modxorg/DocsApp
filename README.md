@@ -23,3 +23,7 @@ Version-specific copies of the documentation should go into the `/doc-sources` d
 From the root of the project first load the dependencies with `npm install`. 
 
 Then use `npm build:css` to build the styles or `npm run watch:css` to watch for changes to the sass files in `public/assets/scss/` and automatically build them.
+
+## Running in a Docker Container
+
+Run `make` and `make install` or use the provided Dockerfile/docker-compose.yml. (#3)
