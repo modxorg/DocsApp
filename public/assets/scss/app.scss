@@ -13,16 +13,14 @@ $lightBlue: #3780B3;
 $fontColor: #323232;
 $linkColor: #3780b3;
 $linkHoverColor: #214b68;
-/* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
 
+/* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
 $rootFontSize: 18px;
-$fontFamily: Ubuntu,
-sans-serif;
-$fontFamilyHeader: 'Ubuntu Condensed',
-Ubuntu,
-sans-serif;
+$fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$fontFamilyHeader: 'Ubuntu Condensed', Ubuntu, sans-serif;
 $rowWidth: 1200px;
 $maxContentWidth: 45em;
+
 /*#endregion*/
 
 /******************************************************************************
