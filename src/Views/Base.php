@@ -1,6 +1,5 @@
 <?php
-
-namespace MODXDocs\Controllers;
+namespace MODXDocs\Views;
 
 use Monolog\Logger;
 use Slim\Container;
@@ -8,6 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Router;
 use Slim\Views\Twig;
+
 
 abstract class Base
 {

@@ -1,13 +1,8 @@
 <?php
+namespace MODXDocs\Views;
 
-namespace MODXDocs\Controllers;
-
-use DirectoryIterator;
-use Knp\Menu\Matcher\Matcher;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
-use MODXDocs\Helpers\LinkRenderer;
-use MODXDocs\Helpers\TocRenderer;
 use Webuni\CommonMark\TableExtension\TableExtension;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
@@ -15,6 +10,9 @@ use Slim\Http\Response;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
+
+use MODXDocs\Helpers\LinkRenderer;
+
 
 class Doc extends Base
 {
@@ -27,7 +25,7 @@ class Doc extends Base
 
     public function setVersion($version)
     {
-        $path = $this->container->get('settings')['docSources'] . '/' . $version . '/';
+        $path = $this->container->get('settings')['docs_dir'] . '/' . $version . '/';
         if (!file_exists($path) || !is_dir($path)) {
             throw new NotFoundException($this->request, $this->response);
         }
@@ -137,11 +135,7 @@ class Doc extends Base
 
         // Generate table of contents
         $tocGenerator = new TocGenerator();
-        $renderer = new TocRenderer(new Matcher(), [
-            'currentClass'  => 'active',
-            'ancestorClass' => 'active_ancestor'
-        ], $this->docPath);
-        $toc = $tocGenerator->getHtmlMenu($content, 2, 6, $renderer);
+        $toc = $tocGenerator->getHtmlMenu($content, 2);
         $this->setVariable('toc', $toc);
 
 
@@ -150,7 +144,7 @@ class Doc extends Base
 
     public function getVersions()
     {
-        $dir = new DirectoryIterator($this->container->get('settings')['docSources']);
+        $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
 
         $versions = [];
         foreach ($dir as $fileinfo) {
@@ -206,7 +200,7 @@ class Doc extends Base
     {
         $nav = [];
         try {
-            $dir = new DirectoryIterator($path);
+            $dir = new \DirectoryIterator($path);
         }
         catch (\Exception $e) {
             $this->logger->addError('Exception ' . get_class($e) . ' fetching navigation for ' . $path . ': ' . $e->getMessage());
