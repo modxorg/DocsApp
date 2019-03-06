@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block meta %}
+    <base href="{{ settings.directory }}">
+{% endblock %}
+
+{% block content %}
+    <div class="single-column">
+        <div class="content p-2">
+            <h1>Search the documentation</h1>
+            <p>You're currently searching the {{ version }} documentation in {{ language }}.</p>
+
+
+            <form method="POST" action="{{ path_for('search', {version: version, language: language}) }}">
+                <label for="search-query">
+                    Search term:
+                </label>
+                <input type="text" name="query" id="search-query" value="{{ query }}">
+
+                <button type="submit">Search!</button>
+            </form>
+
+            {% if results %}
+                <h2>{{ total_results }} Results for "{{ query }}"</h2>
+                <ul class="search-results">
+                    {% for result in results %}
+                        <li class="search-result">
+                            <h3 class="search-result__title">
+                                <a href="{{ result.url }}">{{ result.title }}</a>
+                            </h3>
+                            <p class="search-result__snippet">
+                                {{ result.snippet }}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elseif error %}
+                <p>{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -27,7 +27,7 @@ class Doc extends Base
 
     public function setVersion($version)
     {
-        $path = $this->container->get('settings')['docSources'] . '/' . $version . '/';
+        $path = rtrim($this->container->get('settings')['docSources'], '/') . '/' . $version . '/';
         if (!file_exists($path) || !is_dir($path)) {
             throw new NotFoundException($this->request, $this->response);
         }
@@ -119,17 +119,7 @@ class Doc extends Base
 
         // Process the content
         $content = $obj->body();
-
-        // Grab the markdown
-        $environment = Environment::createCommonMarkEnvironment();
-        $environment->addExtension(new TableExtension());
-        $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link',
-            new LinkRenderer($this->baseUri, $this->docPath)
-        );
-        $markdown = new CommonMarkConverter([
-            'html_input' => 'allow',
-        ], $environment);
-        $content = $markdown->convertToHtml($content);
+        $content = $this->parseMarkdown($content);
 
         $fixer = new MarkupFixer();
         $content = $fixer->fix($content);
@@ -265,14 +255,14 @@ class Doc extends Base
             ]),
             'classes' => 'item',
         ];
-        if (strpos($this->file, $relativeFilePath) !== false) {
+        if ($relativeFilePath !== '' && strpos($this->file, $relativeFilePath) !== false) {
             $current['classes'] .= ' active';
         }
 
         return $current;
     }
 
-    private function getTitle(\SplFileInfo $file)
+    protected function getTitle(\SplFileInfo $file)
     {
         // Parse the front matter from the file
         $fileContents = $file->isFile() ? file_get_contents($file->getPathname()) : false;
@@ -284,5 +274,25 @@ class Doc extends Base
             $title = implode(' ', explode('-', $title));
         }
         return $title;
+    }
+
+    /**
+     * @param $content
+     * @return string
+     */
+    protected function parseMarkdown($content): string
+    {
+// Grab the markdown
+        $environment = Environment::createCommonMarkEnvironment();
+        $environment->addExtension(new TableExtension());
+        $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link',
+            new LinkRenderer($this->baseUri, $this->docPath)
+        );
+        $markdown = new CommonMarkConverter([
+            'html_input' => 'allow',
+        ], $environment);
+        $content = $markdown->convertToHtml($content);
+
+        return $content;
     }
 }
