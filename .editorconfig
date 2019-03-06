@@ -18,5 +18,8 @@ indent_size = 2
 [*.twig]
 indent_size = 2
 
+[*.scss]
+indent_size = 2
+
 [*.md]
 insert_final_newline = false
