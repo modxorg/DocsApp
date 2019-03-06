@@ -2,7 +2,8 @@
 namespace MODXDocs;
 
 use Slim\App;
-
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use MODXDocs\Containers\View;
 use MODXDocs\Containers\PageNotFound;
 use MODXDocs\Containers\Logger;
@@ -12,6 +13,7 @@ use MODXDocs\Views\Doc;
 
 class DocsApp
 {
+    /** @var App */
     private $app;
 
     public function __construct(array $settings)
@@ -19,15 +21,9 @@ class DocsApp
         session_start();
 
         $this->app = new App($settings);
-    }
-
-    public function run()
-    {
         $this->routes();
         $this->dependencies();
         $this->middlewares();
-
-        $this->app->run();
     }
 
     private function routes()
@@ -53,4 +49,16 @@ class DocsApp
             call_user_func([$container, 'load'], $this->app->getContainer());
         }
     }
+
+
+    public function run()
+    {
+        $this->app->run();
+    }
+
+    public function process(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        return $this->app->process($request, $response);
+    }
+
 }
