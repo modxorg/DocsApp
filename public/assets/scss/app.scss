@@ -1,0 +1,513 @@
+/******************************************************************************
+VARIABLES
+******************************************************************************/
+
+/*#region*/
+
+// General colors
+$lightBg: #f4f5f7;
+$darkBlue: #284569;
+$darkBlue1: #10243E;
+$lightBlue: #3780B3;
+// Text colors
+$fontColor: #323232;
+$linkColor: #3780b3;
+$linkHoverColor: #214b68;
+
+/* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
+$rootFontSize: 18px;
+$fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$fontFamilyHeader: 'Ubuntu Condensed', Ubuntu, sans-serif;
+$rowWidth: 1200px;
+$maxContentWidth: 45em;
+
+/*#endregion*/
+
+/******************************************************************************
+RESET
+******************************************************************************/
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/******************************************************************************
+ROOT STYLES
+******************************************************************************/
+
+/*#region*/
+
+body {
+  font-family: $fontFamily;
+  font-size: $rootFontSize;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  color: $fontColor;
+  background: $lightBg;
+  padding-top: 100px; // Room for fixed header
+}
+
+a {
+  color: $linkColor;
+  text-decoration: none;
+  &:hover,
+  &:active {
+    color: $linkHoverColor;
+  }
+}
+
+p,
+pre {
+  line-height: 1.5rem;
+  margin-top: .75rem;
+  margin-bottom: .75rem;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
+blockquote {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $fontFamilyHeader;
+  line-height: 1;
+  font-weight: 300;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.1875rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  font-size: 1.0625rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h6 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 40em) {
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.8rem;
+  }
+  h4 {
+    font-size: 1.4rem;
+  }
+  h5 {
+    font-size: 1rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
+}
+
+table {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  max-width: 100%;
+  border-radius: 5px;
+  thead {
+    background-color: #eee;
+    text-align: left;
+  }
+  td,
+  th {
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+/*#endregion*/
+
+/******************************************************************************
+MODULES
+******************************************************************************/
+
+/*#region*/
+
+/* Header Bar */
+
+.header {
+  position: fixed;
+  height: 100px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: $darkBlue;
+  z-index: 1;
+  &__inner {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: $rowWidth;
+  }
+  &__logo {
+    flex: 0 0 auto;
+    position: relative;
+  }
+  &__menu {
+    flex: 1 1 auto;
+    text-align: right;
+  }
+  &__hamburger {
+    display: none;
+    position: absolute;
+    top: 36px;
+    right: 20px;
+    cursor: pointer;
+  }
+}
+
+.mainMenu {
+  &__wrap {
+    padding: 0;
+    margin: 0;
+  }
+  &__item {
+    display: inline-block;
+  }
+  &__link {
+    padding: 0.5em 1em;
+    color: $lightBg;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 13px;
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .header {
+    &__inner {
+      display: block;
+      padding: 10px 0;
+    }
+    &__logo {
+      margin: 0 auto;
+      z-index: 5;
+    }
+    &__menu {
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      text-align: center;
+      z-index: 1;
+      background-color: $darkBlue;
+      box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .4);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform .6s ease-out, opacity .6s ease-out;
+      padding: 14px 0;
+    }
+    &__menu--active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    &__hamburger {
+      display: block;
+    }
+  }
+  .mainMenu {
+    &__wrap {
+      margin: 0 auto;
+    }
+    &__item {
+      display: block;
+    }
+  }
+}
+
+/* The MODX logo*/
+
+.logo {
+  width: 200px;
+  &__link {}
+  &__img {
+    border: none;
+    outline: none;
+  }
+}
+
+// Generic body container
+.container {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: $lightBg;
+}
+
+// Two column split
+.content-container {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sidebar {
+  flex: 1 1 40%;
+  background-color: $lightBlue;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: -10px 0px 18px -10px inset rgba(0, 0, 0, .5);
+  transition: margin .5s ease-out;
+  &__inner {
+    flex: 0 1 auto;
+    padding-right: 15px;
+  }
+  &__heading {
+    font-size: 1.5rem;
+    color: #fff;
+    a {
+      text-decoration: none;
+      color: #fff;
+      &:hover {
+        color: #fcc;
+      }
+    }
+  }
+}
+
+// For sidebar button to expand
+/*
+
+.content {
+  flex: 0 1 400px;
+  margin-right: -415px;
+}
+
+.sidebar {
+  flex: 1 0 100%;
+  margin-left: 0;
+}
+
+
+
+*/
+
+@media (max-width: 700px) {
+  .sidebar {
+    flex: 0 0 250px;
+    margin-left: -250px;
+  }
+}
+
+.content {
+  flex: 2 1 60%;
+  box-shadow: 10px 0 7px -10px inset rgba(0, 0, 0, .6);
+  border-left: 1px solid #eaeaea;
+  &__inner {
+    max-width: $maxContentWidth;
+    padding: 20px 40px;
+    h2 {
+      margin: 1.5rem 0;
+      background-color: $lightBlue;
+      left: -60px;
+      position: relative;
+      padding: 8px 60px;
+      display: inline-block;
+      border-radius: 12px;
+      color: #fff;
+    }
+  }
+  img {
+    max-width: 100%;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    padding: 3px;
+  }
+  ul, ol {
+    padding-left: 20px;
+  }
+}
+
+.nav-menu-wrapper {
+  & .nav-item-1 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  & .nav-item-2 {
+    font-size: .9rem;
+    line-height: 1rem;
+  }
+  & & {
+    margin-left: 4px;
+    padding-left: 6px;
+    border-left: 1px solid rgba(255, 255, 255, .2);
+  }
+  .item {
+    list-style-type: none;
+    a {
+      display: inline-block;
+      color: #fff;
+      text-decoration: none;
+      padding: 3px;
+      &:hover {
+        color: #fff;
+      }
+    }
+    &.has-children>a {
+      font-weight: bold;
+    }
+  }
+  & li:not(.has-children) a:hover {
+    background-color: rgba(255, 255, 255, .2);
+  }
+}
+
+.footerSection {
+  background-color: $darkBlue;
+  padding: 20px;
+  border-top: 1px solid $lightBg;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__wrap {
+    max-width: $rowWidth;
+  }
+}
+
+/*#endregion*/
+
+/******************************************************************************
+TYPOGRAPHY
+******************************************************************************/
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.bg-grey {
+  background-color: #eee;
+}
+
+.toc {
+  margin: 1rem 0;
+  .toc__inner {
+    padding: 0 1rem;
+    border-left: 3px solid $lightBlue;
+  }
+  p {
+    font-weight: bold;
+  }
+  ul {
+    padding: 0;
+  }
+  li {
+    font-size: .9rem;
+    padding-left: 10px;
+    list-style: none;
+  }
+  li li {
+    padding-left: 10px;
+  }
+}
+
+/******************************************************************************
+ELEMENTS
+******************************************************************************/
+
+/* Code blocks */
+
+code {
+  vertical-align: baseline;
+}
+
+/* Leading paragraph text */
+
+.lead {
+  font-size: 1.414rem;
+}
+
+/* Hug the block above you */
+
+.hug {
+  margin-top: 0;
+}
+
+.btn {
+  background-color: #4187c8;
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  display: inline-block;
+  text-decoration: none;
+  &:hover,
+  &:focus {
+    border-color: #0b1b6b;
+    color: #fff;
+  }
+  &.full {
+    display: block;
+    width: 100%;
+  }
+}

@@ -7,7 +7,6 @@ use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 
-
 class LinkRenderer implements InlineRendererInterface
 {
     protected $baseUri;

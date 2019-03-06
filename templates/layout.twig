@@ -1,45 +1,85 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}Welcome to the MODX Documentation{% endblock %}</title>
-    {% block meta %}{% endblock %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>
+            {% block title %}Welcome to the MODX Documentation{% endblock %}
+            | MODX Documentation</title>
+        {% block meta %}{% endblock %}
+        <link rel="stylesheet" href="{{ settings.directory }}assets/dist/app.css">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
 
-    <link rel="stylesheet" href="{{ settings.directory }}assets/wireframe/app.css">
-    {% block stylesheets %}{% endblock %}
-</head>
-<body>
+        <header class="header">
+            <div class="header__inner">
+                <div class="logo header__logo">
+                    <a class="logo__link" href="{{ path_for('home') }}" title="MODX Documentation">
+                        <img class="logo__img" src="{{settings.directory}}images/modx-docs-logo.svg" alt="MODX DOCS Logo">
+                    </a>
+                </div>
+                <nav class="header__menu mainMenu">
+                    <ul class="mainMenu__wrap">
+                        {% for item in topnav %}
+                            <li class="mainMenu__item">
+                                <a class="mainMenu__link" href="{{ item.uri }}">{{ item.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+                <div class="header__hamburger" onclick="toggleMenu()"><img src="{{settings.directory}}images/menu.svg" alt="menu icon"></div>
+            </div>
+        </header>
 
-<header>
-    <div class="logo">
-        <a href="{{ path_for('home') }}" title="MODX Documentation">
-            <img src="https://modx.com/assets/design/css/images/modx-logo-color.svg" width="200" alt="MODX Logo">
-        </a>
-    </div>
-    <nav class="menu">
-        {% for item in topnav %}
-            <a href="{{ item.uri }}" class="nav-item">{{ item.title }}</a>
-        {% endfor %}
-    </nav>
-</header>
+        <script>
 
-{% block container %}
-<div class="container">
-    <div class="content-container">
-        {% block content %}
-            <div class="content">
-                <h1>{{ page.title }}</h1>
-                <p style="font-size: 1.1em;">{{ page.introduction }}</p>
+            function toggleMenu() {
+                menu = document.querySelector(".header__menu");
+                menu.classList.toggle("header__menu--active");
+            }
+        </script>
+
+        {% block container %}
+            <div class="container">
+                {% block content %}
+                    <div class="content">
+                        <h1>{{ page.title }}</h1>
+                        <p>{{ page.introduction }}</p>
+                    </div>
+                {% endblock %}
             </div>
         {% endblock %}
-    </div>
-</div>
-{% endblock %}
 
-{% block scripts %}{% endblock %}
+        {% block footer %}
+            <footer class="footerSection">
+                <div class="footer">
+                    <div class="footer__wrap">
+                        <ul class="footer__menu">
+                            <li class="footer__item">
+                                <a class="footer__link" href="#">link</a>
+                            </li>
+                            <li class="footer__item">
+                                <a class="footer__link" href="#">link</a>
+                            </li>
+                            <li class="footer__item">
+                                <a class="footer__link" href="#">link</a>
+                            </li>
+                            <li class="footer__item">
+                                <a class="footer__link" href="#">link</a>
+                            </li>
+                            <li class="footer__item">
+                                <a class="footer__link" href="#">link</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
 
-</body>
+        {% block scripts %}{% endblock %}
+
+    </body>
 </html>
