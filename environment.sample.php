@@ -4,6 +4,7 @@ return [
         'host' => 'docs.modx.local',
         'directory' => '/',
         'docSources' => __DIR__ . '/doc-sources/',
+        'searchIndex' => __DIR__ . '/search_index/',
         'displayErrorDetails' => true, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
