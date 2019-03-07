@@ -49,6 +49,15 @@ class NotFound extends Doc
 
     private function findNewUri($uri)
     {
+        $currentRedirects = $this->container->get('settings')['docs_dir'] . '/current/redirects.json';
+        if (file_exists($currentRedirects) && is_readable($currentRedirects)) {
+            $redirects = json_decode(file_get_contents($currentRedirects), true);
+
+            if (\is_array($redirects) && array_key_exists($uri, $redirects)) {
+                return $this->container->get('settings')['directory'] . 'current/' . $redirects[$uri];
+            }
+        }
+
         $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDir() || $fileinfo->isDot()) {
@@ -59,7 +68,7 @@ class NotFound extends Doc
             if (file_exists($file) && is_readable($file)) {
                 $redirects = json_decode(file_get_contents($file), true);
 
-                if (is_array($redirects) && array_key_exists($uri, $redirects)) {
+                if (\is_array($redirects) && array_key_exists($uri, $redirects)) {
                     return $this->container->get('settings')['directory'] . $dir->getFilename() . '/' . $redirects[$uri];
                 }
             }
