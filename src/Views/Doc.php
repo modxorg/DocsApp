@@ -251,11 +251,21 @@ class Doc extends Base
 
         }
 
+        usort($nav, function ($item, $item2) {
+            $so1 = array_key_exists('sortorder', $item) ? (int)$item['sortorder'] : null;
+            $so2 = array_key_exists('sortorder', $item2) ? (int)$item2['sortorder'] : null;
+            if ($so1 && !$so2) { return -1; }
+            if (!$so1 && $so2) { return 1; }
+            if (!$so1 && !$so2) { return 0; }
+            return $so1 - $so2;
+        });
+
         return $nav;
     }
 
     private function getNavItem(\SplFileInfo $file, $relativeFilePath)
     {
+        $fm = $this->getFrontmatter($file);
         $current = [
             'title' => $this->getTitle($file),
             'uri' => $this->container->router->pathFor('documentation', [
@@ -265,6 +275,9 @@ class Doc extends Base
             ]),
             'classes' => 'item',
         ];
+        if (array_key_exists('sortorder', $fm)) {
+            $current['sortorder'] = (int)$fm['sortorder'];
+        }
         if (strpos($this->file, $relativeFilePath) !== false) {
             $current['classes'] .= ' active';
         }
@@ -272,12 +285,17 @@ class Doc extends Base
         return $current;
     }
 
-    private function getTitle(\SplFileInfo $file)
-    {
+    private function getFrontmatter(\SplFileInfo $file) {
         // Parse the front matter from the file
         $fileContents = $file->isFile() ? file_get_contents($file->getPathname()) : false;
         $obj = YamlFrontMatter::parse($fileContents);
-        $title = $obj->matter('title');
+        return $obj->matter();
+    }
+
+    private function getTitle(\SplFileInfo $file)
+    {
+        $fm = $this->getFrontmatter($file);
+        $title = array_key_exists('title', $fm) ? $fm['title'] : '';
         if (empty($title)) {
             $name = $file->getFilename();
             $title = strpos($name, '.md') !== false ? substr($name, 0, strpos($name, '.md')) : $name;
