@@ -256,7 +256,7 @@ class Doc extends Base
             $so2 = array_key_exists('sortorder', $item2) ? (int)$item2['sortorder'] : null;
             if ($so1 && !$so2) { return -1; }
             if (!$so1 && $so2) { return 1; }
-            if (!$so1 && !$so2) { return 0; }
+            if (!$so1 && !$so2) { return strnatcmp($item['title'], $item2['title']); }
             return $so1 - $so2;
         });
 
