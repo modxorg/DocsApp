@@ -91,8 +91,8 @@ class NotFound extends Doc
 
         // If not in the prefered version, check the others
         foreach ($redirects as $version => $options) {
-            if (array_key_exists($uri, $options[$version])) {
-                return $baseDir . $version . '/' . $options[$version][$uri];
+            if (array_key_exists($uri, $options)) {
+                return $baseDir . $version . '/' . $options[$uri];
             }
         }
 
