@@ -49,30 +49,54 @@ class NotFound extends Doc
 
     private function findNewUri($uri)
     {
-        $currentRedirects = $this->container->get('settings')['docs_dir'] . '/current/redirects.json';
-        if (file_exists($currentRedirects) && is_readable($currentRedirects)) {
-            $redirects = json_decode(file_get_contents($currentRedirects), true);
+        $preferedVersion = 'current';
+        $redirects = [];
 
-            if (\is_array($redirects) && array_key_exists($uri, $redirects)) {
-                return $this->container->get('settings')['directory'] . 'current/' . $redirects[$uri];
-            }
-        }
-
+        // Start by collecting the available redirects per version
         $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDir() || $fileinfo->isDot()) {
                 continue;
             }
 
+            // Filename for a directory is actually the directory name without path or quotes
+            $key = $fileinfo->getFilename();
+
+            // Check if the URI starts with the key; if it does, treat it as a relative redirect, setting the preferred
+            // version accordingly, and removing the version from the uri we're looking for
+            if (substr($uri, 1, \strlen($key)) === $key) {
+                $preferedVersion = $key;
+                $uri = substr($uri, 1 + \strlen($preferedVersion));
+            }
+
+            // Get the redirects for this version, and store it in an array
             $file = $fileinfo->getPathname() . '/redirects.json';
             if (file_exists($file) && is_readable($file)) {
-                $redirects = json_decode(file_get_contents($file), true);
-
-                if (\is_array($redirects) && array_key_exists($uri, $redirects)) {
-                    return $this->container->get('settings')['directory'] . $dir->getFilename() . '/' . $redirects[$uri];
+                $versionRedirects = json_decode(file_get_contents($file), true);
+                if (\is_array($versionRedirects)) {
+                    $redirects[$key] = $versionRedirects;
                 }
             }
         }
+
+        $baseDir = $this->container->get('settings')['directory'];
+
+        // First, check if the requested URI exists in the preferred version
+        if (array_key_exists($preferedVersion, $redirects)) {
+            if (array_key_exists($uri, $redirects[$preferedVersion])) {
+                return $baseDir . $preferedVersion . '/' . $redirects[$preferedVersion][$uri];
+            }
+            unset($redirects[$preferedVersion]);
+        }
+
+        // If not in the prefered version, check the others
+        foreach ($redirects as $version => $options) {
+            if (array_key_exists($uri, $options[$version])) {
+                return $baseDir . $version . '/' . $options[$version][$uri];
+            }
+        }
+
+        // No clue what you're looking for!
         return false;
     }
 }
