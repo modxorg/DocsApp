@@ -11,11 +11,10 @@ if (PHP_SAPI === 'cli-server') {
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$settingsParser = new MODXDocs\Settings\Parser();
-$settingsParser->parse([
-    dirname(__DIR__) . '/settings/settings-default.php',
-    dirname(__DIR__) . '/settings/settings.php'
-]);
+use MODXDocs\DocsApp;
+use MODXDocs\Helpers\SettingsParser;
 
-$app = new MODXDocs\DocsApp($settingsParser->getSettings());
+$settingsParser = new SettingsParser();
+
+$app = new DocsApp($settingsParser->getSlimConfig());
 $app->run();

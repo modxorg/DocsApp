@@ -1,4 +1,4 @@
-FROM php:7.1.3-apache
+FROM php:7.1.8-apache
 
 # Copy the PHP settings into place
 COPY .docker/php.ini /usr/local/etc/php/

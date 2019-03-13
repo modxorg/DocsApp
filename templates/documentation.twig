@@ -2,16 +2,12 @@
 
 {% block title %}{{ page_title }}{% endblock %}
 
-{% block meta %}
-    <base href="{{ settings.directory }}{{ version }}/{{ language }}/">
-{% endblock %}
-
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ settings.directory }}assets/vendor/prism/prism.css">
+    <link rel="stylesheet" href="assets/vendor/prism/prism.css">
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="{{ settings.directory }}assets/vendor/prism/prism.js"></script>
+    <script type="text/javascript" src="assets/vendor/prism/prism.js"></script>
 {% endblock %}
 
 {% block content %}
