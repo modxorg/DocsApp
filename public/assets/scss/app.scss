@@ -13,6 +13,7 @@ $lightBlue: #3780B3;
 $fontColor: #323232;
 $linkColor: #3780b3;
 $linkHoverColor: #214b68;
+$errorColor: #720900;
 
 /* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
 $rootFontSize: 18px;
@@ -56,7 +57,25 @@ a {
   text-decoration: none;
   &:hover,
   &:active {
+    text-decoration: underline;
     color: $linkHoverColor;
+  }
+
+  &.link__broken {
+    color: $errorColor;
+  }
+  &.link__external {
+    position: relative;
+    padding-right: 1.25rem;
+    &:after {
+      content: url(../../images/external-link.svg);
+      position: absolute;
+      right: 0;
+      height: 1rem;
+      width: 1rem;
+      top: 0;
+      bottom: 0;
+    }
   }
 }
 
