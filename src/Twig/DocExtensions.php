@@ -29,7 +29,7 @@ class DocExtensions extends AbstractExtension
     {
         $scheme = getenv('SSL') === '1' ? 'https' : 'http';
         $uri = $this->request->getUri();
-        $port = in_array($uri->getPort(), [80, 443]) ? '' : (':' . $uri->getPort());
+        $port = \in_array($uri->getPort(), [80, 443, null], true) ? '' : (':' . $uri->getPort());
 
         return $scheme . '://' . $uri->getHost() . $port;
     }
