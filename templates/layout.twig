@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <base href="{{ base_href() }}">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -8,7 +9,7 @@
             {% block title %}Welcome to the MODX Documentation{% endblock %}
             | MODX Documentation</title>
         {% block meta %}{% endblock %}
-        <link rel="stylesheet" href="{{ settings.directory }}assets/dist/app.css">
+        <link rel="stylesheet" href="assets/dist/app.css">
         <link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
     </head>
@@ -17,8 +18,8 @@
         <header class="header">
             <div class="header__inner">
                 <div class="logo header__logo">
-                    <a class="logo__link" href="{{ path_for('home') }}" title="MODX Documentation">
-                        <img class="logo__img" src="{{settings.directory}}images/modx-docs-logo.svg" alt="MODX DOCS Logo">
+                    <a class="logo__link" href="{{ base_href() }}" title="MODX Documentation">
+                        <img class="logo__img" src="images/modx-docs-logo.svg" alt="MODX DOCS Logo">
                     </a>
                 </div>
                 <nav class="header__menu mainMenu">
@@ -30,7 +31,7 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                <div class="header__hamburger" onclick="toggleMenu()"><img src="{{settings.directory}}images/menu.svg" alt="menu icon"></div>
+                <div class="header__hamburger" onclick="toggleMenu()"><img src="images/menu.svg" alt="menu icon"></div>
             </div>
         </header>
 

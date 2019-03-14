@@ -27,7 +27,7 @@ class Doc extends Base
 
     public function setVersion($version)
     {
-        $path = $this->container->get('settings')['docs_dir'] . '/' . $version . '/';
+        $path = getenv('DOCS_DIRECTORY') . '/' . $version . '/';
         if (!file_exists($path) || !is_dir($path)) {
             throw new NotFoundException($this->request, $this->response);
         }
@@ -36,7 +36,7 @@ class Doc extends Base
         $this->setVariable('version_branch', $version === 'current' ? '2.x' : $version);
 
         $this->basePath = $path;
-        $this->baseUri = $this->container->get('settings')['directory'] . $version;
+        $this->baseUri = $version;
     }
 
     public function setLanguage($language)
@@ -140,7 +140,7 @@ class Doc extends Base
         $renderer = new TocRenderer(new Matcher(), [
             'currentClass'  => 'active',
             'ancestorClass' => 'active_ancestor'
-        ], $this->docPath);
+        ], $request->getAttribute('version') . '/' . $request->getAttribute('language') . '/' . $this->docPath);
         $toc = $tocGenerator->getHtmlMenu($content, 2, 6, $renderer);
         $this->setVariable('toc', $toc);
 
@@ -150,7 +150,7 @@ class Doc extends Base
 
     public function getVersions()
     {
-        $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
+        $dir = new \DirectoryIterator(getenv('DOCS_DIRECTORY'));
 
         $versions = [];
         foreach ($dir as $fileinfo) {
@@ -163,7 +163,7 @@ class Doc extends Base
             if (file_exists($file . '.md') || file_exists($file . '/index.md')) {
                 $versions[] = [
                     'title' => $fileinfo->getFilename(),
-                    'uri' => $this->container->get('settings')['directory'] . $fileinfo->getFilename() . '/' . $this->language . '/' . $this->docPath,
+                    'uri' => '/' . $fileinfo->getFilename() . '/' . $this->language . '/' . $this->docPath,
                 ];
             }
         }

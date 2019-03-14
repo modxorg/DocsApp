@@ -21,6 +21,7 @@
         "league/commonmark": "^0.17.0",
         "webuni/commonmark-table-extension": "^0.8.0",
         "caseyamcl/toc": "^1.1",
+        "vlucas/phpdotenv": "^3.3",
         "ext-json": "*"
     },
     "require-dev": {

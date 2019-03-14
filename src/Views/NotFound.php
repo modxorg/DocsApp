@@ -53,7 +53,7 @@ class NotFound extends Doc
         $redirects = [];
 
         // Start by collecting the available redirects per version
-        $dir = new \DirectoryIterator($this->container->get('settings')['docs_dir']);
+        $dir = new \DirectoryIterator(getenv('DOCS_DIRECTORY'));
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDir() || $fileinfo->isDot()) {
                 continue;
@@ -79,7 +79,7 @@ class NotFound extends Doc
             }
         }
 
-        $baseDir = $this->container->get('settings')['directory'];
+        $baseDir = '/';
 
         // First, check if the requested URI exists in the preferred version
         if (array_key_exists($preferedVersion, $redirects)) {
