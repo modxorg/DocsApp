@@ -66,6 +66,10 @@ class LinkRenderer implements InlineRendererInterface
             return $this->baseUri . $this->currentDoc . $url;
         }
 
+        if (strpos($url, '/') === 0) {
+            return $url;
+        }
+
         return $this->baseUri . $url;
     }
 
