@@ -17,10 +17,10 @@ $fontColor: #242A31;
 $gray: #3B454E;
 $linkColor: #3572d4;
 $linkHoverColor: #214b68;
-$errorColor: #720900;
+$errorColor: #CF1124;
 
 /* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
-$rootFontSize: 18px;
+$rootFontSize: 16px;
 $fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $rowWidth: 1200px;
 $maxContentWidth: 45em;
@@ -45,6 +45,10 @@ ROOT STYLES
 
 /*#region*/
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: $fontFamily;
   font-size: $rootFontSize;
@@ -61,6 +65,8 @@ body {
   letter-spacing: 0.0em;
   background: $lightBg;
   padding-top: 100px; // Room for fixed header
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -73,7 +79,7 @@ a {
   }
 
   &.link__broken {
-    color: $errorColor;
+    color: $errorColor !important;
   }
   &.link__external {
     position: relative;
@@ -332,6 +338,7 @@ MODULES
   margin: 0;
   padding: 0;
   background-color: $lightBg;
+  flex: 1 0 auto;
 }
 
 // Two column split
@@ -342,6 +349,7 @@ MODULES
   overflow: hidden;
   transition: margin-bottom 250ms ease;
   align-items: stretch;
+  height: 100%;
 }
 
 .sidebar {
@@ -357,7 +365,8 @@ MODULES
   &__inner {
     flex: 0 1 auto;
     padding-right: 15px;
-    margin-top: 20px;
+    margin-top: 27px;
+    margin-bottom: 20px;
   }
   &__heading {
     font-size: 1.5rem;
@@ -368,7 +377,7 @@ MODULES
       margin-left: 0px;
       border-left-color: transparent;
       &:hover {
-        color: #fcc;
+        color: rgb(56, 132, 255);
       }
     }
   }
@@ -426,13 +435,27 @@ MODULES
     padding-left: 20px;
     li{
       a{
-        color: #74818D;
+        color: #6b7782;
         &:hover{
           color: hsl(217.10000000000002, 100%, 42.7%);
           text-decoration: none;
         }
       }
     }
+  }
+}
+
+.single-column{
+  max-width: 1448px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  .content{
+    background: transparent;
+    margin-right: -15px;
+    margin-left: -15px;
   }
 }
 
@@ -451,9 +474,6 @@ MODULES
   }
   .item {
     list-style-type: none;
-    &:last-child{
-      margin-bottom: 20px;
-    }
     a {
       display: inline-block;
       color: #5C6975;
@@ -470,6 +490,9 @@ MODULES
       font-weight: bold;
     }
   }
+  .item .active:not(.has-children) a {
+    color: rgb(56, 132, 255);
+  }
   & li:not(.has-children) a:hover {
     background-color: rgba(255, 255, 255, .2);
   }
@@ -480,6 +503,7 @@ MODULES
   color: #9DAAB6;
   border-radius: 3px;
   background-color: #E6ECF1;
+  flex: 0 0 auto;
 }
 
 .footer {
@@ -498,7 +522,7 @@ MODULES
     }
     .footer__link {
       padding: 0 16px;
-      color: $blue;
+      color: #2e64bb;
       outline: none;
       white-space: nowrap;
       border-color: transparent;
@@ -610,16 +634,22 @@ code {
 }
 
 .doc-note {
-  border: 1px solid $darkBlue;
-  border-radius: 5px;
-  background: $lightBlue;
-  padding: 1em;
-  color: $white;
-  margin-bottom: 1rem;
+  width: 100%;
+  margin: 0;
+  display: block;
+  padding: 24px 24px;
+  position: relative;
+  margin-top: 32px;
+  border-left: 4px solid;
+  margin-bottom: 32px;
+  border-radius: 3px;
+  background-color: $lightBg;
+  border-color: $blue;
+  color: inherit;
 
   &__delete {
     border-color: #6a0008;
-    background: #93262a;
+    background: $errorColor;
   }
 }
 
