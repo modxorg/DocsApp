@@ -3,14 +3,14 @@
     <head>
         <base href="{{ base_href() }}">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>
             {% block title %}Welcome to the MODX Documentation{% endblock %}
             | MODX Documentation</title>
         {% block meta %}{% endblock %}
         <link rel="stylesheet" href="assets/dist/app.css">
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet">
+        <link rel="shortcut icon" href="favicon.ico" />
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -19,7 +19,7 @@
             <div class="header__inner">
                 <div class="logo header__logo">
                     <a class="logo__link" href="{{ base_href() }}" title="MODX Documentation">
-                        <img class="logo__img" src="images/modx-docs-logo.svg" alt="MODX DOCS Logo">
+                        <img class="logo__img" src="images/modx-logo-color.svg" alt="MODX DOCS Logo">
                     </a>
                 </div>
                 <nav class="header__menu mainMenu">
