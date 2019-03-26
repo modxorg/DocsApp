@@ -45,6 +45,10 @@ ROOT STYLES
 
 /*#region*/
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: $fontFamily;
   font-size: $rootFontSize;
@@ -61,6 +65,8 @@ body {
   letter-spacing: 0.0em;
   background: $lightBg;
   padding-top: 100px; // Room for fixed header
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -332,6 +338,7 @@ MODULES
   margin: 0;
   padding: 0;
   background-color: $lightBg;
+  flex: 1 0 auto;
 }
 
 // Two column split
@@ -342,6 +349,7 @@ MODULES
   overflow: hidden;
   transition: margin-bottom 250ms ease;
   align-items: stretch;
+  height: 100%;
 }
 
 .sidebar {
@@ -357,7 +365,7 @@ MODULES
   &__inner {
     flex: 0 1 auto;
     padding-right: 15px;
-    margin-top: 40px;
+    margin-top: 27px;
   }
   &__heading {
     font-size: 1.5rem;
@@ -368,7 +376,7 @@ MODULES
       margin-left: 0px;
       border-left-color: transparent;
       &:hover {
-        color: #fcc;
+        color: rgb(56, 132, 255);
       }
     }
   }
@@ -494,6 +502,7 @@ MODULES
   color: #9DAAB6;
   border-radius: 3px;
   background-color: #E6ECF1;
+  flex: 0 0 auto;
 }
 
 .footer {
