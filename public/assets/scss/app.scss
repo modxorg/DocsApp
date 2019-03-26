@@ -17,10 +17,10 @@ $fontColor: #242A31;
 $gray: #3B454E;
 $linkColor: #3572d4;
 $linkHoverColor: #214b68;
-$errorColor: #720900;
+$errorColor: #CF1124;
 
 /* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
-$rootFontSize: 18px;
+$rootFontSize: 16px;
 $fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $rowWidth: 1200px;
 $maxContentWidth: 45em;
@@ -73,7 +73,7 @@ a {
   }
 
   &.link__broken {
-    color: $errorColor;
+    color: $errorColor !important;
   }
   &.link__external {
     position: relative;
@@ -633,7 +633,7 @@ code {
 
   &__delete {
     border-color: #6a0008;
-    background: #93262a;
+    background: $errorColor;
   }
 }
 
