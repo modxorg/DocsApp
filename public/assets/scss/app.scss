@@ -436,6 +436,20 @@ MODULES
   }
 }
 
+.single-column{
+  max-width: 1448px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  .content{
+    background: transparent;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+
 .nav-menu-wrapper {
   & .nav-item-1 {
     font-size: 1rem;
