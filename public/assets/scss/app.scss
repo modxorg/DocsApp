@@ -366,6 +366,7 @@ MODULES
     flex: 0 1 auto;
     padding-right: 15px;
     margin-top: 27px;
+    margin-bottom: 20px;
   }
   &__heading {
     font-size: 1.5rem;
@@ -473,9 +474,6 @@ MODULES
   }
   .item {
     list-style-type: none;
-    &:last-child{
-      margin-bottom: 20px;
-    }
     a {
       display: inline-block;
       color: #5C6975;
