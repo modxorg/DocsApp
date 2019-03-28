@@ -247,7 +247,6 @@ MODULES
   }
   &__logo {
     flex: 0 0 auto;
-    width: 100%;
     margin: 0;
     display: flex;
     padding: 0;
@@ -336,7 +335,7 @@ MODULES
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .header {
     &__inner {
       padding: 10px 0;
@@ -369,7 +368,7 @@ MODULES
 /* The MODX logo*/
 
 .logo {
-  width: 100%;
+  padding: 0 0.5rem;
   &__img {
     border: none;
     outline: none;
@@ -440,33 +439,41 @@ MODULES
 }
 
 .sidebar__control {
-  position: absolute;
-  left: 0;
-  top: 0;
-
-  + .container {
-    .sidebar {
-      position: absolute;
-      right: 100%;
-      width: 100%;
-      transition: right 0.5s ease-in-out;
-      z-index: 5;
-    }
-  }
-
-  &:checked {
-    + .container {
-      .sidebar {
-        right: 0;
-      }
-    }
-  }
+  display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .sidebar {
     flex: 0 0 250px;
     margin-left: -250px;
+  }
+  .sidebar__control {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+
+    + .container {
+      .sidebar {
+        position: fixed;
+        top: 80px;
+        padding-bottom: 80px;
+        right: 100%;
+        width: 100%;
+        transition: right 0.5s ease-in-out;
+        z-index: 5;
+      }
+    }
+
+    &:checked {
+      + .container {
+        .sidebar {
+          right: 0;
+        }
+      }
+    }
   }
 }
 
