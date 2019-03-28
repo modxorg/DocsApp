@@ -735,6 +735,16 @@ code {
   box-decoration-break: clone;
 }
 
+div.code-toolbar > .toolbar a {
+  background: #027de7 !important;
+  box-shadow: 0 !important;
+  color: #fff !important;
+  padding: .25rem .5rem !important;
+  font-size: 75% !important;
+  border: 0 !important;
+  border-radius: .25rem !important;
+}
+
 /* Leading paragraph text */
 
 .lead {
