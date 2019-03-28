@@ -53,21 +53,28 @@
 
                 {% if meta.note %}
                     <div class="doc-note">
-                        Note: {{ meta.note }}
-                    </div>
-                {% endif %}
-
-                {% if toc is not empty %}
-                    <div class="toc">
-                        <div class="toc__inner">
-                            <p>Contents</p>
-                            {{ toc|raw }}
-                        </div>
+                        <strong>Note:</strong> {{ meta.note }}
                     </div>
                 {% endif %}
 
                 {{ parsed|raw }}
 
+            </div>
+            <div class="content__side">
+                <div class="side__wrapper">
+                    <div class="menu__items">
+
+                        {% if toc is not empty %}
+                            <div class="toc">
+                                <div class="toc__inner">
+                                    <span class="title">Contents</span>
+                                    {{ toc|raw }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

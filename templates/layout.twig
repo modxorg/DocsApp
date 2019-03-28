@@ -32,6 +32,11 @@
                     </ul>
                 </nav>
                 <div class="header__hamburger" onclick="toggleMenu()"><img src="images/menu.svg" alt="menu icon"></div>
+                <div class="header__search">
+                    <div class="header__search_container">
+                        search
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -56,27 +61,40 @@
 
         {% block footer %}
             <footer class="footerSection">
-                <div class="footer">
-                    <div class="footer__wrap">
+                <div class="footer__wrap">
+
+                    <div class="footer__col">
                         <ul class="footer__menu">
                             <li class="footer__item">
-                                <a class="footer__link" href="#">link</a>
+                                <a class="footer__link" href="https://modx.com/" target="_blank">MODX.com</a>
                             </li>
                             <li class="footer__item">
-                                <a class="footer__link" href="#">link</a>
+                                <a class="footer__link" href="https://community.modx.com/" target="_blank">The MODX Community</a>
                             </li>
                             <li class="footer__item">
-                                <a class="footer__link" href="#">link</a>
-                            </li>
-                            <li class="footer__item">
-                                <a class="footer__link" href="#">link</a>
-                            </li>
-                            <li class="footer__item">
-                                <a class="footer__link" href="#">link</a>
+                                <a class="footer__link" href="https://modxcommunity.slack.com/" target="_blank">Slack</a>
                             </li>
                         </ul>
                     </div>
+
+                    <div class="footer__col">
+                        <ul class="footer__menu">
+                            <li class="footer__item">
+                                <a class="footer__link" href="https://github.com/Mark-H/Docs" target="_blank">Edit this page</a>
+                            </li>
+                            <li class="footer__item">
+                                <a class="footer__link" href="https://github.com/Mark-H/Docs" target="_blank">Report an issue with this page</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
+                <div class="copyright__wrap">
+                    <p class="copyright">
+                        Designed and built with all the love in the world by the MODX team with the help of <a href="https://github.com/Mark-H/Docs/graphs/contributors" target="_blank">our contributors</a>.
+                    </p>
+                </div>
+
             </footer>
         {% endblock %}
 
