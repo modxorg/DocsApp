@@ -492,6 +492,7 @@ MODULES
     // padding: 20px 40px;
     margin: 0px 88px;
     flex: 1 1 auto;
+    order: 1;
     display: block;
     padding: 0;
     min-width: 0;
@@ -503,6 +504,7 @@ MODULES
   }
   &__side {
     flex: 0 0 auto;
+    order: 2;
     width: 224px;
     margin: 0;
     display: block;
@@ -560,8 +562,15 @@ MODULES
 }
 
 @media (max-width: 700px) {
+  .content {
+    display: block;
+  }
   .content__inner {
     margin: 0 1rem;
+  }
+  .content__side .side__wrapper {
+    display: block;
+    position: relative;
   }
 }
 
