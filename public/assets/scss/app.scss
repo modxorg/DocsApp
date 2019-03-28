@@ -719,9 +719,14 @@ ELEMENTS
 /* Code blocks */
 
 code {
-  vertical-align: baseline;
-  background: $white;
-  padding: 0.125em 0.33em;
+  margin: 0 1px;
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 85%;
+  font-family: "Source Code Pro", Menlo, monospace;
+  border-radius: 3px;
+  background-color: #F5F7F9;
+  box-decoration-break: clone;
 }
 
 /* Leading paragraph text */
