@@ -431,6 +431,9 @@ MODULES
   padding-left: calc((100% - 1448px) / 2);
   border-right: 1px solid #E6ECF1;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   &__inner {
     flex: 0 1 auto;
     padding-right: 15px;
