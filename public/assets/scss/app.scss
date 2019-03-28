@@ -274,10 +274,9 @@ MODULES
   }
   &__hamburger {
     display: none;
-    position: absolute;
-    top: 36px;
-    right: 20px;
     cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.5rem;
   }
   &__search{
     margin: 0;
@@ -298,9 +297,7 @@ MODULES
     &_container{
       margin: 0;
       display: block;
-      padding: 0;
-      padding-left: 14px;
-      padding-right: 16px;
+      padding: 0 16px 0 14px;
     }
   }
 }
@@ -342,7 +339,6 @@ MODULES
 @media (max-width: 700px) {
   .header {
     &__inner {
-      display: block;
       padding: 10px 0;
     }
     &__logo {
@@ -350,21 +346,7 @@ MODULES
       z-index: 5;
     }
     &__menu {
-      position: absolute;
-      left: 60px;
-      right: 60px;
-      text-align: center;
-      z-index: 1;
-      background-color: $darkBlue;
-      box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .4);
-      transform: translateY(-100%);
-      opacity: 0;
-      transition: transform .6s ease-out, opacity .6s ease-out;
-      padding: 14px 0;
-      background-color: #E6ECF1;
-      .mainMenu__link{
-        color: #242A31;
-      }
+      display: none;
     }
     &__menu--active {
       transform: translateY(0);
@@ -437,6 +419,7 @@ MODULES
   &__inner {
     flex: 0 1 auto;
     padding-right: 15px;
+    padding-left: 15px;
     margin-top: 27px;
     margin-bottom: 20px;
   }
@@ -451,6 +434,30 @@ MODULES
       border-left-color: transparent;
       &:hover {
         color: rgb(56, 132, 255);
+      }
+    }
+  }
+}
+
+.sidebar__control {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  + .container {
+    .sidebar {
+      position: absolute;
+      right: 100%;
+      width: 100%;
+      transition: right 0.5s ease-in-out;
+      z-index: 5;
+    }
+  }
+
+  &:checked {
+    + .container {
+      .sidebar {
+        right: 0;
       }
     }
   }

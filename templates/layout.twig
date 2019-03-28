@@ -17,6 +17,7 @@
 
         <header class="header">
             <div class="header__inner">
+                <label class="header__hamburger" for="sidebar-toggle"><img src="images/menu.svg" alt="menu icon"></label>
                 <div class="logo header__logo">
                     <a class="logo__link" href="{{ base_href() }}" title="MODX Documentation">
                         <img class="logo__img" src="images/modx-logo-color.svg" alt="MODX DOCS Logo">
@@ -31,24 +32,16 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                <div class="header__hamburger" onclick="toggleMenu()"><img src="images/menu.svg" alt="menu icon"></div>
                 <div class="header__search">
-                    <div class="header__search_container">
+                    <div class="header__search_container" title="Coming soon!">
                         search
                     </div>
                 </div>
             </div>
         </header>
 
-        <script>
-
-            function toggleMenu() {
-                menu = document.querySelector(".header__menu");
-                menu.classList.toggle("header__menu--active");
-            }
-        </script>
-
         {% block container %}
+            <input type="checkbox" class="sidebar__control" id="sidebar-toggle">
             <div class="container">
                 {% block content %}
                     <div class="content">
