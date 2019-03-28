@@ -553,6 +553,17 @@ MODULES
     }
   }
 }
+@media (max-width: 1024px) {
+  .content__inner {
+    margin: 0 44px;
+  }
+}
+
+@media (max-width: 700px) {
+  .content__inner {
+    margin: 0 1rem;
+  }
+}
 
 .single-column{
   max-width: 1448px;
