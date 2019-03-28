@@ -576,6 +576,9 @@ MODULES
     background: transparent;
     margin-right: -15px;
     margin-left: -15px;
+    display: block;
+    text-align: center;
+    margin-top: 100px;
   }
 }
 
@@ -787,17 +790,21 @@ div.code-toolbar > .toolbar a {
 }
 
 .btn {
-  background-color: #4187c8;
-  color: $white;
-  border: 2px solid transparent;
-  border-radius: 5px;
+  color: rgb(36, 42, 49);
+  box-shadow: rgba(116, 129, 141, 0.1) 0px 3px 8px 0px;
+  background-color: rgb(255, 255, 255);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(230, 236, 241);
   padding: 0.5em 1em;
   display: inline-block;
   text-decoration: none;
+  border-radius: 3px;
+  transition: border 250ms ease 0s;
   &:hover,
   &:focus {
-    border-color: #0b1b6b;
-    color: $white;
+    border-color: $blue;
+    text-decoration: none;
   }
   &.full {
     display: block;
