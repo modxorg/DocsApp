@@ -11,6 +11,10 @@ $darkBlue: #284569;
 $darkBlue1: #10243E;
 $lightBlue: #3780B3;
 $white: #FFFFFF;
+$geyser: #D4DADF;
+$mystic : #E6ECF1;
+$gullGray: #9DAAB6;
+$paleSky: #6C757D;
 
 // Text colors
 $fontColor: #242A31;
@@ -62,7 +66,7 @@ body {
   text-rendering: optimizeLegibility;
   text-size-adjust: 100%;
   color: $fontColor;
-  color: #3B454E;
+  color: $gray;
   letter-spacing: 0.0em;
   background: $lightBg;
   padding-top: 80px; // Room for fixed header
@@ -233,7 +237,7 @@ MODULES
   left: 0;
   right: 0;
   box-shadow: 0 3px 8px 0 rgba(116, 129, 141, 0.1);
-  border-bottom: 1px solid #d4dadf;
+  border-bottom: 1px solid $geyser;
   background-color: $white;
   z-index: 1;
   &__inner {
@@ -260,7 +264,7 @@ MODULES
       content: " ";
       position: absolute;
       transform: translateY(-50%);
-      border-left: 1px solid #E6ECF1;
+      border-left: 1px solid $mystic;
     }
   }
   &__menu {
@@ -292,7 +296,7 @@ MODULES
       content: " ";
       position: absolute;
       transform: translateY(-50%);
-      border-left: 1px solid #E6ECF1;
+      border-left: 1px solid $mystic;
     }
     &_container{
       margin: 0;
@@ -412,7 +416,7 @@ MODULES
   background: $lightBg;
   align-items: stretch;
   padding-left: calc((100% - 1448px) / 2);
-  border-right: 1px solid #E6ECF1;
+  border-right: 1px solid $mystic;
   flex-direction: column;
   height: 100vh;
   overflow-y: scroll;
@@ -533,7 +537,7 @@ MODULES
           height: 100%;
           content: " ";
           position: absolute;
-          border-left: 1px solid #E6ECF1;
+          border-left: 1px solid $mystic;
         }
       }
     }
@@ -635,9 +639,9 @@ MODULES
 
 .footerSection {
   padding: 20px;
-  color: #9DAAB6;
+  color: $gullGray;
   box-shadow: 0 3px 8px 0 rgba(116,129,141,0.1);
-  border-top: 1px solid #d4dadf;
+  border-top: 1px solid $geyser;
   background-color: $white;
   flex: 0 0 auto;
 }
@@ -653,7 +657,7 @@ footer {
     justify-content: space-between;
     align-content: center;
     align-items: flex-start;
-    color: #6c757d;
+    color: $paleSky;
     margin-bottom: 1rem;
   }
 
@@ -690,7 +694,7 @@ footer {
     display: flex;
     .copyright{
       margin: 0;
-      color: #6c757d;
+      color: $paleSky;
       font-size: 14px;
     }
   }
@@ -722,7 +726,7 @@ TYPOGRAPHY
     padding: 0 1rem;
   }
   .title {
-    color: #9DAAB6;
+    color: $gullGray;
     margin: 0;
     display: flex;
     padding: 0;
@@ -740,7 +744,6 @@ TYPOGRAPHY
       line-height: 1.5;
       font-weight: 500;
       list-style: none;
-      color: #74818D;
       margin: 0;
       cursor: pointer;
       display: block;
@@ -779,9 +782,9 @@ code {
 }
 
 div.code-toolbar > .toolbar a {
-  background: #027de7 !important;
+  background: $blue !important;
   box-shadow: 0 !important;
-  color: #fff !important;
+  color: $white !important;
   padding: .25rem .5rem !important;
   font-size: 75% !important;
   border: 0 !important;
