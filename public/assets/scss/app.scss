@@ -768,6 +768,20 @@ footer {
   }
 }
 
+@media (max-width: 700px) {
+  .footerSection {
+    text-align: center;
+
+    .footer__wrap {
+      justify-content: center;
+    }
+
+    .footer__menu .footer__link {
+      padding: 0 14px;
+      font-size: 14px;
+    }
+  }
+}
 
 
 /*#endregion*/
