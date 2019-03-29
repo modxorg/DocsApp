@@ -25,7 +25,16 @@ $errorColor: #CF1124;
 
 /* This will make all the relative REMs and EMs change! Set 100% to use browser settings */
 $rootFontSize: 16px;
-$fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$fontFamily: -apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Helvetica,
+Arial,
+sans-serif,
+"Apple Color Emoji",
+"Segoe UI Emoji",
+"Segoe UI Symbol";
 $rowWidth: 1200px;
 $maxContentWidth: 45em;
 
@@ -77,6 +86,7 @@ body {
 a {
   color: $blue;
   text-decoration: none;
+
   &:hover,
   &:active {
     text-decoration: underline;
@@ -86,9 +96,11 @@ a {
   &.link__broken {
     color: $errorColor !important;
   }
+
   &.link__external {
     position: relative;
     padding-right: 1.25rem;
+
     &:after {
       content: url(../../images/external-link.svg);
       position: absolute;
@@ -175,18 +187,23 @@ h6 {
   h1 {
     font-size: 3rem;
   }
+
   h2 {
     font-size: 2rem;
   }
+
   h3 {
     font-size: 1.8rem;
   }
+
   h4 {
     font-size: 1.4rem;
   }
+
   h5 {
     font-size: 1rem;
   }
+
   h6 {
     font-size: 1rem;
   }
@@ -198,10 +215,12 @@ table {
   margin-top: 1.5rem;
   max-width: 100%;
   border-radius: 5px;
+
   thead {
     background-color: #eee;
     text-align: left;
   }
+
   td,
   th {
     padding: 0.5em 1em;
@@ -209,13 +228,13 @@ table {
   }
 }
 
-code[class*="language-"], 
-pre[class*="language-"]{
+code[class*="language-"],
+pre[class*="language-"] {
   font-size: 14px !important;
 }
 
-ol{
-  li{
+ol {
+  li {
     padding: 3px 0;
   }
 }
@@ -240,6 +259,7 @@ MODULES
   border-bottom: 1px solid $geyser;
   background-color: $white;
   z-index: 1;
+
   &__inner {
     position: relative;
     z-index: 1;
@@ -247,9 +267,9 @@ MODULES
     padding: 0.75rem 0;
     display: flex;
     align-items: center;
-  //  justify-content: space-between;
     max-width: 1448px;
   }
+
   &__logo {
     flex: 0 0 auto;
     margin: 0;
@@ -257,7 +277,8 @@ MODULES
     padding: 0;
     position: relative;
     align-items: center;
-    &::after{
+
+    &::after {
       top: 50%;
       right: 0;
       height: 40px;
@@ -267,29 +288,33 @@ MODULES
       border-left: 1px solid $mystic;
     }
   }
+
   &__menu {
     flex: 1 1 auto;
-    margin: 0px 88px;
+    margin: 0 88px;
     display: block;
     padding: 0;
     overflow: hidden;
     position: relative;
     max-width: 750px;
   }
+
   &__hamburger {
     display: none;
     cursor: pointer;
     padding: 0.5rem;
     margin: 0.5rem;
   }
-  &__search{
+
+  &__search {
     margin: 0;
     display: flex;
     padding: 0;
     position: relative;
     max-width: 224px;
     align-items: center;
-    &::before{
+
+    &::before {
       top: 50%;
       left: 0;
       height: 40px;
@@ -298,7 +323,8 @@ MODULES
       transform: translateY(-50%);
       border-left: 1px solid $mystic;
     }
-    &_container{
+
+    &_container {
       margin: 0;
       display: block;
       padding: 0 16px 0 14px;
@@ -311,9 +337,11 @@ MODULES
     padding: 0;
     margin: 0;
   }
+
   &__item {
     display: inline-block;
   }
+
   &__link {
     padding: 0 16px;
     color: $blue;
@@ -330,12 +358,14 @@ MODULES
       text-decoration: none;
     }
   }
+
   &__link:first-child {
     padding-left: 0;
   }
 }
-@media screen and (min-width: 1024px){
-  .header__logo{
+
+@media screen and (min-width: 1024px) {
+  .header__logo {
     max-width: 298px;
   }
 }
@@ -345,25 +375,31 @@ MODULES
     &__inner {
       padding: 10px 0;
     }
+
     &__logo {
       margin: 0 auto;
       z-index: 5;
     }
+
     &__menu {
       display: none;
     }
+
     &__menu--active {
       transform: translateY(0);
       opacity: 1;
     }
+
     &__hamburger {
       display: block;
     }
   }
+
   .mainMenu {
     &__wrap {
       margin: 0 auto;
     }
+
     &__item {
       display: block;
     }
@@ -375,6 +411,7 @@ MODULES
 .logo {
   padding: 0 0.5rem;
   width: 298px;
+
   &__img {
     border: none;
     outline: none;
@@ -421,6 +458,7 @@ MODULES
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
+
   &__inner {
     flex: 0 1 auto;
     padding-right: 15px;
@@ -428,15 +466,18 @@ MODULES
     margin-top: 27px;
     margin-bottom: 20px;
   }
+
   &__heading {
     font-size: 1.5rem;
     color: $white;
     margin-top: 0;
+
     a {
       text-decoration: none;
       color: #5C6975;
-      margin-left: 0px;
+      margin-left: 0;
       border-left-color: transparent;
+
       &:hover {
         color: rgb(56, 132, 255);
       }
@@ -453,6 +494,7 @@ MODULES
     flex: 0 0 250px;
     margin-left: -250px;
   }
+
   .sidebar__control {
     position: fixed;
     top: 0;
@@ -461,20 +503,20 @@ MODULES
     height: 0;
     opacity: 0;
 
-    + .container {
+    +.container {
       .sidebar {
         position: fixed;
         top: 80px;
         padding-bottom: 80px;
         right: 100%;
         width: 100%;
-        transition: right 0.5s ease-in-out;
+        transition: right .5s ease-in-out;
         z-index: 5;
       }
     }
 
     &:checked {
-      + .container {
+      +.container {
         .sidebar {
           right: 0;
         }
@@ -491,11 +533,9 @@ MODULES
   min-width: 0;
   max-width: 100%;
   background: $white;
-  // flex-direction: column;
   padding-bottom: 64px;
+
   &__inner {
-    // max-width: $maxContentWidth;
-    // padding: 20px 40px;
     margin: 0px 88px;
     flex: 1 1 auto;
     order: 1;
@@ -503,11 +543,13 @@ MODULES
     padding: 0;
     min-width: 0;
     max-width: 750px;
+
     h2 {
       display: inline-block;
       border-radius: 12px;
     }
   }
+
   &__side {
     flex: 0 0 auto;
     order: 2;
@@ -517,7 +559,8 @@ MODULES
     padding: 0;
     position: relative;
     margin-right: auto;
-    .side__wrapper{
+
+    .side__wrapper {
       display: flex;
       padding-top: 40px;
       padding-bottom: 40px;
@@ -527,12 +570,14 @@ MODULES
       position: fixed;
       width: 224px;
       max-height: 291px;
-      .menu__items{
+
+      .menu__items {
         flex: 1;
         margin: 0;
         display: block;
         padding: 0;
-        &::before{
+
+        &::before {
           left: 0;
           height: 100%;
           content: " ";
@@ -542,18 +587,23 @@ MODULES
       }
     }
   }
+
   img {
     max-width: 100%;
     border: 1px solid #bbb;
     border-radius: 5px;
     padding: 3px;
   }
-  ul, ol {
+
+  ul,
+  ol {
     padding-left: 20px;
-    li{
-      a{
+
+    li {
+      a {
         color: $blue;
-        &:hover{
+
+        &:hover {
           color: hsl(217.10000000000002, 100%, 42.7%);
           text-decoration: none;
         }
@@ -561,6 +611,7 @@ MODULES
     }
   }
 }
+
 @media (max-width: 1024px) {
   .content__inner {
     margin: 0 44px;
@@ -571,23 +622,26 @@ MODULES
   .content {
     display: block;
   }
+
   .content__inner {
     margin: 0 1rem;
   }
+
   .content__side .side__wrapper {
     display: block;
     position: relative;
   }
 }
 
-.single-column{
+.single-column {
   max-width: 1448px;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  .content{
+
+  .content {
     background: transparent;
     margin-right: -15px;
     margin-left: -15px;
@@ -601,37 +655,45 @@ MODULES
   & .nav-item-1 {
     font-size: 1rem;
   }
+
   & .nav-item-2 {
     font-size: .9rem;
     line-height: 1rem;
   }
+
   & & {
     margin-left: 4px;
     padding-left: 6px;
     border-left: 1px solid rgba(255, 255, 255, .2);
   }
+
   .item {
     list-style-type: none;
+
     a {
       display: inline-block;
       color: inherit;
-      margin-left: 0px;
+      margin-left: 0;
       text-decoration: none;
       cursor: pointer;
       padding: 5px 24px 5px 16px;
       border: 0;
       font-size: 14px;
+
       &:hover {
         color: rgb(56, 132, 255);
       }
     }
+
     &.has-children>a {
       font-weight: bold;
     }
   }
+
   .item .active a {
     color: rgb(56, 132, 255);
   }
+
   & li:not(.has-children) a:hover {
     background-color: rgba(255, 255, 255, .2);
   }
@@ -640,7 +702,7 @@ MODULES
 .footerSection {
   padding: 20px;
   color: $gullGray;
-  box-shadow: 0 3px 8px 0 rgba(116,129,141,0.1);
+  box-shadow: 0 3px 8px 0 rgba(116, 129, 141, .1);
   border-top: 1px solid $geyser;
   background-color: $white;
   flex: 0 0 auto;
@@ -648,6 +710,7 @@ MODULES
 
 footer {
   background-color: #f7f7f7;
+
   .footer__wrap {
     max-width: 1448px;
     margin: 0 auto;
@@ -662,11 +725,13 @@ footer {
   }
 
   .footer__menu {
-      padding: 0;
-      margin: 0;
+    padding: 0;
+    margin: 0;
+
     .footer__item {
       display: inline-block;
     }
+
     .footer__link {
       padding: 0 16px;
       color: #495057;
@@ -678,21 +743,24 @@ footer {
       line-height: 1em;
       font-weight: 600;
       transition: all 250ms ease-out;
-      &:first-child{
+
+      &:first-child {
         padding-left: 0;
       }
-  
+
       &:hover {
         color: hsl(217.10000000000002, 100%, 42.7%);
         text-decoration: none;
       }
     }
   }
-  .copyright__wrap{
+
+  .copyright__wrap {
     max-width: 1448px;
     margin: 0 auto;
     display: flex;
-    .copyright{
+
+    .copyright {
       margin: 0;
       color: $paleSky;
       font-size: 14px;
@@ -722,9 +790,11 @@ TYPOGRAPHY
 
 .toc {
   margin: 0;
+
   .toc__inner {
     padding: 0 1rem;
   }
+
   .title {
     color: $gullGray;
     margin: 0;
@@ -737,8 +807,10 @@ TYPOGRAPHY
     text-transform: uppercase;
     letter-spacing: 1.2px;
   }
+
   ul {
     padding: 0;
+
     li {
       font-size: 12px;
       line-height: 1.5;
@@ -750,13 +822,16 @@ TYPOGRAPHY
       padding: 4px 0;
       align-items: center;
       text-decoration: none;
-      &.first{
+
+      &.first {
         padding-top: 0;
       }
-      a{
+
+      a {
         color: #74818D;
       }
     }
+
     li li {
       padding-left: 10px;
       padding-bottom: 0;
@@ -781,7 +856,7 @@ code {
   box-decoration-break: clone;
 }
 
-div.code-toolbar > .toolbar a {
+div.code-toolbar>.toolbar a {
   background: $blue !important;
   box-shadow: 0 !important;
   color: $white !important;
@@ -815,11 +890,13 @@ div.code-toolbar > .toolbar a {
   text-decoration: none;
   border-radius: 3px;
   transition: border 250ms ease 0s;
+
   &:hover,
   &:focus {
     border-color: $blue;
     text-decoration: none;
   }
+
   &.full {
     display: block;
     width: 100%;
@@ -845,4 +922,3 @@ div.code-toolbar > .toolbar a {
     background: $errorColor;
   }
 }
-
