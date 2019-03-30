@@ -28,6 +28,16 @@ $maxContentWidth: 45em;
 /*#endregion*/
 
 /******************************************************************************
+IMPORTS
+******************************************************************************/
+
+/*#region*/
+
+@import "../../../node_modules/rfs/scss";
+
+/*#endregion*/
+
+/******************************************************************************
 RESET
 ******************************************************************************/
 
@@ -131,60 +141,39 @@ h6 {
 }
 
 h1 {
-  font-size: 1.8rem;
+  @include font-size(3rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 h2 {
-  font-size: 1.25rem;
+  @include font-size(2rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 h3 {
-  font-size: 1.1875rem;
+  @include font-size(1.8rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 h4 {
-  font-size: 1.125rem;
+  @include font-size(1.4rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 h5 {
-  font-size: 1.0625rem;
+  @include font-size(1rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 h6 {
-  font-size: 1rem;
+  @include font-size(1rem);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-}
-
-@media (min-width: 40em) {
-  h1 {
-    font-size: 3rem;
-  }
-  h2 {
-    font-size: 2rem;
-  }
-  h3 {
-    font-size: 1.8rem;
-  }
-  h4 {
-    font-size: 1.4rem;
-  }
-  h5 {
-    font-size: 1rem;
-  }
-  h6 {
-    font-size: 1rem;
-  }
 }
 
 table {
@@ -424,7 +413,7 @@ MODULES
     margin-bottom: 20px;
   }
   &__heading {
-    font-size: 1.5rem;
+    @include font-size(1.5rem);
     color: $white;
     margin-top: 0;
     a {
@@ -594,10 +583,10 @@ MODULES
 
 .nav-menu-wrapper {
   & .nav-item-1 {
-    font-size: 1rem;
+    @include font-size(1rem);
   }
   & .nav-item-2 {
-    font-size: .9rem;
+    @include font-size(.9rem);
     line-height: 1rem;
   }
   & & {
@@ -669,7 +658,7 @@ footer {
       white-space: nowrap;
       border-color: transparent;
       text-decoration: none;
-      font-size: 16px;
+      @include font-size(1rem);
       line-height: 1em;
       font-weight: 600;
       transition: all 250ms ease-out;
@@ -790,7 +779,7 @@ div.code-toolbar > .toolbar a {
 /* Leading paragraph text */
 
 .lead {
-  font-size: 1.414rem;
+  @include font-size(1.414rem);
 }
 
 /* Hug the block above you */
