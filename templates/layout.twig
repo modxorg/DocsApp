@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <base href="{{ base_href() }}">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,21 +9,21 @@
             | MODX Documentation</title>
         {% block meta %}{% endblock %}
 
-        <link rel="shortcut icon" href="favicon.ico" />
-        <link rel="stylesheet" href="template/dist/app.css">
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/template/dist/app.css">
         {% block stylesheets %}{% endblock %}
-        <script defer src="template/dist/main-modern.js" type="module"></script>
-        <script defer src="template/dist/main-legacy.js" nomodule></script>
+        <script defer src="/template/dist/main-modern.js" type="module"></script>
+        <script defer src="/template/dist/main-legacy.js" nomodule></script>
         {% block scripts %}{% endblock %}
     </head>
     <body>
 
         <header class="header">
             <div class="header__inner">
-                <label class="header__hamburger" for="sidebar-toggle"><img src="images/menu.svg" alt="menu icon"></label>
+                <label class="header__hamburger" for="sidebar-toggle"><img src="/images/menu.svg" alt="menu icon"></label>
                 <div class="logo header__logo">
-                    <a class="logo__link" href="{{ base_href() }}" title="MODX Documentation">
-                        <img class="logo__img" src="images/modx-logo-color.svg" alt="MODX DOCS Logo">
+                    <a class="logo__link" href="/" title="MODX Documentation">
+                        <img class="logo__img" src="/images/modx-logo-color.svg" alt="MODX Documentation">
                     </a>
                 </div>
                 <nav class="header__menu mainMenu">
