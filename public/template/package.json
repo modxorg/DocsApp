@@ -51,6 +51,7 @@
         "@babel/register": "^7.4.0",
         "autoprefixer": "^9.5.0",
         "babel-loader": "^8.0.5",
+        "babel-plugin-prismjs": "^1.0.2",
         "eslint": "^5.16.0",
         "expose-loader": "^0.7.5",
         "livereload": "^0.7.0",

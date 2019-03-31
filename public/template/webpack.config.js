@@ -27,8 +27,15 @@ module.exports = {
                         presets: [
                             ['@babel/preset-env', {
                                 debug: false,
-                                corejs: "2",
+                                corejs: '2',
                                 useBuiltIns: 'usage',
+                            }],
+                        ],
+                        plugins: [
+                            ['prismjs', {
+                                languages: ['markup'],
+                                plugins: ['line-numbers'],
+                                css: false
                             }],
                         ]
                     }
