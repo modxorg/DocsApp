@@ -443,6 +443,9 @@ MODULES
   transition: margin-bottom 250ms ease;
   align-items: stretch;
   height: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .sidebar {
