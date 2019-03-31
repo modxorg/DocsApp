@@ -9,9 +9,13 @@
             {% block title %}Welcome to the MODX Documentation{% endblock %}
             | MODX Documentation</title>
         {% block meta %}{% endblock %}
-        <link rel="stylesheet" href="assets/dist/app.css">
+
         <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="stylesheet" href="template/dist/app.css">
         {% block stylesheets %}{% endblock %}
+        <script defer src="template/dist/main-modern.js" type="module"></script>
+        <script defer src="template/dist/main-legacy.js" nomodule></script>
+        {% block scripts %}{% endblock %}
     </head>
     <body>
 
@@ -90,8 +94,5 @@
 
             </footer>
         {% endblock %}
-
-        {% block scripts %}{% endblock %}
-
     </body>
 </html>

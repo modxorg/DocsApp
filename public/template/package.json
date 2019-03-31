@@ -1,0 +1,76 @@
+{
+    "name": "@modxorg/docsapp",
+    "description": "DocsApp assets for MODX Documentation",
+    "private": true,
+    "scripts": {
+        "start": "run-p livereload watch",
+        "watch": "run-p watch:*",
+        "lint": "run-p lint:*",
+        "build": "run-p build:*",
+        "release": "run-p release:*",
+        "analyize": "BROWSERSLIST_ENV=modern webpack --mode production --profile --json > webpackstats.json && webpack-bundle-analyzer webpackstats.json",
+        "livereload": "livereload 'dist/*' -p `cat .livereload` --wait 300",
+        "watch:css": "onchange --await-write-finish -i 'src/scss/**' -- npm run build:css",
+        "build:css": "node-sass src/scss/ --output dist/ --output-style \"compressed\" --source-map true",
+        "postbuild:css": "postcss dist/*.css --use autoprefixer -d dist/ --map",
+        "release:css": "npm run build:css",
+        "watch:svg": "onchange -i 'src/svg/*' -- npm run build:svg",
+        "build:svg": "svg-sprite --symbol --symbol-dest dist --symbol-sprite sprite.svg src/svg/*.svg",
+        "release:svg": "npm run build:svg",
+        "lint:js": "eslint --config package.json --ext '.js' src/js/*",
+        "watch:js": "onchange 'src/js/**' -- npm run lint:js & BROWSERSLIST_ENV=modern webpack --watch --mode development",
+        "build:js": "npm run lint:js && BROWSERSLIST_ENV=modern webpack --mode development",
+        "release:js": "run-p lint:js release:js:*",
+        "release:js:modern": "BROWSERSLIST_ENV=modern webpack --mode production",
+        "release:js:legacy": "BROWSERSLIST_ENV=legacy webpack --mode production"
+    },
+    "browserslist": {
+        "modern": [
+            "Firefox >= 53",
+            "Edge >= 15",
+            "Chrome >= 58",
+            "iOS >= 10.1"
+        ],
+        "legacy": [
+            "ie 11"
+        ]
+    },
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "es6": true
+        },
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaVersion": 6
+        }
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.0",
+        "@babel/preset-env": "^7.4.0",
+        "@babel/register": "^7.4.0",
+        "autoprefixer": "^9.5.0",
+        "babel-loader": "^8.0.5",
+        "eslint": "^5.16.0",
+        "expose-loader": "^0.7.5",
+        "livereload": "^0.7.0",
+        "node-sass": "^4.11.0",
+        "npm-run-all": "^4.1.5",
+        "onchange": "^5.2.0",
+        "postcss-cli": "^6.1.2",
+        "script-loader": "^0.7.2",
+        "webpack": "^4.29.6",
+        "webpack-bundle-analyzer": "^3.0.3",
+        "webpack-cli": "^3.3.0"
+    },
+    "dependencies": {
+        "@babel/polyfill": "^7.4.0",
+        "modern-normalize": "^0.5.0",
+        "prismjs": "^1.16.0",
+        "svg-sprite": "^1.5.0",
+        "svg4everybody": "^2.1.9"
+    },
+    "resolutions": {
+        "braces": "^2.3.1"
+    }
+}
