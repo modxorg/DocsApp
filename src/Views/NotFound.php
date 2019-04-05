@@ -36,8 +36,6 @@ class NotFound extends Doc
 
         $this->response = $this->response->withStatus(404);
 
-        $uri = urlencode($uri);
-        $this->setVariable('req_url', $uri);
         $this->setVariable('page_title', 'Oops, page not found.');
         return $this->render('notfound.twig');
     }

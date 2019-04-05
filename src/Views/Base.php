@@ -47,6 +47,7 @@ abstract class Base
         $this->setArguments($args);
         $this->setVariable('args', $args);
         $this->setVariable('_env', $_ENV);
+        $this->setVariable('current_uri', $request->getUri()->getPath());
 
         $revision = 'dev';
 

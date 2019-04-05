@@ -1,3 +1,17 @@
+@charset "UTF-8";
+// http://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
+@-ms-viewport{
+    width: device-width;
+}
+
+// import modnern-normalize (https://github.com/sindresorhus/modern-normalize)
+@import 'node_modules/modern-normalize/modern-normalize';
+
+@import '../../node_modules/prismjs/themes/prism';
+//@import 'functions';
+//@import 'settings';
+
+
 /******************************************************************************
 VARIABLES
 ******************************************************************************/
