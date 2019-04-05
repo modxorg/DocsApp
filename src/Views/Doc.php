@@ -36,7 +36,7 @@ class Doc extends Base
         $this->setVariable('version_branch', $version === 'current' ? '2.x' : $version);
 
         $this->basePath = $path;
-        $this->baseUri = $version;
+        $this->baseUri = '/' . $version;
     }
 
     public function setLanguage($language)
