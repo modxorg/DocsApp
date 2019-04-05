@@ -68,4 +68,4 @@ We automatically generate a SVG sprite from the files located at `public/templat
 Please make sure to separate CSS into different files based on components/features. This gives other developers much more orientation. When adding new files make sure to import them in the `public/template/src/scss/main.scss`.
 
 ### JS
-Please make sure to separate your JS code into different files based on components/features. This gives other developers much more orientation. When adding new files make sure to use ES6 syntax with an `export` and import them in the `public/template/src/scss/main.js`. When you need to add polyfills make sure to them in the `polyfill` files based on browser support.
+Please make sure to separate your JS code into different files based on components/features. This gives other developers much more orientation. When adding new files make sure to use ES6 syntaxt with an `export` and import them in the `public/template/src/scss/main.js`. When you need to add polyfills make sure to them in the `polyfill` files based on browser support.

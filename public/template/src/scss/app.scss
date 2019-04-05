@@ -318,6 +318,11 @@ MODULES
     cursor: pointer;
     padding: 0.5rem;
     margin: 0.5rem;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &__search {
