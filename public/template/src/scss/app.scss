@@ -116,13 +116,13 @@ a {
     padding-right: 1.25rem;
 
     &:after {
-      content: url(../../images/external-link.svg);
+      content: url(../src/svg/externallink.svg);
       position: absolute;
       right: 0;
-      height: 1rem;
-      width: 1rem;
-      top: 0;
       bottom: 0;
+      width: 14px;
+      height: 1em;
+      line-height: 1em;
     }
   }
 }
