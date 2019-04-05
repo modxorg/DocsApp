@@ -10,7 +10,3 @@
 	path = doc-sources/2.x
 	url = https://github.com/Mark-H/Docs.git
 	branch = 2.x
-[submodule "doc-sources/extras"]
-	path = doc-sources/extras
-	url = https://github.com/modxorg/Docs.git
-	branch = add-extras
