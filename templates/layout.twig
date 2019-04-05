@@ -75,9 +75,11 @@
 
                     <div class="footer__col">
                         <ul class="footer__menu">
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://github.com/modxorg/Docs" rel="noopener" target="_blank">Edit this page</a>
-                            </li>
+                            {% if file_path %}
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}" rel="noopener" target="_blank">Edit this page</a>
+                                </li>
+                            {% endif %}
                             <li class="footer__item">
                                 <a class="footer__link" href="https://github.com/modxorg/DocsApp/issues/new?title=Issue+on+{{ current_uri|url_encode }}&template=bug_report.md" rel="noopener" target="_blank">Report an issue with this page</a>
                             </li>
@@ -87,7 +89,7 @@
                 </div>
                 <div class="copyright__wrap">
                     <p class="copyright">
-                        Designed and built with all the love in the world by the MODX team with the help of <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">our contributors</a>.
+                        Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
                     </p>
                 </div>
 
