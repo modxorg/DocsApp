@@ -33,8 +33,8 @@ module.exports = {
                         ],
                         plugins: [
                             ['prismjs', {
-                                languages: ['markup'],
-                                plugins: ['line-numbers'],
+                                languages: ['markup', 'css', 'clike', 'javascript', 'bash', 'css-extras', 'markup-templating', 'json', 'markdown', 'php', 'php-extras', 'sql', 'smarty'],
+                                plugins: ['line-highlight', 'line-numbers', 'toolbar', 'command-line', 'normalize-whitespace', 'copy-to-clipboard'],
                                 css: false
                             }],
                         ]
