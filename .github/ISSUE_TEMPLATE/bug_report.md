@@ -1,21 +1,12 @@
 ---
 name: Bug report
-about: Create a report to help us improve DocsApp 
-
+about: Report an issue with the application that serves docs.modx.org. For issues about the content, please visit modxorg/Docs instead. 
 ---
 
-## Bug report
-### Summary
+## Summary
+
 Quick summary what's this issue about.
 
-### Step to reproduce
-How to reproduce the issue, including custom code if needed.
+## Step to reproduce
 
-### Observed behavior
-How it behaved after following steps above.
-
-### Expected behavior
-How it should behave after following steps above.
-
-### Environment
-Apache/nginx and version, browser, etc. Any relevant information.
+How to reproduce the issue. If a problem exists on a specific URL, please include that link. Please be specific about the observed and expected behaviour. 
