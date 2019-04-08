@@ -1,8 +1,11 @@
 ### What does it do?
-Describe the technical changes you did.
+
+What has changed for users or contributors of the application? 
 
 ### Why is it needed?
-Describe the issue you are solving.
+
+What problem does this solve?
 
 ### Related issue(s)/PR(s)
-Let us know if this is related to any issue/pull request (see https://github.com/blog/1506-closing-issues-via-pull-requests)
+
+If there's a related issue, please add `Fixes #<issue number>`.
