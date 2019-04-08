@@ -1,18 +1,12 @@
 ---
-name: Feature request
-about: Suggest an idea for DocsApp
-
+name: Improvement or Feature Request
+about: Suggest an idea for the application running on docs.modx.org, including the design. For content-related suggestions, please visit modxorg/Docs
 ---
 
-## Feature request
-### Summary
-Quick summary what's this feature request about.
+## Summary
 
-### Why is it needed?
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+What feature should be added, or what existing feature should be improved?
 
-### Suggested solution(s)
-A clear and concise description of what you want to happen.
+## Why?
 
-### Related issue(s)/PR(s)
-Let us know if this is related to any issue/pull request.
+What does the improvement or feature solve, and for who? 
