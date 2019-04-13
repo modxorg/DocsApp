@@ -30,14 +30,18 @@ class NotFound extends Doc
         }
         $uri = $request->getUri()->getPath();
 
+        // Make sure links ending in .md get redirected
+        if (substr($uri, -3) === '.md') {
+            $uri = substr($uri,0,-3);
+            return $this->response->withRedirect($uri, 301);
+        }
+
         if ($newUri = Redirector::findNewURI($uri)) {
             return $this->response->withRedirect($newUri, 301);
         }
 
         $this->response = $this->response->withStatus(404);
 
-        $uri = urlencode($uri);
-        $this->setVariable('req_url', $uri);
         $this->setVariable('page_title', 'Oops, page not found.');
         return $this->render('notfound.twig');
     }

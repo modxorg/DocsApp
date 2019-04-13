@@ -1,26 +1,29 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <base href="{{ base_href() }}">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>
             {% block title %}Welcome to the MODX Documentation{% endblock %}
             | MODX Documentation</title>
         {% block meta %}{% endblock %}
-        <link rel="stylesheet" href="assets/dist/app.css">
-        <link rel="shortcut icon" href="favicon.ico" />
+
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/template/dist/app.css">
         {% block stylesheets %}{% endblock %}
+        <script defer src="/template/dist/main-modern.js" type="module"></script>
+        <script defer src="/template/dist/main-legacy.js" nomodule></script>
+        {% block scripts %}{% endblock %}
     </head>
     <body>
 
         <header class="header">
             <div class="header__inner">
-                <label class="header__hamburger" for="sidebar-toggle"><img src="images/menu.svg" alt="menu icon"></label>
+                <label class="header__hamburger" for="sidebar-toggle">{{ icon('menu', 'Menu') }}</label>
                 <div class="logo header__logo">
-                    <a class="logo__link" href="{{ base_href() }}" title="MODX Documentation">
-                        <img class="logo__img" src="images/modx-logo-color.svg" alt="MODX DOCS Logo">
+                    <a class="logo__link" href="/" title="MODX Documentation">
+                        <img class="logo__img" src="/images/modx-logo-color.svg" alt="MODX Documentation">
                     </a>
                 </div>
                 <nav class="header__menu mainMenu">
@@ -59,24 +62,26 @@
                     <div class="footer__col">
                         <ul class="footer__menu">
                             <li class="footer__item">
-                                <a class="footer__link" href="https://modx.com/" target="_blank">MODX.com</a>
+                                <a class="footer__link" href="https://modx.com/" rel="noopener" target="_blank">MODX.com</a>
                             </li>
                             <li class="footer__item">
-                                <a class="footer__link" href="https://community.modx.com/" target="_blank">The MODX Community</a>
+                                <a class="footer__link" href="https://community.modx.com/" rel="noopener" target="_blank">The MODX Community</a>
                             </li>
                             <li class="footer__item">
-                                <a class="footer__link" href="https://modxcommunity.slack.com/" target="_blank">Slack</a>
+                                <a class="footer__link" href="https://modxcommunity.slack.com/" rel="noopener" target="_blank">Slack</a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="footer__col">
                         <ul class="footer__menu">
+                            {% if file_path %}
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}" rel="noopener" target="_blank">Edit this page</a>
+                                </li>
+                            {% endif %}
                             <li class="footer__item">
-                                <a class="footer__link" href="https://github.com/Mark-H/Docs" target="_blank">Edit this page</a>
-                            </li>
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://github.com/Mark-H/Docs" target="_blank">Report an issue with this page</a>
+                                <a class="footer__link" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md" rel="noopener" target="_blank">Report an issue with this page</a>
                             </li>
                         </ul>
                     </div>
@@ -84,14 +89,11 @@
                 </div>
                 <div class="copyright__wrap">
                     <p class="copyright">
-                        Designed and built with all the love in the world by the MODX team with the help of <a href="https://github.com/Mark-H/Docs/graphs/contributors" target="_blank">our contributors</a>.
+                        Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
                     </p>
                 </div>
 
             </footer>
         {% endblock %}
-
-        {% block scripts %}{% endblock %}
-
     </body>
 </html>

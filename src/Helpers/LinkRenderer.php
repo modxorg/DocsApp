@@ -62,6 +62,10 @@ class LinkRenderer implements InlineRendererInterface
             return $url;
         }
 
+        if (substr($url, -3) === '.md') {
+            $url = substr($url,0,-3);
+        }
+
         if (strpos($url, '#') === 0) {
             return $this->baseUri . $this->currentDoc . $url;
         }

@@ -36,7 +36,7 @@ class Doc extends Base
         $this->setVariable('version_branch', $version === 'current' ? '2.x' : $version);
 
         $this->basePath = $path;
-        $this->baseUri = $version;
+        $this->baseUri = '/' . $version;
     }
 
     public function setLanguage($language)
@@ -140,7 +140,7 @@ class Doc extends Base
         $renderer = new TocRenderer(new Matcher(), [
             'currentClass'  => 'active',
             'ancestorClass' => 'active_ancestor'
-        ], $request->getAttribute('version') . '/' . $request->getAttribute('language') . '/' . $this->docPath);
+        ], '/' . $request->getAttribute('version') . '/' . $request->getAttribute('language') . '/' . $this->docPath);
         $toc = $tocGenerator->getHtmlMenu($content, 2, 6, $renderer);
         $this->setVariable('toc', $toc);
 
