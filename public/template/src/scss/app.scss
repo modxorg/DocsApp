@@ -233,7 +233,7 @@ table {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  font-size: 14px !important;
+  @include font-size(.875rem, true);
 }
 
 ol {
@@ -357,7 +357,7 @@ MODULES
     white-space: nowrap;
     border-color: transparent;
     text-decoration: none;
-    font-size: 15px;
+    @include font-size(.9375rem);
     line-height: 1em;
     font-weight: 500;
     transition: all 250ms ease-out;
@@ -689,7 +689,7 @@ MODULES
       cursor: pointer;
       padding: 5px 24px 5px 16px;
       border: 0;
-      font-size: 14px;
+      @include font-size(.875rem);
 
       &:hover {
         color: rgb(56, 132, 255);
@@ -774,7 +774,7 @@ footer {
     .copyright {
       margin: 0;
       color: $paleSky;
-      font-size: 14px;
+      @include font-size(.875rem);
     }
   }
 }
@@ -789,7 +789,7 @@ footer {
 
     .footer__menu .footer__link {
       padding: 0 14px;
-      font-size: 14px;
+      @include font-size(.875rem);
     }
   }
 }
@@ -826,7 +826,7 @@ TYPOGRAPHY
     display: flex;
     padding: 0;
     margin-bottom: 8px;
-    font-size: 10px;
+    @include font-size(.625rem);
     line-height: 1;
     font-weight: 700;
     text-transform: uppercase;
@@ -837,7 +837,7 @@ TYPOGRAPHY
     padding: 0;
 
     li {
-      font-size: 12px;
+      @include font-size(.75rem);
       line-height: 1.5;
       font-weight: 500;
       list-style: none;
@@ -875,11 +875,11 @@ TYPOGRAPHY
 
   .toc {
     .title {
-      font-size: 13px;
+      @include font-size(.8215rem);
     }
 
     ul li {
-      font-size: 14px;
+      @include font-size(.875rem);
     }
   }
 
@@ -896,7 +896,7 @@ code {
   margin: 0 1px;
   display: inline-block;
   padding: 2px 6px;
-  font-size: 85%;
+  @include font-size(.85rem);
   font-family: "Source Code Pro", Menlo, monospace;
   border-radius: 3px;
   background-color: #F5F7F9;
@@ -908,7 +908,7 @@ div.code-toolbar>.toolbar a {
   box-shadow: 0 !important;
   color: $white !important;
   padding: .25rem .5rem !important;
-  font-size: 75% !important;
+  @include font-size(.75rem, true);
   border: 0 !important;
   border-radius: .25rem !important;
 }
