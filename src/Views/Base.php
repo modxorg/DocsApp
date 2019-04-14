@@ -57,6 +57,8 @@ abstract class Base
             $revision = file_get_contents($projectDir . '.revision');
         }
         $this->setVariable('revision', $revision);
+
+        $this->setVariable('is_dev', (bool) getenv('DEV'));
         return true;
     }
 

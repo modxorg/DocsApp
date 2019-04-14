@@ -1,0 +1,19 @@
+.o-logo {
+    margin: rem(0 20);
+    &__image {
+        width: rem(250);
+        height: auto;
+        max-height: 100%;
+    }
+}
+
+.o-docmeta {
+    margin: rem(-20) 0 $global-margin*2;
+}
+
+.o-sidebar-heading {
+    display: block;
+    margin: rem(5 0) $global-margin;
+    font-size: rem(20);
+    font-weight: 700;
+}

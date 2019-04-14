@@ -75,7 +75,6 @@ class Doc extends Base
     public function initialize(Request $request, Response $response, array $args = array())
     {
         parent::initialize($request, $response, $args);
-        $this->setVariable('is_dev', (bool) getenv('DEV'));
         $this->setVersion($request->getAttribute('version'));
         $this->setLanguage($request->getAttribute('language'));
         $this->getTopNavigation();
@@ -139,8 +138,10 @@ class Doc extends Base
         // Generate table of contents
         $tocGenerator = new TocGenerator();
         $renderer = new TocRenderer(new Matcher(), [
-            'currentClass'  => 'active',
-            'ancestorClass' => 'active_ancestor'
+            'currentClass' => 'c-toc__item--active',
+            'ancestorClass' => 'c-toc__item--activeancestor',
+            'firstClass' => 'c-toc__item--first',
+            'lastClass' => 'c-toc__item--last',
         ], '/' . $request->getAttribute('version') . '/' . $request->getAttribute('language') . '/' . $this->docPath);
         $toc = $tocGenerator->getHtmlMenu($content, 2, 6, $renderer);
         $this->setVariable('toc', $toc);
@@ -231,7 +232,7 @@ class Doc extends Base
                 $current['level'] = $level;
 
                 if ($level < $maxDepth && is_dir($filePath . '/')) {
-                    $current['classes'] .= ' has-children';
+                    $current['classes'] .= ' c-nav__item--has-children';
                     $current['children'] = $this->getNavigationForParent($filePath . '/', $level + 1, $maxDepth);
                 }
                 $nav[] = $current;
@@ -242,7 +243,7 @@ class Doc extends Base
                 if (file_exists($file->getPathname() . '/index.md')) {
                     $current = $this->getNavItem(new \SplFileInfo($file->getPathname() . '/index.md'), $relativeFilePath);
                     $current['level'] = $level;
-                    $current['classes'] .= ' has-children';
+                    $current['classes'] .= ' c-nav__item--has-children';
                     if ($level < $maxDepth) {
                         $current['children'] = $this->getNavigationForParent($file->getPathname(), $level + 1, $maxDepth);
                     }

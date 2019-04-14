@@ -1,11 +1,11 @@
-<ul class="nav-menu-wrapper">
+<ul class="c-nav{% if subnav == true %}__sublist{% endif %}">
 {% for item in children %}
-    <li class="nav-item-{{ item.level }} {{ item.classes }}">
+    <li class="c-nav__item c-nav__item--level{{ item.level }} {{ item.classes }}">
         <a href="{{ item.uri }}">
             {{ item.title }}
         </a>
         {% if item.children|length > 0 %}
-            {% include "partials/nav.twig" with { children: item.children } %}
+            {% include "partials/nav.twig" with { children: item.children, subnav: true } %}
         {% endif %}
     </li>
 {% endfor %}

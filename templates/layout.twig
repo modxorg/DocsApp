@@ -19,8 +19,8 @@
     <body>
         <div class="l-app">
             <header class="l-header">
-                <a href="/" title="MODX Docs" class="c-logo">
-                    MODX Docs
+                <a href="/" title="MODX Docs" class="o-logo">
+                    <img src="/images/logo.svg" alt="MODX Docs" class="o-logo__image">
                 </a>
             </header>
 
@@ -34,16 +34,16 @@
             </div>
 
             <footer class="l-footer">
-                <p class="copyright">
-                    Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
+                <p>
+                    <small>
+                        Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">MODX community</a>.
+                    </small>
                 </p>
             </footer>
 
             <nav class="l-sidebar">
                 {% if current_nav_parent %}
-                    <h2 class="sidebar__heading">
-                        <a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
-                    </h2>
+                    <a class="o-sidebar-heading" href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
                 {% endif %}
                 {{ nav|raw }}
             </nav>
