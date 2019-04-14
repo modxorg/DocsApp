@@ -75,6 +75,7 @@ class Doc extends Base
     public function initialize(Request $request, Response $response, array $args = array())
     {
         parent::initialize($request, $response, $args);
+        $this->setVariable('is_dev', (bool) getenv('DEV'));
         $this->setVersion($request->getAttribute('version'));
         $this->setLanguage($request->getAttribute('language'));
         $this->getTopNavigation();

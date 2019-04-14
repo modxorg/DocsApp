@@ -9,7 +9,7 @@
         "build": "run-p build:*",
         "release": "run-p release:*",
         "analyize": "BROWSERSLIST_ENV=modern webpack --mode production --profile --json > webpackstats.json && webpack-bundle-analyzer webpackstats.json",
-        "livereload": "livereload 'dist/*' -p `cat .livereload` --wait 300",
+        "livereload": "livereload 'dist/*' --wait 300",
         "watch:css": "onchange --await-write-finish -i 'src/scss/**' -- npm run build:css",
         "build:css": "node-sass src/scss/ --output dist/ --output-style \"compressed\" --source-map true",
         "postbuild:css": "postcss dist/*.css --use autoprefixer -d dist/ --map",

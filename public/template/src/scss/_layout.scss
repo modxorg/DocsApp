@@ -1,0 +1,68 @@
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.l-app {
+    padding-top: rem(60);
+    padding-left: rem(320);
+}
+
+.l-header {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: rem(60);
+    background: $body-background;
+    border-bottom: 1px solid darken($border-color, 10%);
+    box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
+}
+
+.l-sidebar {
+    z-index: 1;
+    position: fixed;
+    top: rem(60);
+    bottom: 0;
+    left: 0;
+    width: rem(320);
+    background: $sidebar-background;
+    border-right: 1px solid $border-color;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+}
+
+.l-content {
+    display: flex;
+    //flex-wrap: wrap;
+    margin: rem(15 75);
+}
+
+main {
+    flex-basis: rem(750);
+    flex-grow: 0;
+    flex-shrink: 1;
+
+    @include breakpoint(large) {
+        order: 1;
+    }
+}
+
+.c-toc {
+    flex-basis: 100%;
+    flex-shrink: 1;
+
+    @include breakpoint(large) {
+        flex-basis: rem(320);
+        margin: rem(0 0 0 75);
+        order: 2;
+    }
+}
+
+.l-footer {
+    flex-basis: 100%;
+    flex-shrink: 0;
+    order: 3;
+}

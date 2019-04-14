@@ -1,13 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ language }}">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>
-            {% block title %}Welcome to the MODX Documentation{% endblock %}
-            | MODX Documentation</title>
-        {% block meta %}{% endblock %}
+        <meta charset="utf-8">
+        <title>{% block title %}Home{% endblock %} | MODX Docs</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/template/dist/app.css">
@@ -15,85 +12,121 @@
         <script defer src="/template/dist/main-modern.js" type="module"></script>
         <script defer src="/template/dist/main-legacy.js" nomodule></script>
         {% block scripts %}{% endblock %}
+        {% if is_dev == true %}
+        <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+        {% endif %}
     </head>
     <body>
+        <div class="l-app">
+            <header class="l-header">
+                <a href="/" title="MODX Docs" class="c-logo">
+                    MODX Docs
+                </a>
+            </header>
 
-        <header class="header">
-            <div class="header__inner">
-                <label class="header__hamburger" for="sidebar-toggle">{{ icon('menu', 'Menu') }}</label>
-                <div class="logo header__logo">
-                    <a class="logo__link" href="/" title="MODX Documentation">
-                        <img class="logo__img" src="/images/modx-logo-color.svg" alt="MODX Documentation">
-                    </a>
-                </div>
-                <nav class="header__menu mainMenu">
-                    <ul class="mainMenu__wrap">
-                        {% for item in topnav %}
-                            <li class="mainMenu__item">
-                                <a class="mainMenu__link" href="{{ item.uri }}">{{ item.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </nav>
-                <div class="header__search">
-                    <div class="header__search_container" title="Coming soon!">
-                        search
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        {% block container %}
-            <input type="checkbox" class="sidebar__control" id="sidebar-toggle">
-            <div class="container">
+            <div class="l-content">
                 {% block content %}
-                    <div class="content">
+                    <main class="c-content">
                         <h1>{{ page.title }}</h1>
                         <p>{{ page.introduction }}</p>
-                    </div>
+                    </main>
                 {% endblock %}
             </div>
-        {% endblock %}
 
-        {% block footer %}
-            <footer class="footerSection">
-                <div class="footer__wrap">
-
-                    <div class="footer__col">
-                        <ul class="footer__menu">
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://modx.com/" rel="noopener" target="_blank">MODX.com</a>
-                            </li>
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://community.modx.com/" rel="noopener" target="_blank">The MODX Community</a>
-                            </li>
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://modxcommunity.slack.com/" rel="noopener" target="_blank">Slack</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="footer__col">
-                        <ul class="footer__menu">
-                            {% if file_path %}
-                                <li class="footer__item">
-                                    <a class="footer__link" href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}" rel="noopener" target="_blank">Edit this page</a>
-                                </li>
-                            {% endif %}
-                            <li class="footer__item">
-                                <a class="footer__link" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md" rel="noopener" target="_blank">Report an issue with this page</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div class="copyright__wrap">
-                    <p class="copyright">
-                        Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
-                    </p>
-                </div>
-
+            <footer class="l-footer">
+                <p class="copyright">
+                    Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
+                </p>
             </footer>
-        {% endblock %}
+
+            <nav class="l-sidebar">
+                {% if current_nav_parent %}
+                    <h2 class="sidebar__heading">
+                        <a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
+                    </h2>
+                {% endif %}
+                {{ nav|raw }}
+            </nav>
+
+{#
+            <header class="c-header">
+                <div class="c-header__inner">
+                    <label class="header__hamburger" for="sidebar-toggle">{{ icon('menu', 'Menu') }}</label>
+                    <div class="logo header__logo">
+                        <a class="logo__link" href="/" title="MODX Documentation">
+                            <img class="logo__img" src="/images/modx-logo-color.svg" alt="MODX Documentation">
+                        </a>
+                    </div>
+                    <nav class="header__menu mainMenu">
+                        <ul class="mainMenu__wrap">
+                            {% for item in topnav %}
+                                <li class="mainMenu__item">
+                                    <a class="mainMenu__link" href="{{ item.uri }}">{{ item.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    <div class="header__search">
+                        <div class="header__search_container" title="Coming soon!">
+                            search
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {% block container %}
+                <input type="checkbox" class="sidebar__control" id="sidebar-toggle">
+                <div class="container">
+                    {% block content %}
+                        <div class="content">
+                            <h1>{{ page.title }}</h1>
+                            <p>{{ page.introduction }}</p>
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block footer %}
+                <footer class="footerSection">
+                    <div class="footer__wrap">
+
+                        <div class="footer__col">
+                            <ul class="footer__menu">
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://modx.com/" rel="noopener" target="_blank">MODX.com</a>
+                                </li>
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://community.modx.com/" rel="noopener" target="_blank">The MODX Community</a>
+                                </li>
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://modxcommunity.slack.com/" rel="noopener" target="_blank">Slack</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="footer__col">
+                            <ul class="footer__menu">
+                                {% if file_path %}
+                                    <li class="footer__item">
+                                        <a class="footer__link" href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}" rel="noopener" target="_blank">Edit this page</a>
+                                    </li>
+                                {% endif %}
+                                <li class="footer__item">
+                                    <a class="footer__link" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md" rel="noopener" target="_blank">Report an issue with this page</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="copyright__wrap">
+                        <p class="copyright">
+                            Designed and built with all the love in the world by the <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener" target="_blank">MODX community</a>.
+                        </p>
+                    </div>
+
+                </footer>
+            {% endblock %}
+#}
+        </div>
     </body>
 </html>

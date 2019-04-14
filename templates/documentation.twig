@@ -3,73 +3,48 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-    <div class="content-container">
-        <div class="sidebar">
-            <div class="sidebar__inner">
-                {% if current_nav_parent %}
-                    <h2 class="sidebar__heading">
-                        <a href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
-                    </h2>
-                {% endif %}
-                {{ nav|raw }}
-            </div>
-        </div>
-        <div class="content">
-            <div class="content__side">
-                <div class="side__wrapper">
-                    <div class="menu__items">
-
-                        {% if toc is not empty %}
-                            <div class="toc">
-                                <div class="toc__inner">
-                                    <span class="title">Contents</span>
-                                    {{ toc|raw }}
-                                </div>
-                            </div>
+    {% if toc is not empty %}
+        <aside class="c-toc">
+            <span class="c-toc__title">In this document</span>
+            {{ toc|raw }}
+        </aside>
+    {% endif %}
+    <main class="c-content">
+        <h1>{{ meta.title }}</h1>
+            <p>
+                <small>
+                    <em>
+                        {% if versions | length > 1 %}
+                            Other versions:
+                            {% for version in versions %}
+                                <a href="{{ version.uri }}">{{ version.title }}</a>
+                            {% endfor %}
+                            &mdash;
                         {% endif %}
+                        Found a problem? Please
+                        <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
+                            target="_blank" rel="noopener">edit this page</a>
+                        or
+                        <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
+                            target="_blank" rel="noopener">report an issue</a>.
+                    </em>
+                </small>
+            </p>
 
-                    </div>
-                </div>
+        {% if meta.suggest_delete %}
+            <div class="doc-note doc-note__delete">
+                This page is marked as a candidate to be deleted: {{ meta.suggest_delete }}
             </div>
-            <div class="content__inner">
-                <h1>{{ meta.title }}</h1>
-                    <p>
-                        <small>
-                            <em>
-                                {% if versions | length > 1 %}
-                                    Other versions:
-                                    {% for version in versions %}
-                                        <a href="{{ version.uri }}">{{ version.title }}</a>
-                                    {% endfor %}
-                                    &mdash;
-                                {% endif %}
-                                Found a problem? Please
-                                <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
-                                   target="_blank" rel="noopener">edit this page</a>
-                                or
-                                <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
-                                   target="_blank" rel="noopener">report an issue</a>.
-                            </em>
-                        </small>
-                    </p>
-
-                {% if meta.suggest_delete %}
-                    <div class="doc-note doc-note__delete">
-                        This page is marked as a candidate to be deleted: {{ meta.suggest_delete }}
-                    </div>
-                {% endif %}
+        {% endif %}
 
 
-                {% if meta.note %}
-                    <div class="doc-note">
-                        <strong>Note:</strong> {{ meta.note }}
-                    </div>
-                {% endif %}
-
-                {{ parsed|raw }}
-
+        {% if meta.note %}
+            <div class="doc-note">
+                <strong>Note:</strong> {{ meta.note }}
             </div>
-        </div>
-    </div>
+        {% endif %}
 
+        {{ parsed|raw }}
+
+    </main>
 {% endblock %}
