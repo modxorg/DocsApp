@@ -1,0 +1,13 @@
+.c-toc {
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    a {
+        font-size: rem(14);
+        color: map-get($colors, gray);
+    }
+}

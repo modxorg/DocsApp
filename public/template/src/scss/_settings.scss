@@ -1,7 +1,7 @@
 $colors: (
     primary: #2b72e4,
-    secondary: #ad1c1a,
     light: #ededed,
+    gray: #888,
     alert: #c70000,
     success: #2d8b01,
     warning: #ffae00,
@@ -24,7 +24,7 @@ $breakpoints: (
 );
 
 $global-font-size: 100%;
-$global-line-height: 1.5;
+$global-line-height: 1.6;
 $global-width: rem(1200);
 $global-margin: rem(15);
 $body-background: #fff;

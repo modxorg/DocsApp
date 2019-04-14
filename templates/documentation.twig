@@ -4,12 +4,14 @@
 
 {% block content %}
     {% if toc is not empty %}
-        <aside class="c-toc">
-            <span class="c-toc__title">In this document</span>
-            {{ toc|raw }}
+        <aside class="l-toc">
+            <span class="o-toc-title">In this document</span>
+            <nav class="c-toc" aria-label="Table of Contents">
+                {{ toc|raw }}
+            </nav>
         </aside>
     {% endif %}
-    <main class="c-content">
+    <main id="main" class="c-content">
         <h1>{{ meta.title }}</h1>
             <p class="o-docmeta">
                 <small>

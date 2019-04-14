@@ -68,13 +68,14 @@ main {
     }
 }
 
-.c-toc {
+.l-toc {
     flex-basis: 100%;
     flex-shrink: 1;
+    margin: rem(50) 0 $global-margin;
 
     @include breakpoint(xlarge) {
         flex-basis: rem(320);
-        margin: rem(0 0 0 75);
+        margin-left: rem(75);
         order: 2;
     }
 }

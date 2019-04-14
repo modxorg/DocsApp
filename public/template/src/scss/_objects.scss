@@ -17,3 +17,12 @@
     font-size: rem(20);
     font-weight: 700;
 }
+
+.o-toc-title {
+    display: block;
+    margin: 0 0 rem(5);
+    font-size: rem(12);
+    font-weight: 700;
+    color: map-get($colors, gray);
+    text-transform: uppercase;
+}
