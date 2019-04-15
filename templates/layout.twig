@@ -20,7 +20,7 @@
     <body>
         <a href="#main" class="show-for-sr">Jump to main content</a>
         <a href="#docnav" class="show-for-sr">Jump to doc navigation</a>
-        <div class="l-app">
+        <div class="l-app {% if nav is not empty %} l-app--has-sidebar{% endif %}">
             <header class="l-header">
                 <div class="l-header__top">
                     <a href="/" title="MODX Docs" class="l-header__logo o-logo">
@@ -116,12 +116,14 @@
 
             </footer>
 
+            {% if nav is not empty %}
             <nav id="docnav" arial-label="Documentation Navigation" class="l-sidebar">
                 {% if current_nav_parent %}
                     <a class="o-sidebar-heading" href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
                 {% endif %}
                 {{ nav|raw }}
             </nav>
+            {% endif %}
 
 {#
             <header class="c-header">

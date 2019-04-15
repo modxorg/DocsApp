@@ -5,8 +5,11 @@ html, body {
 
 .l-app {
     padding-top: $header-height;
-    @include breakpoint(large) {
-        padding-left: $sidebar-width;
+
+    &--has-sidebar {
+        @include breakpoint(large) {
+            padding-left: $sidebar-width;
+        }
     }
 }
 
