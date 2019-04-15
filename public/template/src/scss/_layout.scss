@@ -27,7 +27,7 @@ html, body {
 .l-sidebar {
     display: none;
     z-index: 1;
-    padding: rem(20);
+    padding: ($main-margin-top + rem(10)) rem(20) $global-margin;
     background: $sidebar-background;
     border-right: 1px solid $border-color;
     overflow-y: scroll;
@@ -47,10 +47,10 @@ html, body {
 .l-content {
     display: flex;
     flex-direction: column;
-    margin: rem(15 20);
+    margin: $global-margin rem(20);
 
     @include breakpoint(medium) {
-        margin: rem(15 75);
+        margin: $main-margin-top rem(75) $global-margin;
     }
 
     @include breakpoint(xlarge) {

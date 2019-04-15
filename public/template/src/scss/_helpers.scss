@@ -8,3 +8,11 @@
     white-space: nowrap;
     border: 0;
 }
+
+// make anchor tags work with fixed header
+:target:before {
+    content:"";
+    display:block;
+    height: ($header-height+$main-margin-top); /* fixed header height*/
+    margin: (($header-height+$main-margin-top)*-1) 0 0; /* negative fixed header height */
+}

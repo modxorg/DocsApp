@@ -1,7 +1,7 @@
 .o-logo {
     margin: rem(0 20);
     &__image {
-        width: rem(250);
+        width: rem(240);
         height: auto;
         max-height: 100%;
     }
@@ -25,4 +25,10 @@
     font-weight: 700;
     color: map-get($colors, gray);
     text-transform: uppercase;
+}
+
+.o-content {
+    > *:first-child {
+        margin-top: 0;
+    }
 }
