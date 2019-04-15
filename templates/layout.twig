@@ -18,6 +18,7 @@
     </head>
     <body>
         <a href="#main" class="show-for-sr">Jump to main content</a>
+        <a href="#docnav" class="show-for-sr">Jump to doc navigation</a>
         <div class="l-app">
             <header class="l-header">
                 <div class="l-header__top">
@@ -26,7 +27,7 @@
                         {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                     </a>
                     <nav class="l-header__topnav">
-                        <ul class="c-topnav">
+                        <ul id="topnav" class="c-topnav">
                             {% for item in topnav %}
                                 <li class="c-topnav__item">
                                     <a class="c-topnav__link" href="{{ item.uri }}">{{ item.title }}</a>
@@ -114,7 +115,7 @@
 
             </footer>
 
-            <nav arial-label="Main Navigation" class="l-sidebar">
+            <nav id="docnav" arial-label="Documentation Navigation" class="l-sidebar">
                 {% if current_nav_parent %}
                     <a class="o-sidebar-heading" href="{{ current_nav_parent.uri }}">{{ current_nav_parent.title }}</a>
                 {% endif %}

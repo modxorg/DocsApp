@@ -1,7 +1,12 @@
 .c-topnav {
+    display: none;
     margin: rem(0 -15);
     padding: 0;
     list-style: none;
+
+    @include breakpoint(large) {
+        display: block;
+    }
 
     &__item {
         display: inline-block;
@@ -9,7 +14,11 @@
 
     &__link {
         display: block;
-        padding: rem(15);
+        padding: rem(15 5);
         color: #fff;
+
+        @include breakpoint(xlarge) {
+            padding: rem(15);
+        }
     }
 }
