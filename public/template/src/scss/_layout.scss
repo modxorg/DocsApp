@@ -1,10 +1,13 @@
 html, body {
     width: 100%;
     overflow-x: hidden;
+    background: map-get($colors, 'body-bg');
 }
 
 .l-app {
     padding-top: $header-height;
+    background: map-get($colors, 'body-bg');
+    //filter: invert(100%);
 
     &--has-sidebar {
         @include breakpoint(large) {
