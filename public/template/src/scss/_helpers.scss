@@ -18,8 +18,7 @@
 }
 
 .is-brokenlink {
-    //color: map-get($colors, 'warning') !important;
-    opacity: 0.75;
+    color: map-get($colors, 'link-broken');
     text-decoration: line-through;
     
     &:after {
