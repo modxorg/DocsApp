@@ -15,7 +15,7 @@
     &__link {
         display: block;
         padding: rem(15 5);
-        color: #fff;
+        color: map-get($colors, 'header-text');
 
         @include breakpoint(xlarge) {
             padding: rem(15);

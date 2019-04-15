@@ -1,9 +1,9 @@
 body {
-    background:$body-background;
+    background:map-get($colors, 'body-bg');
     font-family: $body-font-family;
     font-weight: 400;
     line-height: $global-line-height;
-    color: $body-font-color;
+    color: map-get($colors, 'body-text');
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

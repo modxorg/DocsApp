@@ -14,7 +14,7 @@
             display: block;
             margin-bottom: rem(10);
             text-decoration: none;
-            color: $body-font-color;
+            color: map-get($colors, 'body-text');
             transition: color .2s ease-in-out;
 
             &:hover {

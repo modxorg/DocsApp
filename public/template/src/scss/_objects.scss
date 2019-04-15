@@ -4,7 +4,7 @@
         display: block;
         width: rem(200);
         height: $header-top-height;
-        fill: #fff;
+        fill: map-get($colors, 'header-text');
     }
 }
 

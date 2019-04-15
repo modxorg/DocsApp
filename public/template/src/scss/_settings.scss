@@ -5,15 +5,30 @@ $colors: (
     alert: #c70000,
     success: #2d8b01,
     warning: #ffae00,
+    'header-bg': #2b72e4,
+    'header-text': #fff, //#4a4a4a,
+    'sidebar-bg': #F5F7F9,
+    'body-bg': #fff,
+    'body-text': #000,
+    'border': #E6ECF1,
 );
 
-$social-colors: (
-    facebook: #3b5998,
-    twitter: #1da1f2,
-    instagram: #e1306c,
-    youtube: #ff0000,
-    vimeo: #1ab7ea
+/*
+$dark-colors: (
+    primary: #68a2ff, // AA compatible
+    light: #ededed,
+    gray: #757575, // AA compatible
+    alert: #c70000,
+    success: #2d8b01,
+    warning: #ffae00,
+    'header-bg': #052a67,
+    'header-text': #fff, //#4a4a4a,
+    'sidebar-bg': #141f31,
+    'body-bg': #111,
+    'body-text': #fff,
+    border: #E6ECF1,
 );
+*/
 
 $breakpoints: (
     small: 0,
@@ -27,15 +42,13 @@ $global-font-size: 100%;
 $global-line-height: 1.6;
 $global-width: rem(1200);
 $global-margin: rem(15);
-$body-background: #fff;
-$sidebar-background: #F5F7F9;
-$body-font-color: #222;
+
 $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$border-color: #E6ECF1;
 
 $header-breadcrumb-height: rem(40);
 $header-top-height: rem(60);
 $header-height: $header-breadcrumb-height+$header-top-height;
+
 $main-margin-top: rem(30);
 
 $sidebar-width: rem(320);

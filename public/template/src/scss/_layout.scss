@@ -17,8 +17,7 @@ html, body {
     right: 0;
     left: 0;
     height: $header-height;
-    background: $body-background;
-    border-bottom: 1px solid darken($border-color, 10%);
+    background: map-get($colors, 'body-bg');
     box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
 
     &__top {
@@ -26,13 +25,15 @@ html, body {
         align-items: center;
         width: 100%;
         height: $header-top-height;
-        background: map-get($colors, primary);
+        background: map-get($colors, 'header-bg');
+        border-bottom: 1px solid darken(map-get($colors, border), 10%);
     }
 
     &__breadcrumb {
         display: block;
         width: 100%;
         height: $header-breadcrumb-height;
+        border-bottom: 1px solid darken(map-get($colors, border), 10%);
     }
 
     &__logo {
@@ -49,7 +50,7 @@ html, body {
                 top: rem(10);
                 bottom: rem(10);
                 width: 1px;
-                background: $border-color;
+                background: map-get($colors, 'header-text');
                 opacity: 0.5;
             }
         }
@@ -74,8 +75,8 @@ html, body {
     display: none;
     z-index: 1;
     padding: ($main-margin-top + rem(10)) rem(20) $global-margin;
-    background: $sidebar-background;
-    border-right: 1px solid $border-color;
+    background: map-get($colors, 'sidebar-bg');
+    border-right: 1px solid map-get($colors, border);
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     overflow-x: auto;
@@ -132,7 +133,7 @@ main {
     order: 3;
     padding: rem(30 15 15);
     margin: rem(45 0 0);
-    border-top: 1px solid $border-color;
+    border-top: 1px solid map-get($colors, border);
 
     @include breakpoint(medium) {
         padding: rem(30 75 15);
