@@ -36,7 +36,7 @@ class LinkRenderer implements InlineRendererInterface
         }
 
         if (static::isExternalUrl($inline->getUrl())) {
-            $attributes['class'] = 'link__external';
+            $attributes['class'] = 'is-externallink';
             $attributes['target'] = '_blank';
             $attributes['rel'] = 'noreferrer noopener';
         }
@@ -46,7 +46,7 @@ class LinkRenderer implements InlineRendererInterface
             if (!file_exists($docs . $href . '.md') && !file_exists($docs . $href . '/index.md')) {
                 $newUri = Redirector::findNewURI($href);
                 if ($newUri === false) {
-                    $attributes['class'] = 'link__broken';
+                    $attributes['class'] = 'is-brokenlink';
                 }
                 else {
                     $attributes['href'] = $newUri;
