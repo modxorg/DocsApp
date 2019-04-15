@@ -32,5 +32,8 @@ $sidebar-background: #F5F7F9;
 $body-font-color: #222;
 $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $border-color: #E6ECF1;
-$header-height: rem(75);
+
+$header-breadcrumb-height: rem(40);
+$header-top-height: rem(60);
+$header-height: $header-breadcrumb-height+$header-top-height;
 $main-margin-top: rem(30);

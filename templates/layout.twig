@@ -20,9 +20,31 @@
         <a href="#main" class="show-for-sr">Jump to main content</a>
         <div class="l-app">
             <header class="l-header">
-                <a href="/" title="MODX Docs" class="o-logo">
-                    <img src="/images/logo.svg" alt="MODX Docs" class="o-logo__image">
-                </a>
+                <div class="l-header__top">
+                    <a href="/" title="MODX Docs" class="o-logo">
+                        {# <img src="/images/logo.svg" alt="MODX Docs" class="o-logo__image"> #}
+                        {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
+                    </a>
+                </div>
+                <nav class="l-header__breadcrumb" aria-label="Breadcrumb">
+                    <ol class="c-breadcrumb">
+                        <li  class="c-breadcrumb__item">
+                            <a class="c-breadcrumb__link" href="/">
+                                Home
+                            </a>
+                        </li>
+                        <li class="c-breadcrumb__item">
+                            <a class="c-breadcrumb__link" href="/pg2">
+                                Getting Started
+                            </a>
+                        </li>
+                        <li class="c-breadcrumb__item">
+                            <a class="c-breadcrumb__link c-breadcrumb__link--current" href="/pg2/this-pg" aria-current="page"> {# aria-current for current visible page  #}
+                                An Overview of MODX
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
             </header>
 
             <div class="l-content">

@@ -12,8 +12,6 @@ html, body {
 
 .l-header {
     z-index: 2;
-    display: flex;
-    align-items: center;
     position: fixed;
     top: 0;
     right: 0;
@@ -22,6 +20,20 @@ html, body {
     background: $body-background;
     border-bottom: 1px solid darken($border-color, 10%);
     box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
+
+    &__top {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: $header-top-height;
+        background: map-get($colors, primary);
+    }
+
+    &__breadcrumb {
+        display: block;
+        width: 100%;
+        height: $header-breadcrumb-height;
+    }
 }
 
 .l-sidebar {
