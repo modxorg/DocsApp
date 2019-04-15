@@ -1,0 +1,42 @@
+.c-footer {
+
+    &__grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    &__cell {
+        width: 100%;
+
+        @include breakpoint(large) {
+            width: auto;
+        }
+    }
+
+    &__copyright {
+        color: map-get($colors, gray);
+    }
+
+    &__nav {
+        margin: rem(0 -10);
+        padding: 0;
+        list-style: none;
+    }
+
+    &__navitem {
+        display: inline-block;
+    }
+
+    &__navlink {
+        display: block;
+        font-weight: 700;
+        padding: rem(10);
+        color: map-get($colors, gray);
+
+        &:hover {
+            color: map-get($colors, primary);
+        }
+    }
+}

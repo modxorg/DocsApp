@@ -96,9 +96,11 @@ main {
     flex-basis: 100%;
     flex-shrink: 0;
     order: 3;
-    margin: rem(30 15 15);
+    padding: rem(30 15 15);
+    margin: rem(45 0 0);
+    border-top: 1px solid $border-color;
 
     @include breakpoint(medium) {
-        margin: rem(45 75 15);
+        padding: rem(30 75 15);
     }
 }
