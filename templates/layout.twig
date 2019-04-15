@@ -21,10 +21,28 @@
         <div class="l-app">
             <header class="l-header">
                 <div class="l-header__top">
-                    <a href="/" title="MODX Docs" class="o-logo">
+                    <a href="/" title="MODX Docs" class="l-header__logo o-logo">
                         {# <img src="/images/logo.svg" alt="MODX Docs" class="o-logo__image"> #}
                         {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                     </a>
+                    <nav class="l-header__topnav">
+                        <ul class="c-topnav">
+                            {% for item in topnav %}
+                                <li class="c-topnav__item">
+                                    <a class="c-topnav__link" href="{{ item.uri }}">{{ item.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    <div class="l-header__search">
+                        <form method="get" action="/search" class="c-searchform">
+                            <label class="c-searchform__label" for="search"><span class="show-for-sr">Search</span></label>
+                            <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required>
+                            <button class="c-searchform__button" type="submit" value="Search">
+                                {{ icon('search', 'Search', 'c-searchform__icon') }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 <nav class="l-header__breadcrumb" aria-label="Breadcrumb">
                     <ol class="c-breadcrumb">

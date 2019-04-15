@@ -6,7 +6,7 @@ html, body {
 .l-app {
     padding-top: $header-height;
     @include breakpoint(large) {
-        padding-left: rem(320);
+        padding-left: $sidebar-width;
     }
 }
 
@@ -34,6 +34,36 @@ html, body {
         width: 100%;
         height: $header-breadcrumb-height;
     }
+
+    &__logo {
+        flex: $sidebar-width 0 0;
+        position: relative;
+
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: 0;
+            top: rem(10);
+            bottom: rem(10);
+            width: 1px;
+            background: $border-color;
+            opacity: 0.5;
+        }
+    }
+
+    &__topnav {
+        width: auto;
+        //max-width: rem(750);
+        flex-grow: 1;
+        @include breakpoint(medium) {
+            margin: 0 rem(75);
+        }
+    }
+
+    &__search {
+        margin: 0 rem(12);
+    }
 }
 
 .l-sidebar {
@@ -52,7 +82,7 @@ html, body {
         top: $header-height;
         bottom: 0;
         left: 0;
-        width: rem(320);
+        width: $sidebar-width;
     }
 }
 

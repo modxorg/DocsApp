@@ -1,0 +1,15 @@
+.c-topnav {
+    margin: rem(0 -15);
+    padding: 0;
+    list-style: none;
+
+    &__item {
+        display: inline-block;
+    }
+
+    &__link {
+        display: block;
+        padding: rem(15);
+        color: #fff;
+    }
+}

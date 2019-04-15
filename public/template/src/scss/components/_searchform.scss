@@ -1,0 +1,28 @@
+.c-searchform {
+    position: relative;
+
+    &__input {
+        display: block;
+        width: rem(220);
+        border: none;
+        border-radius: rem(3);
+        padding: rem(8 35 8 10);
+        font-size: rem(15);
+    }
+
+    &__button {
+        position: absolute;
+        top: rem(6);
+        right: rem(10);
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+    }
+
+    &__icon {
+        width: rem(24);
+        height: rem(20);
+        fill: #717171;
+    }
+}

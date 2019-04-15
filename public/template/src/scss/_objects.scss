@@ -1,9 +1,9 @@
 .o-logo {
-    margin: rem(0 15);
+    padding: rem(0 15);
     &__image {
         display: block;
         width: rem(200);
-        height: $header-height;
+        height: $header-top-height;
         fill: #fff;
     }
 }

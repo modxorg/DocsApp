@@ -1,7 +1,7 @@
 $colors: (
-    primary: #2b72e4,
+    primary: #2b72e4, // AA compatible
     light: #ededed,
-    gray: #888,
+    gray: #757575, // AA compatible
     alert: #c70000,
     success: #2d8b01,
     warning: #ffae00,
@@ -37,3 +37,5 @@ $header-breadcrumb-height: rem(40);
 $header-top-height: rem(60);
 $header-height: $header-breadcrumb-height+$header-top-height;
 $main-margin-top: rem(30);
+
+$sidebar-width: rem(320);
