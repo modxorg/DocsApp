@@ -47,20 +47,25 @@
                     </div>
                 </div>
                 <nav class="l-header__breadcrumb" aria-label="Breadcrumb">
-                    <ol class="c-breadcrumb">
-                        <li  class="c-breadcrumb__item">
-                            <a class="c-breadcrumb__link" href="/">
-                                Home
+                    <ol class="c-breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                        <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="/" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                                <span itemprop="name">Home</span>
+                                <meta itemprop="position" content="1">
                             </a>
                         </li>
-                        <li class="c-breadcrumb__item">
-                            <a class="c-breadcrumb__link" href="/pg2">
-                                Getting Started
+                        <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="/pg2" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                                <span itemprop="name">Getting started</span>
+                                <meta itemprop="position" content="2">
                             </a>
                         </li>
-                        <li class="c-breadcrumb__item">
-                            <a class="c-breadcrumb__link c-breadcrumb__link--current" href="/pg2/this-pg" aria-current="page"> {# aria-current for current visible page  #}
-                                An Overview of MODX
+                        {# current item gets special markup: #}
+                        <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            {# aria-current for current visible page and --current modifier class  #}
+                            <a class="c-breadcrumb__link c-breadcrumb__link--current" href="/" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                                <span itemprop="name">An Overview of MODX</span>
+                                <meta itemprop="position" content="3">
                             </a>
                         </li>
                     </ol>
