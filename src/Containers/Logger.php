@@ -7,7 +7,6 @@ use Monolog\Processor\UidProcessor;
 use Monolog\Handler\StreamHandler;
 use Slim\Container;
 
-
 class Logger
 {
     public static function load(Container $container)

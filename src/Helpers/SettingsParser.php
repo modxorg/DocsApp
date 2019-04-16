@@ -3,7 +3,6 @@
 namespace MODXDocs\Helpers;
 
 use Dotenv\Dotenv;
-use Monolog\Logger;
 
 class SettingsParser
 {
@@ -14,8 +13,8 @@ class SettingsParser
     {
         $baseDir = dirname(dirname(__DIR__)) . '/';
         $dotFile = static::getDotFile($baseDir);
-        $dotenv = Dotenv::create($baseDir, $dotFile);
-        $dotenv->load();
+        $dotEnv = Dotenv::create($baseDir, $dotFile);
+        $dotEnv->load();
     }
 
     public function getSlimConfig()

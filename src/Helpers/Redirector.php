@@ -2,13 +2,16 @@
 
 namespace MODXDocs\Helpers;
 
+use MODXDocs\Exceptions\RedirectNotFoundException;
+use MODXDocs\Services\RequestAttributesService;
+
 class Redirector
 {
     public static function findNewURI($uri)
     {
-        $uri = '/' . ltrim($uri, '/');
+        $uri = static::cleanRequestUri($uri);
 
-        $preferedVersion = 'current';
+        $preferredVersion = 'current';
         $redirects = [];
 
         // Start by collecting the available redirects per version
@@ -24,8 +27,8 @@ class Redirector
             // Check if the URI starts with the key; if it does, treat it as a relative redirect, setting the preferred
             // version accordingly, and removing the version from the uri we're looking for
             if (substr($uri, 1, \strlen($key)) === $key) {
-                $preferedVersion = $key;
-                $uri = substr($uri, 1 + \strlen($preferedVersion));
+                $preferredVersion = $key;
+                $uri = substr($uri, 1 + \strlen($preferredVersion));
             }
 
             // Get the redirects for this version, and store it in an array
@@ -41,11 +44,11 @@ class Redirector
         $baseDir = '/';
 
         // First, check if the requested URI exists in the preferred version
-        if (array_key_exists($preferedVersion, $redirects)) {
-            if (array_key_exists($uri, $redirects[$preferedVersion])) {
-                return $baseDir . $preferedVersion . '/' . $redirects[$preferedVersion][$uri];
+        if (array_key_exists($preferredVersion, $redirects)) {
+            if (array_key_exists($uri, $redirects[$preferredVersion])) {
+                return $baseDir . $preferredVersion . '/' . $redirects[$preferredVersion][$uri];
             }
-            unset($redirects[$preferedVersion]);
+            unset($redirects[$preferredVersion]);
         }
 
         // If not in the prefered version, check the others
@@ -56,6 +59,21 @@ class Redirector
         }
 
         // No clue what you're looking for!
-        return false;
+        throw new RedirectNotFoundException();
+    }
+
+    private static function cleanRequestUri($uri)
+    {
+        $uri = '/' . ltrim($uri, '/');
+        $currentBranchString = '/' . RequestAttributesService::DEFAULT_VERSION . '/';
+
+        if (substr($uri, 0, strlen($currentBranchString)) !== $currentBranchString) {
+            return $uri;
+        }
+
+        return '/'
+            . RequestAttributesService::CURRENT_BRANCH_VERSION
+            . '/'
+            . substr($uri, strlen($currentBranchString));
     }
 }
