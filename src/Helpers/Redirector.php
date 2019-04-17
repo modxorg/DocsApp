@@ -11,7 +11,7 @@ class Redirector
     {
         $uri = static::cleanRequestUri($uri);
 
-        $preferredVersion = 'current';
+        $preferredVersion = VersionsService::getCurrentVersionBranch();
         $redirects = [];
 
         // Start by collecting the available redirects per version
@@ -46,7 +46,7 @@ class Redirector
         // First, check if the requested URI exists in the preferred version
         if (array_key_exists($preferredVersion, $redirects)) {
             if (array_key_exists($uri, $redirects[$preferredVersion])) {
-                return $baseDir . $preferredVersion . '/' . $redirects[$preferredVersion][$uri];
+                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uri];
             }
             unset($redirects[$preferredVersion]);
         }
@@ -72,7 +72,7 @@ class Redirector
         }
 
         return '/'
-            . VersionsService::getCurrentVersionBranch()
+            . VersionsService::getCurrentVersion()
             . '/'
             . substr($uri, strlen($currentBranchString));
     }
