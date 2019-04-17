@@ -275,13 +275,16 @@ class Doc extends Base
                 'version' => $this->version,
                 'path' => $relativeFilePath,
             ]),
-            'classes' => 'item',
+            'classes' => 'c-nav__item',
         ];
         if (array_key_exists('sortorder', $fm)) {
             $current['sortorder'] = (int)$fm['sortorder'];
         }
         if (strpos($this->file, $relativeFilePath) !== false) {
-            $current['classes'] .= ' active';
+            $current['classes'] .= ' c-nav__item--active';
+        }
+        if ($relativeFilePath === str_replace('.md', '', $this->file)) {
+            $current['classes'] .= ' c-nav__item--activepage';
         }
 
         return $current;

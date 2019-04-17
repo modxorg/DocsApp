@@ -1,10 +1,10 @@
 .c-nav {
-    margin: rem(0 0 0 -15);
+    margin: rem(0 0 0 -20);
     padding: 0;
     list-style: none;
 
     &__item {
-        margin: rem(0 0 0 15);
+        margin: 0;
         padding: 0;
         list-style: none;
         font-size: rem(15);
@@ -13,6 +13,7 @@
         a {
             display: block;
             margin-bottom: rem(10);
+            padding: rem(0 0 0 20);
             text-decoration: none;
             color: map-get($colors, 'body-text');
             transition: color .2s ease-in-out;
@@ -20,6 +21,27 @@
             &:hover {
                 color: map-get($colors, primary);
             }
+        }
+
+        &--activepage {
+
+            > a {
+                position: relative;
+                color: map-get($colors, primary);
+
+                &:after {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    top: rem(-5);
+                    left: 0;
+                    height: 100%;
+                    height: calc(100% + #{rem(10)});
+                    width: rem(5);
+                    background: map-get($colors, primary);
+                }
+            }
+
         }
 
         &--level1 > a {
@@ -30,6 +52,33 @@
             font-weight: 700;
         }
 
+    }
+
+    // navigation indent (required like this due to :after positioning
+    &__item {
+        a {
+            padding-left: rem(20);
+        }
+        .c-nav__item {
+            a {
+                padding-left: rem(40);
+            }
+            .c-nav__item {
+                a {
+                    padding-left: rem(60);
+                }
+                .c-nav__item {
+                    a {
+                        padding-left: rem(60);
+                    }
+                    .c-nav__item {
+                        a {
+                            padding-left: rem(60);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     &__sublist {
