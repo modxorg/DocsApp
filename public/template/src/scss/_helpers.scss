@@ -20,7 +20,7 @@
 .is-brokenlink {
     color: map-get($colors, 'link-broken');
     text-decoration: line-through;
-    
+
     &:after {
         content: " (link broken)";
         text-decoration: none;
@@ -51,3 +51,33 @@
     }
 }
 
+.u-no-margin {
+    margin: 0 !important;
+}
+.u-no-margin--top {
+    margin-top: 0 !important;
+}
+.u-no-margin--bottom {
+    margin-bottom: 0 !important;
+}
+
+.u-no-padding {
+    padding: 0 !important;
+}
+.u-no-padding--top {
+    padding-top: 0 !important;
+}
+.u-no-padding--bottom {
+    padding-bottom: 0 !important;
+}
+
+html.no-js {
+    .u-show-with-js {
+        display: none !important;
+    }
+}
+html.js {
+    .u-hide-with-js {
+        display: none !important;
+    }
+}

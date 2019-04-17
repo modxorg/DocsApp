@@ -3,35 +3,53 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-    {% if toc is not empty %}
-        <aside class="l-toc">
-            <span class="o-toc-title">In this document</span>
-            <nav class="c-toc" aria-label="Table of Contents">
-                {{ toc|raw }}
-            </nav>
-        </aside>
-    {% endif %}
     <main id="main" class="o-content">
-        <h1>{{ meta.title }}</h1>
-            <p class="o-docmeta">
-                <small>
-                    <em>
-                        {% if versions | length > 1 %}
-                            Other versions:
-                            {% for version in versions %}
-                                <a href="{{ version.uri }}">{{ version.title }}</a>
-                            {% endfor %}
-                            &mdash;
-                        {% endif %}
-                        Found a problem? Please
-                        <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
-                            target="_blank" rel="noopener">edit this page</a>
-                        or
-                        <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
-                            target="_blank" rel="noopener">report an issue</a>.
-                    </em>
-                </small>
-            </p>
+        <nav class="c-breadcrumb" aria-label="Breadcrumb">
+            <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="c-breadcrumb__link" href="/" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                        <span itemprop="name">Home</span>
+                        <meta itemprop="position" content="1">
+                    </a>
+                </li>
+                <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="c-breadcrumb__link" href="/pg2" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                        <span itemprop="name">Getting started</span>
+                        <meta itemprop="position" content="2">
+                    </a>
+                </li>
+                {# current item gets special markup: #}
+                <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    {# aria-current for current visible page and --current modifier class  #}
+                    <a class="c-breadcrumb__link c-breadcrumb__link--current" href="/" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
+                        <span itemprop="name">An Overview of MODX</span>
+                        <meta itemprop="position" content="3">
+                    </a>
+                </li>
+            </ol>
+        </nav>
+
+        <h1 class="u-no-margin--top">{{ meta.title }}</h1>
+
+        <p class="o-docmeta">
+            <small>
+                <em>
+                    {% if versions | length > 1 %}
+                        Other versions:
+                        {% for version in versions %}
+                            <a href="{{ version.uri }}">{{ version.title }}</a>
+                        {% endfor %}
+                        &mdash;
+                    {% endif %}
+                    Found a problem? Please
+                    <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
+                        target="_blank" rel="noopener">edit this page</a>
+                    or
+                    <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
+                        target="_blank" rel="noopener">report an issue</a>.
+                </em>
+            </small>
+        </p>
 
         {% if meta.suggest_delete %}
             <div class="doc-note doc-note__delete">
@@ -39,6 +57,14 @@
             </div>
         {% endif %}
 
+        {% if toc is not empty %}
+            <nav class="c-toc" aria-labelledby="toc-title">
+                <div class="c-toc__wrapper">
+                    <span class="c-toc__title" id="toc-title">In this document</span>
+                    {{ toc|raw }}
+                </div>
+            </nav>
+        {% endif %}
 
         {% if meta.note %}
             <div class="doc-note">

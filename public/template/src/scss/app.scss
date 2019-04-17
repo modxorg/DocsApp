@@ -7,12 +7,6 @@
 // import modnern-normalize (https://github.com/sindresorhus/modern-normalize)
 @import 'node_modules/modern-normalize/modern-normalize';
 
-@import '../../node_modules/prismjs/themes/prism';
-@import '../../node_modules/prismjs/plugins/command-line/prism-command-line';
-@import '../../node_modules/prismjs/plugins/line-highlight/prism-line-highlight';
-@import '../../node_modules/prismjs/plugins/line-numbers/prism-line-numbers';
-@import '../../node_modules/prismjs/plugins/toolbar/prism-toolbar';
-
 @import 'functions';
 @import 'breakpoints';
 @import 'settings';
@@ -26,5 +20,6 @@
 @import 'components/breadcrumb';
 @import 'components/toc';
 @import 'components/footer';
+@import 'components/code';
 
 @import 'helpers';
