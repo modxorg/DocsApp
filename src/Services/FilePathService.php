@@ -2,47 +2,43 @@
 
 namespace MODXDocs\Services;
 
-use Slim\Http\Request;
+
+use MODXDocs\Model\PageRequest;
 
 class FilePathService
 {
-    private $requestPathService;
-    private $requestAttributesService;
-
-    public function __construct(
-        RequestPathService $requestPathService,
-        RequestAttributesService $requestAttributesService
-    )
-    {
-        $this->requestPathService = $requestPathService;
-        $this->requestAttributesService = $requestAttributesService;
-    }
-
-    public function isValidRequest(Request $request)
+    public function isValidRequest(PageRequest $request) : bool
     {
         return $this->getFilePath($request) !== null;
     }
 
-    public function getFilePath(Request $request)
+    public function getFilePath(PageRequest $request) : ?string
     {
-        return $this->constructFilePath($request);
-    }
+        $basePath = rtrim($this->getAbsoluteContextPath($request), '/');
 
-    private function constructFilePath(Request $request)
-    {
-        $basePath = rtrim($this->requestPathService->getAbsoluteFullFilePath($request), '/');
+        $fullRequestPath = $basePath . '/' . trim($request->getPath(), '/');
 
-        $file = $basePath . '.md';
+        $file = $fullRequestPath . '.md';
         if (file_exists($file)) {
             return $file;
         }
 
         // See if we have an index file instead
-        $file = $basePath . '/index.md';
+        $file = $fullRequestPath . '/index.md';
         if (file_exists($file)) {
             return $file;
         }
 
         return null;
+    }
+
+    public function getAbsoluteRootPath() : string
+    {
+        return getenv('DOCS_DIRECTORY');
+    }
+
+    public function getAbsoluteContextPath(PageRequest $request) : string
+    {
+        return $this->getAbsoluteRootPath() . $request->getActualContextUrl();
     }
 }

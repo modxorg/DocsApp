@@ -2,14 +2,13 @@
 
 namespace MODXDocs\Views;
 
-use Psr\Container\ContainerInterface;
+use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\NavigationService;
 use Monolog\Logger;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
-
-use MODXDocs\Services\RequestAttributesService;
-use MODXDocs\Services\NavigationService;
+use Psr\Container\ContainerInterface;
 
 abstract class Base
 {
@@ -22,9 +21,6 @@ abstract class Base
     /** @var Twig */
     private $view;
 
-    /** @var RequestAttributesService */
-    private $requestAttributeService;
-
     /** @var NavigationService */
     private $navigationService;
 
@@ -35,20 +31,22 @@ abstract class Base
         $this->logger = $this->container->get('logger');
         $this->view = $this->container->get('view');
 
-        $this->requestAttributeService = $this->container->get(RequestAttributesService::class);
         $this->navigationService = $this->container->get(NavigationService::class);
     }
 
-    protected function render(Request $request, Response $response, $template, array $data = [])
+    protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
     {
+
+        $pageRequest = PageRequest::fromRequest($request);
+
         $initialData = [
             'revision' => static::getRevision(),
             'current_uri' => $request->getUri()->getPath(),
-            'version' => $this->requestAttributeService->getVersion($request),
-            'version_branch' => $this->requestAttributeService->getVersionBranch($request),
-            'language' => $this->requestAttributeService->getLanguage($request),
-            'path' => $this->requestAttributeService->getPath($request),
-            'topnav' => $this->navigationService->getTopNavigation($request),
+            'version' => $pageRequest->getVersion(),
+            'version_branch' => $pageRequest->getVersionBranch(),
+            'language' => $pageRequest->getLanguage(),
+            'path' => $pageRequest->getPath(),
+            'topnav' => $this->navigationService->getTopNavigation($pageRequest),
         ];
 
         return $this->view->render(
@@ -61,7 +59,7 @@ abstract class Base
         );
     }
 
-    protected function render404(Request $request, Response $response, array $data = [])
+    protected function render404(Request $request, Response $response, array $data = []): \Psr\Http\Message\ResponseInterface
     {
         $initialData = [
             'revision' => static::getRevision(),
@@ -78,13 +76,13 @@ abstract class Base
         );
     }
 
-    private static function getRevision()
+    private static function getRevision() : string
     {
         $revision = 'dev';
 
         $projectDir = getenv('BASE_DIRECTORY');
         if (file_exists($projectDir . '.revision')) {
-            $revision = file_get_contents($projectDir . '.revision');
+            $revision = (string)file_get_contents($projectDir . '.revision');
         }
 
         return $revision;

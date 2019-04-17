@@ -3,7 +3,7 @@
 namespace MODXDocs\Helpers;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
-use MODXDocs\Services\RequestAttributesService;
+use MODXDocs\Services\VersionsService;
 
 class Redirector
 {
@@ -62,17 +62,17 @@ class Redirector
         throw new RedirectNotFoundException();
     }
 
-    private static function cleanRequestUri($uri)
+    private static function cleanRequestUri($uri): string
     {
         $uri = '/' . ltrim($uri, '/');
-        $currentBranchString = '/' . RequestAttributesService::DEFAULT_VERSION . '/';
+        $currentBranchString = '/' . VersionsService::getCurrentVersion() . '/';
 
-        if (substr($uri, 0, strlen($currentBranchString)) !== $currentBranchString) {
+        if (strpos($uri, $currentBranchString) !== 0) {
             return $uri;
         }
 
         return '/'
-            . RequestAttributesService::CURRENT_BRANCH_VERSION
+            . VersionsService::getCurrentVersionBranch()
             . '/'
             . substr($uri, strlen($currentBranchString));
     }

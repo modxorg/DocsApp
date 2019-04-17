@@ -2,27 +2,18 @@
 
 namespace MODXDocs\Views;
 
+use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Model\PageRequest;
 use Psr\Container\ContainerInterface;
-use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-use MODXDocs\Navigation\NavigationItemBuilder;
 use MODXDocs\Services\NavigationService;
-use MODXDocs\Services\RequestPathService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
-use MODXDocs\Services\FilePathService;
-use MODXDocs\Services\RequestAttributesService;
 
 class Doc extends Base
 {
-    /** @var RequestPathService */
-    private $requestPathService;
-
-    /** @var FilePathService */
-    private $filePathService;
-
     /** @var DocumentService */
     private $documentService;
 
@@ -32,48 +23,42 @@ class Doc extends Base
     /** @var VersionsService */
     private $versionsService;
 
-    /** @var RequestAttributesService */
-    private $requestAttributesService;
-
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
 
-        $this->requestPathService = $this->container->get(RequestPathService::class);
-        $this->filePathService = $this->container->get(FilePathService::class);
         $this->documentService = $this->container->get(DocumentService::class);
         $this->navigationService = $this->container->get(NavigationService::class);
         $this->versionsService = $this->container->get(VersionsService::class);
-        $this->requestAttributesService = $this->container->get(RequestAttributesService::class);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function get(Request $request, Response $response)
     {
-        if (!$this->requestPathService->isValidRequest($request) || !$this->filePathService->isValidRequest($request)) {
-            throw new NotFoundException($request, $response);
+        $pageRequest = PageRequest::fromRequest($request);
+
+        // Throws our own NotFoundException when it doesn't exist; rethrow for Slim
+        try {
+            $page = $this->documentService->load($pageRequest);
+        } catch (NotFoundException $e) {
+            throw new \Slim\Exception\NotFoundException($request, $response);
         }
 
         return $this->render($request, $response, 'documentation.twig', [
-            'page_title' => static::getPageTitle($request->getAttribute('path')),
+            'page_title' => $page->getTitle(),
 
-            'meta' => $this->documentService->getMeta($request),
-            'parsed' => $this->documentService->getContent($request),
-            'toc' => $this->documentService->getTableOfContents($request),
+            'meta' => $page->getMeta(),
+            'parsed' => $page->getRenderedBody(),
+            'toc' => $page->getTableOfContents(),
 
-            'versions' => $this->versionsService->getVersions($request),
-            'nav' => $this->navigationService->getNavigation($request),
-            'current_nav_parent' => $this->navigationService->getNavParent($request),
+            'versions' => $this->versionsService->getVersions($pageRequest),
+            'nav' => $this->navigationService->getNavigation($pageRequest),
+            'current_nav_parent' => $this->navigationService->getNavParent($pageRequest),
         ]);
-    }
-
-    private static function getPageTitle($path)
-    {
-        // Generate a page title crumbs kinda thing
-        $path = str_replace('-', ' ', $path);
-        $path = explode('/', $path);
-        $path = array_map('ucfirst', $path);
-        $path = array_reverse($path);
-
-        return implode(' / ', $path);
     }
 }

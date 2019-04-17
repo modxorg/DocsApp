@@ -2,8 +2,8 @@
 
 namespace MODXDocs\Services;
 
+use MODXDocs\Model\PageRequest;
 use Monolog\Logger;
-use Slim\Http\Request;
 use Slim\Router;
 use Slim\Views\Twig;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
@@ -16,38 +16,32 @@ class NavigationService
     private $twig;
     private $logger;
     private $router;
-    private $requestPathService;
-    private $requestAttributesService;
     private $filePathService;
 
     public function __construct(
         Twig $twig,
         Logger $logger,
         Router $router,
-        RequestPathService $requestPathService,
-        RequestAttributesService $requestAttributesService,
         FilePathService $filePathService
     )
     {
         $this->twig = $twig;
         $this->logger = $logger;
         $this->router = $router;
-        $this->requestPathService = $requestPathService;
-        $this->requestAttributesService = $requestAttributesService;
         $this->filePathService = $filePathService;
     }
 
-    public function getTopNavigation(Request $request)
+    public function getTopNavigation(PageRequest $request)
     {
         return $this->getNavigationForParent(
             (new NavigationItemBuilder())
                 ->forTopMenu()
                 ->withCurrentFilePath($this->filePathService->getFilePath($request))
-                ->withBasePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-                ->withFilePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-                ->withUrlPath($this->requestPathService->getBaseUrlPath($request))
-                ->withVersion($this->requestAttributesService->getVersion($request))
-                ->withLanguage($this->requestAttributesService->getLanguage($request))
+                ->withBasePath($this->filePathService->getAbsoluteContextPath($request))
+                ->withFilePath($this->filePathService->getAbsoluteContextPath($request))
+                ->withUrlPath($request->getContextUrl())
+                ->withVersion($request->getVersion())
+                ->withLanguage($request->getLanguage())
                 ->build()
         );
     }
@@ -57,25 +51,26 @@ class NavigationService
         return $this->getNavigationForParent($navigationItem);
     }
 
-    public function getNavigation(Request $request)
+    public function getNavigation(PageRequest $request)
     {
         $baseNavigationItem = (new NavigationItemBuilder())
             ->withCurrentFilePath($this->filePathService->getFilePath($request))
-            ->withVersion($this->requestAttributesService->getVersion($request))
-            ->withLanguage($this->requestAttributesService->getLanguage($request))
+            ->withVersion($request->getVersion())
+            ->withLanguage($request->getLanguage())
             ->build();
 
         // Make the navigation dependent on the current parent (administration, developing, xpdo, etc)
-        $docPath = array_filter(explode('/', $this->requestAttributesService->getPath($request)));
+        $docPath = array_filter(explode('/', $request->getPath()));
 
         // If the docpath is empty, we are on the frontpage
-        if (count($docPath) === 0) {
+        if (count($docPath) === 1 && $docPath[0] === 'index') {
             return $this->renderNav(
                 $this->getNavigationForParent(
                     NavigationItemBuilder::copyFromItem($baseNavigationItem)
-                        ->withBasePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-                        ->withFilePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-                        ->withUrlPath($this->requestPathService->getBaseUrlPath($request))
+                        ->withBasePath($this->filePathService->getAbsoluteContextPath($request))
+                        ->withFilePath($this->filePathService->getAbsoluteContextPath($request))
+                        ->withUrlPath($request->getContextUrl() . $request->getPath())
+
                         ->withLevel(NavigationItem::HOME_MENU_LEVEL)
                         ->withDepth(NavigationItem::HOME_MENU_DEPTH)
                         ->build()
@@ -83,16 +78,15 @@ class NavigationService
             );
         }
 
-        $menuFilePath = $this->requestPathService->getAbsoluteBaseFilePath($request) . $docPath[0];
-        $menuUrlPath = $this->requestPathService->getBaseUrlPath($request) . $docPath[0];
+        $menuFilePath = $this->filePathService->getAbsoluteContextPath($request) . $docPath[0] . '/';
 
         if (file_exists($menuFilePath) && is_dir($menuFilePath)) {
             return $this->renderNav(
                 $this->getNavigationForParent(
                     NavigationItemBuilder::copyFromItem($baseNavigationItem)
-                        ->withBasePath($this->requestPathService->getAbsoluteBaseFilePath($request))
+                        ->withBasePath($this->filePathService->getAbsoluteContextPath($request))
                         ->withFilePath($menuFilePath)
-                        ->withUrlPath($menuUrlPath)
+                        ->withUrlPath($request->getContextUrl() . $request->getPath())
                         ->build()
                 )
             );
@@ -102,14 +96,14 @@ class NavigationService
         return null;
     }
 
-    public function getNavParent(Request $request)
+    public function getNavParent(PageRequest $request)
     {
         $navigationItem = (new NavigationItemBuilder())
             ->withCurrentFilePath($this->filePathService->getFilePath($request))
-            ->withFilePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-            ->withPath($this->requestAttributesService->getPath($request))
-            ->withVersion($this->requestAttributesService->getVersion($request))
-            ->withLanguage($this->requestAttributesService->getLanguage($request))
+            ->withFilePath($this->filePathService->getFilePath($request))
+            ->withPath($request->getPath())
+            ->withVersion($request->getVersion())
+            ->withLanguage($request->getLanguage())
             ->build();
 
         // Make the navigation dependent on the current parent (administration, developing, xpdo, etc)

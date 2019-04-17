@@ -9,12 +9,10 @@ use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
-use MODXDocs\Services\RequestAttributesService;
+use MODXDocs\Services\VersionsService;
 
 class LinkRenderer implements InlineRendererInterface
 {
-    const CURRENT_BRANCH_URL_KEYWORD = 'current';
-
     protected $baseUri;
     protected $currentDoc;
 
@@ -84,11 +82,11 @@ class LinkRenderer implements InlineRendererInterface
     private static function replaceCurrentUrl($href)
     {
         // If the URL starts with `current/`, then replace it with the actual branch name
-        if (substr($href, 0, strlen(RequestAttributesService::DEFAULT_VERSION)) !== RequestAttributesService::DEFAULT_VERSION) {
+        if (strpos($href, VersionsService::getCurrentVersion()) !== 0) {
             return $href;
         }
 
-        return RequestAttributesService::CURRENT_BRANCH_VERSION . substr($href, strlen(RequestAttributesService::DEFAULT_VERSION));
+        return VersionsService::getCurrentVersionBranch() . substr($href, strlen(VersionsService::getCurrentVersion()));
     }
 
     private static function isExternalUrl($url)
