@@ -41,6 +41,11 @@ class VersionsService
             $versions[$versionKey] = $details;
         }
 
+        if (!array_key_exists(self::getCurrentVersion(), $versions)
+            && array_key_exists(self::getCurrentVersionBranch(), $versions)) {
+            $versions[self::getCurrentVersion()] = $versions[self::getCurrentVersionBranch()];
+        }
+
         return $versions;
     }
 

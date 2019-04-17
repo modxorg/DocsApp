@@ -72,11 +72,15 @@ class LinkRenderer implements InlineRendererInterface
             return $this->baseUri . $this->currentDoc . $url;
         }
 
-        if (strpos($url, '/') === 0) {
-            return $url;
+        $versions = array_keys(VersionsService::getAvailableVersions());
+        $temp = ltrim($url, '/');
+        foreach ($versions as $key) {
+            if (strpos($temp, $key) === 0) {
+                return '/' . $temp;
+            }
         }
 
-        return $this->baseUri . $url;
+        return $this->baseUri . ltrim($url, '/');
     }
 
     private static function replaceCurrentUrl($href)
