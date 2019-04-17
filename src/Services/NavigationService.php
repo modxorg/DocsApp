@@ -177,7 +177,7 @@ class NavigationService
                 $current['level'] = $navigationItem->getLevel();
 
                 if ($navigationItem->getLevel() < $navigationItem->getDepth() && is_dir($filePath . '/')) {
-                    $current['classes'] .= ' has-children';
+                    $current['classes'] .= ' c-nav__item--has-children';
                     $current['children'] = $this->getNavigationForParent(
                         NavigationItemBuilder::copyFromItem($navigationItem)
                             ->withFilePath($filePath . '/')
@@ -194,7 +194,7 @@ class NavigationService
                         $relativeFilePath
                     );
                     $current['level'] = $navigationItem->getLevel();
-                    $current['classes'] .= ' has-children';
+                    $current['classes'] .= ' c-nav__item--has-children';
 
                     if ($navigationItem->getLevel() < $navigationItem->getDepth()) {
                         $current['children'] = $this->getNavigationForParent(
@@ -243,7 +243,7 @@ class NavigationService
                 'language' => $navigationItem->getLanguage(),
                 'path' => $relativeFilePath,
             ]),
-            'classes' => 'item',
+            'classes' => 'c-nav__item',
         ];
 
         if (array_key_exists('sortorder', $fm)) {
@@ -251,7 +251,15 @@ class NavigationService
         }
 
         if (strpos($navigationItem->getCurrentFilePath(), $relativeFilePath) !== false) {
-            $current['classes'] .= ' active';
+            $current['classes'] .= ' c-nav__item--active';
+        }
+
+        $path = $navigationItem->getCurrentFilePath();
+        $opts = [$relativeFilePath . '.md', $relativeFilePath . '/index.md'];
+        foreach ($opts as $opt) {
+            if (strpos($path, $opt) !== false) {
+                $current['classes'] .= ' c-nav__item--activepage';
+            }
         }
 
         return $current;
