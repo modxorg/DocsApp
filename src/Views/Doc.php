@@ -62,15 +62,7 @@ class Doc extends Base
 
             'versions' => $this->versionsService->getVersions($request),
             'nav' => $this->navigationService->getNavigation($request),
-            'current_nav_parent' => $this->navigationService->getNavParent(
-                (new NavigationItemBuilder())
-                    ->withCurrentFilePath($this->filePathService->getFilePath($request))
-                    ->withFilePath($this->requestPathService->getAbsoluteBaseFilePath($request))
-                    ->withPath($this->requestAttributesService->getPath($request))
-                    ->withVersion($this->requestAttributesService->getVersion($request))
-                    ->withLanguage($this->requestAttributesService->getLanguage($request))
-                    ->build()
-            ),
+            'current_nav_parent' => $this->navigationService->getNavParent($request),
         ]);
     }
 

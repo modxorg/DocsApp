@@ -26,16 +26,6 @@ class RequestPathService
         return $this->getBasePath($request, static::MODE_VERSION);
     }
 
-    public function getFullFilePath(Request $request)
-    {
-        return $this->getFullPath($request, static::MODE_VERSION_BRANCH);
-    }
-
-    public function getBaseFilePath(Request $request)
-    {
-        return $this->getBasePath($request, static::MODE_VERSION_BRANCH);
-    }
-
     public function getAbsoluteBaseFilePath(Request $request)
     {
         return getenv('DOCS_DIRECTORY') . $this->getBasePath($request, static::MODE_VERSION_BRANCH);

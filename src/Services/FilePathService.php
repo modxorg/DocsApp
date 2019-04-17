@@ -30,9 +30,7 @@ class FilePathService
 
     private function constructFilePath(Request $request)
     {
-        $requestPath = $this->requestPathService->getFullFilePath($request);
-
-        $basePath = getenv('DOCS_DIRECTORY') . rtrim($requestPath, '/');
+        $basePath = rtrim($this->requestPathService->getAbsoluteBaseFilePath($request), '/');
 
         $file = $basePath . '.md';
         if (file_exists($file)) {

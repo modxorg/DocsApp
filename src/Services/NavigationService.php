@@ -102,8 +102,16 @@ class NavigationService
         return null;
     }
 
-    public function getNavParent(NavigationItem $navigationItem)
+    public function getNavParent(Request $request)
     {
+        $navigationItem = (new NavigationItemBuilder())
+            ->withCurrentFilePath($this->filePathService->getFilePath($request))
+            ->withFilePath($this->requestPathService->getAbsoluteBaseFilePath($request))
+            ->withPath($this->requestAttributesService->getPath($request))
+            ->withVersion($this->requestAttributesService->getVersion($request))
+            ->withLanguage($this->requestAttributesService->getLanguage($request))
+            ->build();
+
         // Make the navigation dependent on the current parent (administration, developing, xpdo, etc)
         $docPath = array_filter(explode('/', $navigationItem->getPath()));
 
