@@ -52,6 +52,10 @@ class DocsApp
         }
     }
 
+    public function getContainer()
+    {
+        return $this->app->getContainer();
+    }
 
     public function run()
     {

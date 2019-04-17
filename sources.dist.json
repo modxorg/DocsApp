@@ -1,0 +1,15 @@
+{
+    "2.x": {
+        "type": "git",
+        "url": "https://github.com/modxorg/Docs.git",
+        "branch": "2.x"
+    },
+    "3.x": {
+        "type": "git",
+        "url": "https://github.com/modxorg/Docs.git",
+        "branch": "3.x"
+    },
+    "current": {
+        "type": "local"
+    }
+}

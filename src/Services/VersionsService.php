@@ -14,9 +14,41 @@ class VersionsService
 
     private $router;
 
+    private $versions;
+
     public function __construct(Router $router)
     {
         $this->router = $router;
+    }
+
+    public function getDefinition(): array
+    {
+        $this->versions = [];
+
+        $base = getenv('BASE_DIRECTORY');
+        $config = null;
+        $files = ['sources.dist.json', 'sources.json'];
+        foreach ($files as $file) {
+            $path = $base . $file;
+            if (file_exists($path)) {
+                $config = json_decode(file_get_contents($path), true);
+            }
+        }
+
+        if ($config === null) {
+            return [];
+        }
+
+        foreach ($config as $versionKey => $details) {
+            $this->addVersion($versionKey, $details);
+        }
+
+        return $this->versions;
+    }
+
+    private function addVersion($key, array $details): void
+    {
+        $this->versions[$key] = $details;
     }
 
     public function getVersions(PageRequest $request)
@@ -104,5 +136,10 @@ class VersionsService
     public static function getDefaultPath(): string
     {
         return static::DEFAULT_PATH;
+    }
+
+    public static function getDocsRoot(): string
+    {
+        return getenv('DOCS_DIRECTORY');
     }
 }

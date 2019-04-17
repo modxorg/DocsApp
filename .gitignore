@@ -8,3 +8,5 @@ cache/*
 public/.htaccess
 node_modules/
 .env
+sources.json
+markdown/
