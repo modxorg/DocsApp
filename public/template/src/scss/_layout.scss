@@ -121,22 +121,6 @@ main {
     }
 }
 
-.l-toc {
-    flex-basis: 100%;
-    flex-shrink: 1;
-    margin: 0 0 $global-margin;
-
-    @include breakpoint(large) {
-        margin-top: rem(50);
-    }
-
-    @include breakpoint(xlarge) {
-        flex-basis: rem(320);
-        margin-left: rem(75);
-        order: 2;
-    }
-}
-
 .l-footer {
     flex-basis: 100%;
     flex-shrink: 0;
