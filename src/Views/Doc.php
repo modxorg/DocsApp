@@ -78,7 +78,6 @@ class Doc extends Base
         $this->setVersion($request->getAttribute('version'));
         $this->setLanguage($request->getAttribute('language'));
         $this->setDocPath($request->getAttribute('path'));
-        $this->getTopNavigation();
         $this->getVersions();
         $this->getNavigation();
         return true;
@@ -171,12 +170,6 @@ class Doc extends Base
         }
 
         $this->setVariable('versions', $versions);
-    }
-
-    public function getTopNavigation()
-    {
-        $topNav = $this->getNavigationForParent($this->basePath, 1, 1);
-        $this->setVariable('topnav', $topNav);
     }
 
     public function getNavigation()

@@ -55,16 +55,6 @@ html, body {
         }
     }
 
-    &__topnav {
-        width: auto;
-        //max-width: rem(750);
-        flex-grow: 1;
-
-        @include breakpoint(xxlarge) {
-            margin: 0 rem(75);
-        }
-    }
-
     &__search {
         margin: 0 rem(12);
     }
