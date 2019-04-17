@@ -4,9 +4,6 @@ namespace MODXDocs\Navigation;
 
 class NavigationItem
 {
-    const VERIFY = 'verify';
-    const NOT_VERIFY = 'not_verify';
-
     const DEFAULT_LEVEL = 1;
     const DEFAULT_DEPTH = 10;
 

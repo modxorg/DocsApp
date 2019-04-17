@@ -3,18 +3,16 @@ namespace MODXDocs\Navigation;
 
 class NavigationItemBuilder
 {
-    const NOT_INITIALIZED = 'NOT_INITIALIZED';
+    private $currentFilePath = null;
+    private $basePath = null;
+    private $filePath = null;
+    private $urlPath = null;
+    private $level = null;
+    private $depth = null;
 
-    private $currentFilePath = NavigationItemBuilder::NOT_INITIALIZED;
-    private $basePath = NavigationItemBuilder::NOT_INITIALIZED;
-    private $filePath = NavigationItemBuilder::NOT_INITIALIZED;
-    private $urlPath = NavigationItemBuilder::NOT_INITIALIZED;
-    private $level = NavigationItemBuilder::NOT_INITIALIZED;
-    private $depth = NavigationItemBuilder::NOT_INITIALIZED;
-
-    private $version = NavigationItemBuilder::NOT_INITIALIZED;
-    private $language = NavigationItemBuilder::NOT_INITIALIZED;
-    private $path = NavigationItemBuilder::NOT_INITIALIZED;
+    private $version = null;
+    private $language = null;
+    private $path = null;
 
     public function __construct()
     {
