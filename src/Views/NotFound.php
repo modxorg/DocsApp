@@ -1,49 +1,81 @@
 <?php
+
 namespace MODXDocs\Views;
 
-use MODXDocs\Helpers\Redirector;
-use Slim\Exception\NotFoundException;
+use MODXDocs\Navigation\NavigationItemBuilder;
+use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use MODXDocs\Exceptions\RedirectNotFoundException;
+use MODXDocs\Helpers\Redirector;
+use MODXDocs\Services\NavigationService;
+use MODXDocs\Services\NotFoundService;
 
-class NotFound extends Doc
+class NotFound extends Base
 {
-    public function initialize(Request $request, Response $response, array $args = array())
+    const MARKDOWN_SUFFIX = '.md';
+
+    /** @var NotFoundService */
+    private $notFoundService;
+
+    /** @var NavigationService */
+    private $navigationService;
+
+    public function __construct(ContainerInterface $container)
     {
-        try {
-            parent::initialize($request, $response, $args);
-        }
-        catch (NotFoundException $e) {
-            // Continue showing the not found page even if the initialize of the doc page fails
-            // The reason we call the parent initialize is so we get the same handling of version, language,
-            // and top nav on the 404 page
-        }
-        return true;
+        parent::__construct($container);
+
+        $this->notFoundService = $container->get(NotFoundService::class);
+        $this->navigationService = $container->get(NavigationService::class);
     }
 
-    public function get(Request $request, Response $response, array $args = array())
+    public function get(Request $request, Response $response)
     {
-        $init = $this->initialize($request, $response, $args);
-        if ($init !== true) {
-            return $init;
-        }
-        $uri = $request->getUri()->getPath();
+        $currentUri = $request->getUri()->getPath();
 
         // Make sure links ending in .md get redirected
-        if (substr($uri, -3) === '.md') {
-            $uri = substr($uri,0,-3);
-            return $this->response->withRedirect($uri, 301);
+        if (substr($currentUri, -strlen(static::MARKDOWN_SUFFIX)) === static::MARKDOWN_SUFFIX) {
+            $uri = substr($currentUri, 0, -strlen(static::MARKDOWN_SUFFIX));
+            return $response->withRedirect($uri, 301);
         }
 
-        if ($newUri = Redirector::findNewURI($uri)) {
-            return $this->response->withRedirect($newUri, 301);
+        try {
+            $redirectUri = Redirector::findNewURI($currentUri);
+
+            return $response->withRedirect($redirectUri, 301);
+        } catch (RedirectNotFoundException $e) {
+
+            $version = $this->notFoundService->getVersion($request);
+            $versionBranch = $this->notFoundService->getVersionBranch($request);
+            $language = $this->notFoundService->getLanguage($request);
+
+            $basePath = getenv('DOCS_DIRECTORY') . $versionBranch . '/' . $language;
+            $urlPath = $version . '/' . $language;
+
+            return $this->render404($request, $response, [
+                'req_url' => urlencode($currentUri),
+                'page_title' => 'Oops, page not found.',
+
+                'version' => $version,
+                'version_branch' => $versionBranch,
+                'language' => $language,
+
+                // We always disregard the path here, because we know the request is always invalid
+                'path' => null,
+
+                'topnav' => $this->navigationService->getTopNavigationForItem(
+                    (new NavigationItemBuilder())
+                        ->forTopMenu()
+                        ->withCurrentFilePath(null)
+                        ->withBasePath($basePath)
+                        ->withFilePath($basePath)
+                        ->withUrlPath($urlPath)
+                        ->withVersion($this->notFoundService->getVersion($request))
+                        ->withLanguage($this->notFoundService->getLanguage($request))
+                        ->build()
+                ),
+            ]);
         }
-
-        $this->response = $this->response->withStatus(404);
-
-        $this->setVariable('page_title', 'Oops, page not found.');
-        return $this->render('notfound.twig');
     }
-
 }

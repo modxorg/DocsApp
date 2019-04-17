@@ -36,7 +36,7 @@
                     <p>
                         <small>
                             <em>
-                                {% if versions | length > 1 %}
+                                {% if versions %}
                                     Other versions:
                                     {% for version in versions %}
                                         <a href="{{ version.uri }}">{{ version.title }}</a>
@@ -44,10 +44,10 @@
                                     &mdash;
                                 {% endif %}
                                 Found a problem? Please
-                                <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
+                                <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ path }}"
                                    target="_blank" rel="noopener">edit this page</a>
                                 or
-                                <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
+                                <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md"
                                    target="_blank" rel="noopener">report an issue</a>.
                             </em>
                         </small>

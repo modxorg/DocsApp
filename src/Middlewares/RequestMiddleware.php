@@ -1,9 +1,9 @@
 <?php
+
 namespace MODXDocs\Middlewares;
 
-use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-
+use Slim\Http\Response;
+use Slim\Http\Request;
 
 class RequestMiddleware
 {
@@ -20,9 +20,8 @@ class RequestMiddleware
             if ($request->getMethod() === 'GET') {
                 return $response->withRedirect((string)$uri, 301);
             }
-            else {
-                return $next($request->withUri($uri), $response);
-            }
+
+            return $next($request->withUri($uri), $response);
         }
 
         return $next($request, $response);
