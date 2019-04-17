@@ -9,3 +9,7 @@
 :not(pre)>code[class*="language-"], pre[class*="language-"] {
     background: map-get($colors, 'sidebar-bg');
 }
+
+.token.operator {
+    background: none;
+}

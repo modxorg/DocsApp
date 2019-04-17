@@ -1,6 +1,7 @@
 .c-toc {
     position: relative;
-
+    margin: 0 0 $global-margin*2;
+/*
     &__wrapper {
         @include breakpoint(xlarge) {
             position: absolute;
@@ -10,7 +11,7 @@
             width: rem(250);
         }
     }
-
+*/
     &__title {
         display: block;
         margin: 0 0 rem(5);

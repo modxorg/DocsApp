@@ -1,7 +1,7 @@
 $breadcrum-item-spacing: rem(5);
 
 .c-breadcrumb {
-    margin: 0;
+    margin: 0 0 $global-margin;
 
     &__list {
         display: flex;
@@ -19,7 +19,7 @@ $breadcrum-item-spacing: rem(5);
 
     &__link {
         display: inline-block;
-        padding: rem(9) $breadcrum-item-spacing;
+        padding: rem(4) $breadcrum-item-spacing;
         line-height: 1.4;
         font-size: rem(14);
         color: map-get($colors, gray);

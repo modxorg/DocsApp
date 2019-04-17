@@ -98,27 +98,63 @@ html, body {
 }
 
 .l-content {
-    display: flex;
-    flex-direction: column;
+
     margin: $global-margin rem(20);
 
     @include breakpoint(medium) {
-        margin: $main-margin-top rem(75) $global-margin;
+        margin: $main-margin-top rem(50) $global-margin rem(75);
     }
 
-    @include breakpoint(xlarge) {
-        flex-direction: row;
-    }
+
 }
 
-main {
+.l-main {
     position: relative;
-    max-width: rem(750);
 
+    &__title {
+        max-width: rem(1000);
+    }
+
+    &__contentwrapper {
+
+        @include breakpoint(xlarge) {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: row;
+        }
+    }
+
+    &__content {
+        @include breakpoint(medium) {
+            padding-right: rem(25);
+        }
+
+        @include breakpoint(xlarge) {
+            flex-basis: rem(750);
+            flex-grow: 0;
+            flex-shrink: 1;
+            order: 1;
+            min-width: 0;
+        }
+    }
+
+    &__toc {
+
+        @include breakpoint(xlarge) {
+            flex-basis: rem(250);
+            flex-grow: 1;
+            flex-shrink: 0;
+            order: 2;
+            padding: rem(15 0 0 25);
+        }
+    }
+
+    /*
     @include breakpoint(xlarge) {
         max-width: rem(1000); // 750+320
         padding-right: rem(250);
     }
+    */
 }
 
 .l-footer {
