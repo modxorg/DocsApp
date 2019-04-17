@@ -6,20 +6,14 @@ class Nav {
     getClassName() {return 'Nav';}
     constructor() {
         let self = this;
-
-        // init properties
-        self.options = {
-
-        };
-
         self.init();
     }
 
     init() {
         let self = this;
 
+        // iterate items with children
         let collapseableItems = document.querySelectorAll('.c-nav__item--has-children > a');
-
         collapseableItems.forEach((link) => {
             let item = link.parentNode;
 
@@ -27,8 +21,8 @@ class Nav {
                 item.classList.add('c-nav__item--collapsed');
             }
 
+            // attach event listener to anchor
             link.addEventListener('click', (e) => {
-                console.log('click', item);
                 item.classList.toggle('c-nav__item--collapsed');
                 e.stopPropagation()
                 e.preventDefault();
@@ -45,16 +39,15 @@ class Nav {
                 activepageItem = activepageItem.parentNode.parentNode.parentNode;
             }
             activepageItem.scrollIntoView();
-
         }
         
+        // expand first item if no active item exists (e.i. root page)
         if (document.querySelector('.c-nav__item--active') === null) {
-            // no active page found - expand first child
             let firstItem = document.querySelector('.c-nav__item:first-of-type');
-            firstItem.classList.remove('c-nav__item--collapsed');
+            if (firstItem) {
+                firstItem.classList.remove('c-nav__item--collapsed');
+            }
         }
-        
-        
     }
 }
 
