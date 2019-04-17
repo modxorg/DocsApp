@@ -41,9 +41,6 @@ class NotFound extends Base
             return $response->withRedirect($redirectUri, 301);
         } catch (RedirectNotFoundException $e) {
             $pageRequest = PageRequest::fromRequest($request);
-            $basePath = getenv('DOCS_DIRECTORY') . $pageRequest->getContextUrl();
-            $urlPath = $pageRequest->getContextUrl();
-
             return $this->render404($request, $response, [
                 'req_url' => urlencode($currentUri),
                 'page_title' => 'Oops, page not found.',
@@ -55,17 +52,7 @@ class NotFound extends Base
                 // We always disregard the path here, because we know the request is always invalid
                 'path' => null,
 
-                'topnav' => $this->navigationService->getTopNavigationForItem(
-                    (new NavigationItemBuilder())
-                        ->forTopMenu()
-                        ->withCurrentFilePath(null)
-                        ->withBasePath($basePath)
-                        ->withFilePath($basePath)
-                        ->withUrlPath($urlPath)
-                        ->withVersion($pageRequest->getVersion())
-                        ->withLanguage($pageRequest->getLanguage())
-                        ->build()
-                ),
+                'topnav' => $this->navigationService->getTopNavigation($pageRequest)
             ]);
         }
     }
