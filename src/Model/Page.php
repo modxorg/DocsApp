@@ -142,8 +142,10 @@ class Page {
         $renderer = new TocRenderer(new Matcher(),
             $this->currentUrl,
             [
-                'currentClass' => 'active',
-                'ancestorClass' => 'active_ancestor'
+                'currentClass' => 'c-toc__item--active',
+                'ancestorClass' => 'c-toc__item--activeancestor',
+                'firstClass' => 'c-toc__item--first',
+                'lastClass' => 'c-toc__item--last',
             ]
         );
 
