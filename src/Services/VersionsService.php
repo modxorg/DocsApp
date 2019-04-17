@@ -14,16 +14,14 @@ class VersionsService
 
     private $router;
 
-    private $versions;
-
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
-    public function getDefinition(): array
+    public static function getAvailableVersions(): array
     {
-        $this->versions = [];
+        $versions = [];
 
         $base = getenv('BASE_DIRECTORY');
         $config = null;
@@ -40,15 +38,10 @@ class VersionsService
         }
 
         foreach ($config as $versionKey => $details) {
-            $this->addVersion($versionKey, $details);
+            $versions[$versionKey] = $details;
         }
 
-        return $this->versions;
-    }
-
-    private function addVersion($key, array $details): void
-    {
-        $this->versions[$key] = $details;
+        return $versions;
     }
 
     public function getVersions(PageRequest $request)

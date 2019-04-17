@@ -28,7 +28,7 @@ class SourcesUpdate extends Command {
 
         /** @var VersionsService $versionService */
         $versionService = $container->get(VersionsService::class);
-        $definition = $versionService->getDefinition();
+        $definition = $versionService::getAvailableVersions();
 
         if (empty($definition)) {
             $output->writeln('<error>Doc sources definition is missing or invalid JSON</error>');
