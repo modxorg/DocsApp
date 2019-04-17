@@ -85,6 +85,7 @@ class LinkRenderer implements InlineRendererInterface
 
     private static function replaceCurrentUrl($href)
     {
+        $href = ltrim($href, '/');
         // If the URL starts with `current/`, then replace it with the actual branch name
         if (strpos($href, VersionsService::getCurrentVersion()) !== 0) {
             return $href;
