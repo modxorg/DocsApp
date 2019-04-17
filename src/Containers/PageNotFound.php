@@ -1,10 +1,10 @@
 <?php
+
 namespace MODXDocs\Containers;
 
 use Slim\Container;
 
 use MODXDocs\Views\NotFound;
-
 
 class PageNotFound
 {

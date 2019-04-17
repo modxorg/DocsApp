@@ -1,128 +1,91 @@
 <?php
+
 namespace MODXDocs\Views;
 
+use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\NavigationService;
 use Monolog\Logger;
-use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Router;
 use Slim\Views\Twig;
-
+use Psr\Container\ContainerInterface;
 
 abstract class Base
 {
-    /** @var Logger */
-    protected $logger;
-    /** @var Router */
-    protected $router;
-    /** @var Container */
+    /** @var ContainerInterface */
     protected $container;
-    /** @var Request */
-    protected $request;
-    /** @var Response */
-    protected $response;
 
-    protected $arguments = array();
-    protected $variables = array();
+    /** @var Logger */
+    private $logger;
 
-    protected $options = array();
     /** @var Twig */
-    protected $view;
+    private $view;
 
-    public function __construct($container, array $options = array())
+    /** @var NavigationService */
+    private $navigationService;
+
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->options = $options;
+
         $this->logger = $this->container->get('logger');
         $this->view = $this->container->get('view');
-        $this->router = $this->container->get('router');
+
+        $this->navigationService = $this->container->get(NavigationService::class);
     }
 
-    abstract public function get(Request $request, Response $response, array $args = array());
-
-    public function initialize(Request $request, Response $response, array $args = array())
+    protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
     {
-        $this->request =& $request;
-        $this->response =& $response;
-        $this->setArguments($args);
-        $this->setVariable('args', $args);
-        $this->setVariable('_env', $_ENV);
-        $this->setVariable('current_uri', $request->getUri()->getPath());
 
+        $pageRequest = PageRequest::fromRequest($request);
+
+        $initialData = [
+            'revision' => static::getRevision(),
+            'current_uri' => $request->getUri()->getPath(),
+            'version' => $pageRequest->getVersion(),
+            'version_branch' => $pageRequest->getVersionBranch(),
+            'language' => $pageRequest->getLanguage(),
+            'path' => $pageRequest->getPath(),
+            'topnav' => $this->navigationService->getTopNavigation($pageRequest),
+        ];
+
+        return $this->view->render(
+            $response,
+            $template,
+            \array_merge(
+                $initialData,
+                $data
+            )
+        );
+    }
+
+    protected function render404(Request $request, Response $response, array $data = []): \Psr\Http\Message\ResponseInterface
+    {
+        $initialData = [
+            'revision' => static::getRevision(),
+            'is_dev' => (bool) getenv('DEV'),
+            'current_uri' => $request->getUri()->getPath(),
+        ];
+
+        return $this->view->render(
+            $response->withStatus(404),
+            'notfound.twig',
+            \array_merge(
+                $initialData,
+                $data
+            )
+        );
+    }
+
+    private static function getRevision() : string
+    {
         $revision = 'dev';
 
-        // TODO: not sure what this points towards?
         $projectDir = getenv('BASE_DIRECTORY');
-        if (file_exists($projectDir . '.revision'))  {
-            $revision = file_get_contents($projectDir . '.revision');
-        }
-        $this->setVariable('revision', $revision);
-
-        $this->setVariable('is_dev', (bool) getenv('DEV'));
-        return true;
-    }
-
-    public function render($template, $response = null)
-    {
-        if (!$response && $this->response) {
-            $response = $this->response;
+        if (file_exists($projectDir . '.revision')) {
+            $revision = (string)file_get_contents($projectDir . '.revision');
         }
 
-        return $this->view->render($response, $template, $this->getVariables());
-    }
-
-    public function setVariable($key, $value)
-    {
-        $this->variables[$key] = $value;
-    }
-
-    public function setVariables(array $values = array(), $prefix = '')
-    {
-        if (!empty($prefix)) {
-            $this->setVariable($prefix, $values);
-        }
-        else {
-            foreach ($values as $key => $value) {
-                $this->setVariable($key, $value);
-            }
-        }
-    }
-
-    public function getVariable($key, $default = null)
-    {
-        if (isset($this->variables[$key])) {
-            return $this->variables[$key];
-        }
-        return $default;
-    }
-
-    public function getVariables()
-    {
-        return $this->variables;
-    }
-
-    protected function setArguments(array $args = array())
-    {
-        $this->arguments = array_merge($this->arguments, $args);
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getArgument($key, $default = null)
-    {
-        if (array_key_exists($key, $this->arguments)) {
-            return $this->arguments[$key];
-        }
-        return $default;
-    }
-
-    /**
-     * @return array
-     */
-    public function getArguments()
-    {
-        return $this->arguments;
+        return $revision;
     }
 }

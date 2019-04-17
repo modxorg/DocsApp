@@ -7,7 +7,6 @@ use Twig\TwigFunction;
 use Slim\Http\Request;
 use Slim\Interfaces\RouterInterface;
 
-
 class DocExtensions extends AbstractExtension
 {
     private $router;
@@ -18,6 +17,7 @@ class DocExtensions extends AbstractExtension
         $this->router = $router;
         $this->request = $request;
     }
+
     public function getFunctions()
     {
         return [

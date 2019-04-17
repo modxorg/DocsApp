@@ -1,4 +1,5 @@
 <?php
+
 namespace MODXDocs\Helpers;
 
 use League\CommonMark\ElementRendererInterface;
@@ -6,8 +7,9 @@ use League\CommonMark\HtmlElement;
 use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
-use MODXDocs\Views\NotFound;
 
+use MODXDocs\Exceptions\RedirectNotFoundException;
+use MODXDocs\Services\VersionsService;
 
 class LinkRenderer implements InlineRendererInterface
 {
@@ -39,17 +41,16 @@ class LinkRenderer implements InlineRendererInterface
             $attributes['class'] = 'is-externallink';
             $attributes['target'] = '_blank';
             $attributes['rel'] = 'noreferrer noopener';
-        }
-        else {
+        } else {
             // Check if the link points to somewhere valid
             $docs = getenv('DOCS_DIRECTORY');
+            $href = static::replaceCurrentUrl($href);
             if (!file_exists($docs . $href . '.md') && !file_exists($docs . $href . '/index.md')) {
-                $newUri = Redirector::findNewURI($href);
-                if ($newUri === false) {
-                    $attributes['class'] = 'is-brokenlink';
-                }
-                else {
+                try {
+                    $newUri = Redirector::findNewURI($href);
                     $attributes['href'] = $newUri;
+                } catch (RedirectNotFoundException $e) {
+                    $attributes['class'] = 'is-brokenlink';
                 }
             }
         }
@@ -57,7 +58,8 @@ class LinkRenderer implements InlineRendererInterface
         return new HtmlElement('a', $attributes, $htmlRenderer->renderInlines($inline->children()));
     }
 
-    private function getHref($url) {
+    private function getHref($url)
+    {
         if (static::isExternalUrl($url)) {
             return $url;
         }
@@ -70,11 +72,26 @@ class LinkRenderer implements InlineRendererInterface
             return $this->baseUri . $this->currentDoc . $url;
         }
 
-        if (strpos($url, '/') === 0) {
-            return $url;
+        $versions = array_keys(VersionsService::getAvailableVersions());
+        $temp = ltrim($url, '/');
+        foreach ($versions as $key) {
+            if (strpos($temp, $key) === 0) {
+                return '/' . $temp;
+            }
         }
 
-        return $this->baseUri . $url;
+        return $this->baseUri . ltrim($url, '/');
+    }
+
+    private static function replaceCurrentUrl($href)
+    {
+        $href = ltrim($href, '/');
+        // If the URL starts with `current/`, then replace it with the actual branch name
+        if (strpos($href, VersionsService::getCurrentVersion()) !== 0) {
+            return $href;
+        }
+
+        return VersionsService::getCurrentVersionBranch() . substr($href, strlen(VersionsService::getCurrentVersion()));
     }
 
     private static function isExternalUrl($url)

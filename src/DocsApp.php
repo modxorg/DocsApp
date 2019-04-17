@@ -1,15 +1,17 @@
 <?php
+
 namespace MODXDocs;
 
 use Slim\App;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 use MODXDocs\Containers\View;
 use MODXDocs\Containers\PageNotFound;
 use MODXDocs\Containers\Logger;
+use MODXDocs\Containers\Services;
 use MODXDocs\Middlewares\RequestMiddleware;
 use MODXDocs\Views\Doc;
-
 
 class DocsApp
 {
@@ -18,9 +20,8 @@ class DocsApp
 
     public function __construct(array $settings)
     {
-        session_start();
-
         $this->app = new App($settings);
+
         $this->routes();
         $this->dependencies();
         $this->middlewares();
@@ -28,8 +29,8 @@ class DocsApp
 
     private function routes()
     {
-        $this->app->get('/', Doc::class . ':home')->setName('home');
-        $this->app->get('/{version}/{language}/{path:.*}',Doc::class . ':get')->setName('documentation');
+        $this->app->get('/', Doc::class . ':get')->setName('home');
+        $this->app->get('/{version}/{language}/{path:.*}', Doc::class . ':get')->setName('documentation');
     }
 
     private function middlewares()
@@ -43,6 +44,7 @@ class DocsApp
             View::class,
             PageNotFound::class,
             Logger::class,
+            Services::class
         ];
 
         foreach ($containers as $container) {
@@ -50,13 +52,17 @@ class DocsApp
         }
     }
 
+    public function getContainer()
+    {
+        return $this->app->getContainer();
+    }
 
     public function run()
     {
         $this->app->run();
     }
 
-    public function process(ServerRequestInterface $request, ResponseInterface $response)
+    public function process(Request $request, Response $response)
     {
         return $this->app->process($request, $response);
     }
