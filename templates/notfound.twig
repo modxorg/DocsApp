@@ -3,14 +3,12 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-    <div class="single-column">
-        <div class="content p-2">
-            <h1>Oops, page not found</h1>
-            <p>We're sorry, but it appears that you've come across a broken link.</p>
+    <main class="l-main">
+        <h1>Oops, page not found</h1>
+        <p>We're sorry, but it appears that you've come across a broken link.</p>
 
-            <p>
-                <a href="https://github.com/modxorg/Docs/issues/new?title=Page+not+found:+{{ current_uri|url_encode }}&template=not_found.md" target="_blank" rel="noopener" class="btn">Report broken link on GitHub</a>
-            </p>
-        </div>
-    </div>
+        <p>
+            <a href="https://github.com/modxorg/Docs/issues/new?title=Page+not+found:+{{ current_uri|url_encode }}&template=not_found.md" target="_blank" rel="noopener" class="btn">Report broken link on GitHub</a>
+        </p>
+    </main>
 {% endblock %}

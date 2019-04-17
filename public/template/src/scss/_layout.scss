@@ -80,7 +80,7 @@ html, body {
 .l-sidebar {
     display: none;
     z-index: 1;
-    padding: ($main-margin-top + rem(10)) rem(20) $global-margin;
+    padding: $main-margin-top rem(20) $global-margin;
     background: map-get($colors, 'sidebar-bg');
     border-right: 1px solid map-get($colors, border);
     overflow-y: scroll;
@@ -97,26 +97,20 @@ html, body {
     }
 }
 
-.l-content {
 
-    margin: $global-margin rem(20);
+.l-main {
+    position: relative;
+    margin: $main-margin-top rem(20) $global-margin;
 
     @include breakpoint(medium) {
         margin: $main-margin-top rem(50) $global-margin rem(75);
     }
-
-
-}
-
-.l-main {
-    position: relative;
 
     &__title {
         max-width: rem(1000);
     }
 
     &__contentwrapper {
-
         @include breakpoint(xlarge) {
             display: flex;
             justify-content: flex-start;
@@ -139,22 +133,15 @@ html, body {
     }
 
     &__toc {
-
         @include breakpoint(xlarge) {
             flex-basis: rem(250);
             flex-grow: 1;
             flex-shrink: 0;
             order: 2;
-            padding: rem(15 0 0 25);
+            padding: rem(0 0 0 25);
         }
     }
 
-    /*
-    @include breakpoint(xlarge) {
-        max-width: rem(1000); // 750+320
-        padding-right: rem(250);
-    }
-    */
 }
 
 .l-footer {

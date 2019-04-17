@@ -20,6 +20,7 @@
     <body>
         <a href="#main" class="show-for-sr">Jump to main content</a>
         <a href="#docnav" class="show-for-sr">Jump to doc navigation</a>
+
         <div class="l-app {% if nav is not empty %} l-app--has-sidebar{% endif %}">
             <header class="l-header">
                 <div class="l-header__top">
@@ -48,14 +49,12 @@
                 </div>
             </header>
 
-            <div class="l-content">
-                {% block content %}
-                    <main id="main" class="o-content">
-                        <h1>{{ page.title }}</h1>
-                        <p>{{ page.introduction }}</p>
-                    </main>
-                {% endblock %}
-            </div>
+            {% block content %}
+                <main id="main" class="l-main">
+                    <h1>{{ page.title }}</h1>
+                    <p>{{ page.introduction }}</p>
+                </main>
+            {% endblock %}
 
             <footer class="l-footer">
                 <div class="c-footer">
