@@ -184,6 +184,7 @@ class Doc extends Base
         // Make the navigation dependent on the current parent (administration, developing, xpdo, etc)
         $docPath = explode('/', $this->docPath);
         $menuPath = $this->basePath . $docPath[0];
+        /*
         if (file_exists($menuPath) && is_dir($menuPath)) {
             if (file_exists($menuPath . '.md')) {
                 $item = $this->getNavItem(new \SplFileInfo($menuPath . '.md'), $docPath[0]);
@@ -198,6 +199,9 @@ class Doc extends Base
         else {
             $nav = $this->getNavigationForParent($this->basePath, 1, 2);
         }
+        */
+
+        $nav = $this->getNavigationForParent($this->basePath, 1, 4);
 
         $out = $this->container->view->fetch('partials/nav.twig', ['children' => $nav]);
 
@@ -283,7 +287,7 @@ class Doc extends Base
         if (strpos($this->file, $relativeFilePath) !== false) {
             $current['classes'] .= ' c-nav__item--active';
         }
-        if ($relativeFilePath === str_replace('.md', '', $this->file)) {
+        if ($relativeFilePath === str_replace('.md', '', str_replace('index.md', '', $this->file))) {
             $current['classes'] .= ' c-nav__item--activepage';
         }
 

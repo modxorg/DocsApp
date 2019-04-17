@@ -46,40 +46,56 @@
 
         &--level1 > a {
             font-size: rem(16);
+            font-weight: 700;
+            padding-left: rem(40);
+        }
+
+        &--level2 > a {
+            padding-left: rem(60);
+        }
+
+        &--level3 > a {
+            padding-left: rem(80);
+        }
+
+        &--level4 > a {
+            padding-left: rem(100);
+        }
+
+        &--level5 > a {
+            padding-left: rem(120);
         }
 
         &--has-children > a {
-            font-weight: 700;
+            position: relative;
+            &:before {
+                content: "";
+                display: inline-block;
+                position: absolute;
+                top: rem(1);
+                height: rem(20);
+                width: rem(20);
+                margin: rem(0 0 0 -23);
+                background: svg-url('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 62"><path fill="#{map-get($colors, 'body-text')}" fill-rule="nonzero" d="M7.5938.39064L.6562 7.60939l24.25 23.40623-24.25 23.375 6.9376 7.2187 28-26.9999 3.75-3.5938-3.75-3.62498z"/></svg>');
+                background-repeat: no-repeat;
+                background-size: rem(7);
+                background-position: center center;
+                opacity: 0.6;
+                transform: rotate(-90deg);
+            }
+        }
+
+        &--collapsed {
+            > ul {
+                display: none;
+            }
+            > a:before {
+                transform: rotate(90deg);
+            }
         }
 
     }
 
-    // navigation indent (required like this due to :after positioning
-    &__item {
-        a {
-            padding-left: rem(20);
-        }
-        .c-nav__item {
-            a {
-                padding-left: rem(40);
-            }
-            .c-nav__item {
-                a {
-                    padding-left: rem(60);
-                }
-                .c-nav__item {
-                    a {
-                        padding-left: rem(60);
-                    }
-                    .c-nav__item {
-                        a {
-                            padding-left: rem(60);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     &__sublist {
         margin: 0 0 $global-margin*2;

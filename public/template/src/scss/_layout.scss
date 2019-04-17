@@ -32,7 +32,7 @@ html, body {
         width: 100%;
         height: $header-height;
         background: map-get($colors, 'header-bg');
-        border-bottom: 1px solid lightendaten(map-get($colors, border), 10%);
+        border-bottom: 1px solid lightendarken(map-get($colors, border), 10%);
     }
 
     &__logo {
