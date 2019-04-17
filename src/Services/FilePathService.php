@@ -30,7 +30,7 @@ class FilePathService
 
     private function constructFilePath(Request $request)
     {
-        $basePath = rtrim($this->requestPathService->getAbsoluteBaseFilePath($request), '/');
+        $basePath = rtrim($this->requestPathService->getAbsoluteFullFilePath($request), '/');
 
         $file = $basePath . '.md';
         if (file_exists($file)) {
