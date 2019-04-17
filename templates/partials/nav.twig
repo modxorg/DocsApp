@@ -1,7 +1,7 @@
 <ul class="c-nav{% if subnav == true %}__sublist{% endif %}">
 {% for item in children %}
     <li class="{{ item.classes }} c-nav__item--level{{ item.level }}">
-        <a href="{{ item.uri }}">
+        <a class="c-nav__link" href="{{ item.uri }}">
             {{ item.title }}
         </a>
         {% if item.children|length > 0 %}

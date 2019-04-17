@@ -3,7 +3,7 @@
     &__image {
         display: block;
         width: rem(200);
-        height: $header-top-height;
+        height: $header-height;
         fill: map-get($colors, 'header-text');
     }
 }

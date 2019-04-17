@@ -10,15 +10,32 @@
 
     &__item {
         display: inline-block;
+
+        &--active a {
+            position: relative;
+            font-weight: 700;
+
+            &:after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: rem(5);
+                right: rem(5);
+                height: rem(2);
+                background: map-get($colors, 'header-text');
+            }
+        }
     }
 
     &__link {
         display: block;
-        padding: rem(15 5);
+        padding: rem(17 5);
         color: map-get($colors, 'header-text');
+        line-height: rem(26);
 
         @include breakpoint(xlarge) {
-            padding: rem(15);
+            padding: rem(17);
         }
     }
 }

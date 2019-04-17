@@ -161,6 +161,15 @@
     @return mix(rgb(red($rgba), green($rgba), blue($rgba)), $background, alpha($rgba) * 100%)
 }
 
+// lightens or darkens a color based on the existing lightness of a color (for easier switchig light/dark theme)
+@function lightendarken($color, $percent) {
+    @if (lightness($color) > 50) {
+        @return darken($color, $percent);
+    } @else {
+        @return lighten($color, $percent);
+    }
+}
+
 
 @mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
   $u1: unit($min-vw);

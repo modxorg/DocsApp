@@ -30,16 +30,9 @@ html, body {
         display: flex;
         align-items: center;
         width: 100%;
-        height: $header-top-height;
+        height: $header-height;
         background: map-get($colors, 'header-bg');
-        border-bottom: 1px solid darken(map-get($colors, border), 10%);
-    }
-
-    &__breadcrumb {
-        display: block;
-        width: 100%;
-        height: $header-breadcrumb-height;
-        border-bottom: 1px solid darken(map-get($colors, border), 10%);
+        border-bottom: 1px solid lightendaten(map-get($colors, border), 10%);
     }
 
     &__logo {

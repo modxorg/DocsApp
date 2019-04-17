@@ -77,8 +77,8 @@ class Doc extends Base
         parent::initialize($request, $response, $args);
         $this->setVersion($request->getAttribute('version'));
         $this->setLanguage($request->getAttribute('language'));
-        $this->getTopNavigation();
         $this->setDocPath($request->getAttribute('path'));
+        $this->getTopNavigation();
         $this->getVersions();
         $this->getNavigation();
         return true;

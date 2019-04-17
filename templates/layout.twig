@@ -31,8 +31,10 @@
                     <nav class="l-header__topnav">
                         <ul id="topnav" class="c-topnav">
                             {% for item in topnav %}
-                                <li class="c-topnav__item">
-                                    <a class="c-topnav__link" href="{{ item.uri }}">{{ item.title }}</a>
+                                <li class="{{ item.classes|replace({'c-nav': "c-topnav"}) }}">
+                                    <a class="c-topnav__link" href="{{ item.uri }}">
+                                        {{ item.title }}
+                                    </a>
                                 </li>
                             {% endfor %}
                         </ul>

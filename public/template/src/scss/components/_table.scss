@@ -1,0 +1,49 @@
+table {
+    display: block;
+    width: fit-content;
+    //min-width: 100%;
+    max-width: 100%;
+    max-width: calc(100% + #{rem(20)});
+    margin: $global-margin*2 0;
+    border-collapse: collapse;
+    overflow-x: auto;
+
+    @include breakpoint(medium) {
+        display: table;
+        max-width: 100%;
+    }
+
+    tr:nth-child(2n) {
+        background: map-get($colors, 'sidebar-bg');
+    }
+
+    td, th {
+        border: 1px solid lightendarken(map-get($colors, 'border'), 10%);
+        padding: rem(9 16);
+    }
+
+    th {
+        font-weight: 700;
+        text-align: center;
+    }
+
+    td {
+        min-width: rem(170);
+
+        @include breakpoint(medium) {
+            min-width: 0;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: rem(14);
+        height: rem(14);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: rem(8);
+        border: 3px solid #fff;
+        background-color: rgba(map-get($colors, 'body-text'), 0.3);
+    }
+}
