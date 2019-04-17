@@ -42,9 +42,12 @@
                             {% endfor %}
                             &mdash;
                         {% endif %}
-                        Found a problem? Please
-                        <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
-                            target="_blank" rel="noopener">edit this page</a>
+                        Found a problem?
+                        <nobr>
+                            Please
+                            <a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/{{ language }}/{{ file_path }}"
+                                target="_blank" rel="noopener">edit this page</a>
+                        </nobr>
                         or
                         <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ file_path|url_encode }}&template=incorrect.md"
                             target="_blank" rel="noopener">report an issue</a>.
