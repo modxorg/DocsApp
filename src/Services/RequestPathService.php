@@ -46,10 +46,10 @@ class RequestPathService
         $requestPath = $this->requestAttributesService->getPath($request);
 
         if ($requestPath === null) {
-            return $this->getBasePath($request, $mode);
+            return '/' . $this->getBasePath($request, $mode);
         }
 
-        return rtrim($this->getBasePath($request, $mode), '/') . '/' . $requestPath;
+        return '/' . trim($this->getBasePath($request, $mode), '/') . '/' . $requestPath;
     }
 
     private function getBasePath(Request $request, $mode)
