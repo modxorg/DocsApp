@@ -5,6 +5,7 @@
 {% block content %}
     <main id="main" class="l-main">
         <div class="l-main__title">
+            {% if crumbs|length > 1 %}
             <nav class="c-breadcrumb" aria-label="Breadcrumb">
                 <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
                     {% for crumb in crumbs %}
@@ -16,7 +17,7 @@
                         </li>
                     {% endfor %}
                     {# current item gets special markup: #}
-                    <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <li  class="c-breadcrumb__item show-for-sr" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                         {# aria-current for current visible page and --current modifier class  #}
                         <a class="c-breadcrumb__link c-breadcrumb__link--current" href="{{ current_uri }}" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item">
                             <span itemprop="name">{{ title }}</span>
@@ -25,6 +26,7 @@
                     </li>
                 </ol>
             </nav>
+            {% endif %}
 
             <h1 class="u-no-margin--top">{{ meta.title }}</h1>
 

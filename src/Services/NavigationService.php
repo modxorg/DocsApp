@@ -63,7 +63,7 @@ class NavigationService
         $docPath = array_filter(explode('/', $request->getPath()));
 
         // If the docpath is empty, we are on the frontpage
-        if (count($docPath) === 1 && $docPath[0] === 'index') {
+        //if (count($docPath) === 1 && $docPath[0] === 'index') {
             return $this->renderNav(
                 $this->getNavigationForParent(
                     NavigationItemBuilder::copyFromItem($baseNavigationItem)
@@ -72,12 +72,13 @@ class NavigationService
                         ->withUrlPath($request->getContextUrl() . $request->getPath())
 
                         ->withLevel(NavigationItem::HOME_MENU_LEVEL)
-                        ->withDepth(NavigationItem::HOME_MENU_DEPTH)
+                        //->withDepth(NavigationItem::HOME_MENU_DEPTH)
                         ->build()
                 )
             );
-        }
+        //}
 
+        /*
         $menuFilePath = $this->filePathService->getAbsoluteContextPath($request) . $docPath[0] . '/';
 
         if (file_exists($menuFilePath) && is_dir($menuFilePath)) {
@@ -91,6 +92,7 @@ class NavigationService
                 )
             );
         }
+        */
 
         // This should not happen
         return null;
