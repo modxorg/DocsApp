@@ -5,6 +5,7 @@
 {% block content %}
     <main id="main" class="l-main">
         <div class="l-main__title">
+            {% if crumbs|length > 1 %}
             <nav class="c-breadcrumb" aria-label="Breadcrumb">
                 <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
                     {% for crumb in crumbs %}
@@ -25,6 +26,7 @@
                     </li>
                 </ol>
             </nav>
+            {% endif %}
 
             <h1 class="u-no-margin--top">{{ meta.title }}</h1>
 
