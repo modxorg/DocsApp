@@ -54,7 +54,7 @@
             </p>
 
             {% if meta.suggest_delete %}
-                <div class="c-callout c-callout--delete">
+                <div class="c-callout c-callout--warning">
                     This page is marked as a candidate to be deleted: {{ meta.suggest_delete }}
                 </div>
             {% endif %}
@@ -75,7 +75,7 @@
 
             <div class="l-main__content">
                 {% if meta.note %}
-                    <div class="c-callout c-callout--warning">
+                    <div class="c-callout">
                         <strong class="c-callout__title">Note:</strong> {{ meta.note }}
                     </div>
                 {% endif %}
