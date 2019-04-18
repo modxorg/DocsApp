@@ -35,17 +35,6 @@ html, body {
 
         @include breakpoint(xlarge) {
             flex: $sidebar-width 0 0;
-            &:after {
-                content: "";
-                display: block;
-                position: absolute;
-                right: 0;
-                top: rem(10);
-                bottom: rem(10);
-                width: 1px;
-                background: map-get($colors, 'header-text');
-                opacity: 0.5;
-            }
         }
     }
 
