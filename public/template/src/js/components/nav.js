@@ -48,6 +48,70 @@ class Nav {
                 firstItem.classList.remove('c-nav__item--collapsed');
             }
         }
+
+        let allNav = document.querySelectorAll('.c-nav__item a');
+        allNav.forEach(function(item) {
+            item.addEventListener('click', (e) =>  {
+                let target = item.getAttribute('href'),
+                    main = document.getElementById('main');
+
+                main.classList.add('l-main__loading');
+
+                window.history.pushState(null, item.innerText, target);
+                e.preventDefault();
+
+                // Remove old active classes
+                document.querySelectorAll('.c-nav__item--activepage').forEach(function(active) {
+                    active.classList.remove('c-nav__item--activepage');
+                    let p = active;
+                    while (p = p.parentNode) {
+                        if (p && p.classList && p.classList.contains('c-nav__item--active')) {
+                            p.classList.remove('c-nav__item--active');
+                        }
+                    }
+                });
+
+                // Add new active classes
+                item.parentNode.classList.add('c-nav__item--activepage');
+                let np = item;
+                while (np = np.parentNode) {
+                    if (np && np.classList && np.classList.contains('c-nav__item')) {
+                        np.classList.add('c-nav__item--active');
+                    }
+                }
+
+                fetch(target)
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error("HTTP error, status = " + response.status);
+                        }
+                        return response.text();
+                    })
+                    .then(function(response) {
+                        let footer = document.querySelector('.l-footer'),
+                            responseDom = document.createRange().createContextualFragment(response),
+                            responseMain = responseDom.getElementById('main'),
+                            responseFooter = responseDom.querySelector('.l-footer');
+
+                        main.innerHTML = '';
+                        while (responseMain.firstChild) {
+                            main.appendChild(responseMain.firstChild);
+                        }
+                        footer.innerHTML = '';
+                        while (responseFooter.firstChild) {
+                            footer.appendChild(responseFooter.firstChild);
+                        }
+                        window.scroll(0,0);
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                        alert(error.message);
+                    })
+                    .finally(function() {
+                        main.classList.remove('l-main__loading');
+                    });
+            })
+        });
     }
 }
 
