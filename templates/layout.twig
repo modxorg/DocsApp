@@ -24,8 +24,7 @@
         <div class="l-app {% if nav is not empty %} l-app--has-sidebar{% endif %}">
             <header class="l-header">
                 <div class="l-header__top">
-                    <a href="/" title="MODX Docs" class="l-header__logo o-logo">
-                        {# <img src="/images/logo.svg" alt="MODX Docs" class="o-logo__image"> #}
+                    <a href="{{ logo_link }}" title="MODX Docs" class="l-header__logo o-logo">
                         {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                     </a>
                     <div class="l-header__search">

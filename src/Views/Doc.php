@@ -61,7 +61,7 @@ class Doc extends Base
 
         $crumbs[] = [
             'title' => 'Home', // @todo i18n
-            'href' => $pageRequest->getContextUrl(),
+            'href' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
         ];
 
         $crumbs = array_reverse($crumbs);

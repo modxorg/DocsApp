@@ -4,6 +4,7 @@ namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\NavigationService;
+use MODXDocs\Services\VersionsService;
 use Monolog\Logger;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -46,6 +47,7 @@ abstract class Base
             'version_branch' => $pageRequest->getVersionBranch(),
             'language' => $pageRequest->getLanguage(),
             'path' => $pageRequest->getPath(),
+            'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
             'topnav' => $this->navigationService->getTopNavigation($pageRequest),
         ];
 
