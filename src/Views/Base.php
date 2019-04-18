@@ -86,7 +86,7 @@ abstract class Base
 
         $projectDir = getenv('BASE_DIRECTORY');
         if (file_exists($projectDir . '.revision')) {
-            $revision = (string)file_get_contents($projectDir . '.revision');
+            $revision = trim((string)file_get_contents($projectDir . '.revision'));
         }
 
         return $revision;
