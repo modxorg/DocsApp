@@ -16,7 +16,7 @@
                         </li>
                     {% endfor %}
                     {# current item gets special markup: #}
-                    <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <li  class="c-breadcrumb__item show-for-sr" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                         {# aria-current for current visible page and --current modifier class  #}
                         <a class="c-breadcrumb__link c-breadcrumb__link--current" href="{{ current_uri }}" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item">
                             <span itemprop="name">{{ title }}</span>
