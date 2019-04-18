@@ -6,6 +6,7 @@ module.exports = {
     entry: {
         main: [
             isModern ? './src/js/polyfills.modern.js' : './src/js/polyfills.legacy.js',
+            isModern ? '' : './src/js/polyfills.modern.js',
             './src/js/main.js',
         ],
         //head: './src/js/head.js'

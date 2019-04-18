@@ -11,6 +11,7 @@
         line-height: 1.4;
 
         a {
+            position: relative;
             display: block;
             margin-bottom: rem(10);
             padding: rem(0 0 0 20);
@@ -74,6 +75,7 @@
             padding-left: rem(160);
         }
 
+        /*
         &--has-children > a {
             position: relative;
             &:before {
@@ -84,24 +86,37 @@
                 height: rem(20);
                 width: rem(20);
                 margin: rem(0 0 0 -23);
-                background: svg-url('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 62"><path fill="#{map-get($colors, 'body-text')}" fill-rule="nonzero" d="M7.5938.39064L.6562 7.60939l24.25 23.40623-24.25 23.375 6.9376 7.2187 28-26.9999 3.75-3.5938-3.75-3.62498z"/></svg>');
+                background: svg-url('');
                 background-repeat: no-repeat;
                 background-size: rem(7);
                 background-position: center center;
                 opacity: 0.6;
                 transform: rotate(-90deg);
             }
-        }
+        }*/
 
         &--collapsed {
             > ul {
                 display: none;
             }
-            > a:before {
+            > a > .c-nav__chevron {
                 transform: rotate(90deg);
             }
         }
 
+    }
+
+    &__chevron {
+        display: inline-block;
+        position: absolute;
+        top: rem(1);
+        height: rem(21);
+        width: rem(21);
+        padding: rem(5);
+        margin: rem(0 0 0 -23);
+        fill: rgba(map-get($colors, 'body-text'), 0.6);
+        transform: rotate(-90deg);
+        vertical-align: middle;
     }
 
 

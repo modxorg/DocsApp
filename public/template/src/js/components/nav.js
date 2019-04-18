@@ -13,16 +13,28 @@ class Nav {
         let self = this;
 
         // iterate items with children
-        let collapseableItems = document.querySelectorAll('.c-nav__item--has-children > a');
-        collapseableItems.forEach((link) => {
-            let item = link.parentNode;
+        let collapseableItems = document.querySelectorAll('.c-nav__item--has-children');
 
+        collapseableItems.forEach((item) => {
+            // find link
+            let link = item.querySelector(':scope > .c-nav__link');
+            if (!link) {
+                return;
+            }
+
+            // find chevron icon (toggle)
+            let chevron = link.querySelector('.c-nav__chevron');
+            if (!chevron) {
+                return;
+            }
+
+            // collapse non-active items
             if (item.classList.contains('c-nav__item--active') === false) {
                 item.classList.add('c-nav__item--collapsed');
             }
 
-            // attach event listener to anchor
-            link.addEventListener('click', (e) => {
+            // attach event listener to icon
+            chevron.addEventListener('click', (e) => {
                 item.classList.toggle('c-nav__item--collapsed');
                 e.stopPropagation()
                 e.preventDefault();
