@@ -16,7 +16,7 @@
             margin-bottom: rem(10);
             padding: rem(0 0 0 20);
             text-decoration: none;
-            color: map-get($colors, 'body-text');
+            color: map-get($colors, 'sidebar-text');
             transition: color .2s ease-in-out;
 
             &:hover {
