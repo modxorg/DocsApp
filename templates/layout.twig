@@ -8,10 +8,10 @@
         <link rel="canonical" href="{{ canonical_url }}">
 
         <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="/template/dist/app.css">
+        <link rel="stylesheet" href="/template/dist/app.css?v={{ revision }}">
         {% block stylesheets %}{% endblock %}
-        <script defer src="/template/dist/main-modern.js" type="module"></script>
-        <script defer src="/template/dist/main-legacy.js" nomodule></script>
+        <script defer src="/template/dist/main-modern.js?v={{ revision }}" type="module"></script>
+        <script defer src="/template/dist/main-legacy.js?v={{ revision }}" nomodule></script>
         {% block scripts %}{% endblock %}
         {% if is_dev == true %}
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
