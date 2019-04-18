@@ -20,7 +20,7 @@ class View
             $router = $container->get('router');
 
             $view = new Twig(getenv('TEMPLATE_DIRECTORY'), [
-                'cache' => getenv('DEV') === '1' ? false : getenv('CACHE_DIRECTORY'),
+                'cache' => getenv('DEV') === '1' ? false : getenv('CACHE_DIRECTORY') . '/twig',
                 'debug' => true,
             ]);
             $view->addExtension(new DebugExtension());

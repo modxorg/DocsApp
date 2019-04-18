@@ -3,9 +3,7 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
-use MODXDocs\Services\NavigationService;
 use MODXDocs\Services\VersionsService;
-use Monolog\Logger;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
@@ -16,28 +14,17 @@ abstract class Base
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var Logger */
-    private $logger;
-
     /** @var Twig */
-    private $view;
-
-    /** @var NavigationService */
-    private $navigationService;
+    protected $view;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-
-        $this->logger = $this->container->get('logger');
         $this->view = $this->container->get('view');
-
-        $this->navigationService = $this->container->get(NavigationService::class);
     }
 
     protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
     {
-
         $pageRequest = PageRequest::fromRequest($request);
 
         $initialData = [
@@ -48,7 +35,6 @@ abstract class Base
             'language' => $pageRequest->getLanguage(),
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
-            'topnav' => $this->navigationService->getTopNavigation($pageRequest),
             'is_dev' => (bool) getenv('DEV'),
         ];
 

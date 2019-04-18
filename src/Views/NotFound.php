@@ -3,27 +3,15 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
-use MODXDocs\Navigation\NavigationItemBuilder;
-use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Helpers\Redirector;
-use MODXDocs\Services\NavigationService;
 
 class NotFound extends Base
 {
     private const MARKDOWN_SUFFIX = '.md';
-
-    /** @var NavigationService */
-    private $navigationService;
-
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-        $this->navigationService = $container->get(NavigationService::class);
-    }
 
     public function get(Request $request, Response $response)
     {
@@ -51,8 +39,6 @@ class NotFound extends Base
 
                 // We always disregard the path here, because we know the request is always invalid
                 'path' => null,
-
-                'topnav' => $this->navigationService->getTopNavigation($pageRequest)
             ]);
         }
     }

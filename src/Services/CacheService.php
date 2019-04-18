@@ -30,17 +30,17 @@ class CacheService
         }
 
         $data = file_get_contents($file);
-        $data = json_decode($data);
-        if ($data instanceof \stdClass) {
-            if ($hash !== null && $data->hash !== $hash) {
+        $data = json_decode($data, true);
+        if (is_array($data)) {
+            if ($hash !== null && $data['hash'] !== $hash) {
                 return false;
             }
 
-            if (is_numeric($data->expiration) && time() > $data->expiration) {
+            if (is_numeric($data['expiration']) && time() > $data['expiration']) {
                 return false;
             }
 
-            return $data->contents;
+            return $data['contents'];
         }
 
         return false;
@@ -62,7 +62,7 @@ class CacheService
 
         $this->ensurePathsExist(dirname($file));
 
-        file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
+        file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         return true;
     }
 

@@ -2,26 +2,18 @@
 
 namespace MODXDocs\Views;
 
-use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\VersionsService;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
-
-use MODXDocs\Services\NavigationService;
-use MODXDocs\Services\DocumentService;
-use MODXDocs\Services\VersionsService;
 use Slim\Router;
 
 class Search extends Base
 {
     /** @var Router */
     private $router;
-    /** @var DocumentService */
-    private $documentService;
-
-    /** @var NavigationService */
-    private $navigationService;
 
     /** @var VersionsService */
     private $versionsService;
@@ -30,8 +22,6 @@ class Search extends Base
     {
         parent::__construct($container);
         $this->router = $this->container->get('router');
-        $this->documentService = $this->container->get(DocumentService::class);
-        $this->navigationService = $this->container->get(NavigationService::class);
         $this->versionsService = $this->container->get(VersionsService::class);
     }
 
@@ -39,6 +29,7 @@ class Search extends Base
      * @param Request $request
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Exception
      */
     public function get(Request $request, Response $response)
     {
@@ -86,6 +77,8 @@ class Search extends Base
             }
         }
 
+        $tree = Tree::get($pageRequest->getVersion(), $pageRequest->getLanguage());
+        $tree->setActivePath($pageRequest->getContextUrl() . $pageRequest->getPath());
         return $this->render($request, $response, 'search.twig', [
             'page_title' => $title,
             'search_query' => $query,
@@ -94,8 +87,7 @@ class Search extends Base
             'crumbs' => $crumbs,
             'canonical_url' => '',
             'versions' => $this->versionsService->getVersions($pageRequest),
-            'nav' => $this->navigationService->getNavigation($pageRequest),
-            'current_nav_parent' => $this->navigationService->getNavParent($pageRequest),
+            'nav' => $tree->renderTree($this->view),
         ]);
     }
 }
