@@ -23,19 +23,17 @@
 
         <div class="l-app {% if nav is not empty %} l-app--has-sidebar{% endif %}">
             <header class="l-header">
-                <div class="l-header__top">
-                    <a href="{{ logo_link }}" title="MODX Docs" class="l-header__logo o-logo">
-                        {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
-                    </a>
-                    <div class="l-header__search">
-                        <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform">
-                            <label class="c-searchform__label" for="search"><span class="show-for-sr">Enter a search term</span></label>
-                            <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required>
-                            <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
-                                {{ icon('search', 'Search', 'c-searchform__icon') }}
-                            </button>
-                        </form>
-                    </div>
+                <a href="{{ logo_link }}" title="MODX Docs" class="l-header__logo o-logo">
+                    {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
+                </a>
+                <div class="l-header__search">
+                    <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform">
+                        <label class="c-searchform__label" for="search"><span class="show-for-sr">Enter a search term</span></label>
+                        <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required>
+                        <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
+                            {{ icon('search', 'Search', 'c-searchform__icon') }}
+                        </button>
+                    </form>
                 </div>
             </header>
 
