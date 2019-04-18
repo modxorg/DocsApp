@@ -1,0 +1,28 @@
+@mixin callout($color) {
+    background-color: rgba($color, 0.3);
+    border-color: $color;
+    color: darken($color, 28%);
+}
+
+.c-callout {
+    display: block;
+    margin: 0 0 $global-margin;
+    padding: rem(15 20);
+    border-left: rem(8) solid transparent;
+    @include callout(lightendarken(map-get($colors, 'sidebar-bg'), 20%));
+
+    &__title {
+        display: block;
+        margin: rem(0 0 5);
+        text-transform: uppercase;
+        letter-spacing: 1.1;
+    }
+
+    &--warning {
+        @include callout(map-get($colors, 'warning'));
+    }
+
+    &--alert {
+        @include callout(map-get($colors, 'alert'));
+    }
+}
