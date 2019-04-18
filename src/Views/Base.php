@@ -49,6 +49,7 @@ abstract class Base
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
             'topnav' => $this->navigationService->getTopNavigation($pageRequest),
+            'is_dev' => (bool) getenv('DEV'),
         ];
 
         return $this->view->render(
