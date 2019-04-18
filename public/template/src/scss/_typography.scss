@@ -54,7 +54,7 @@ a {
     transition: color .2s ease-in-out;
 
     &:hover {
-        color: lightendaten(map-get($colors, primary), 15%);
+        color: lightendarken(map-get($colors, primary), 15%);
     }
 }
 

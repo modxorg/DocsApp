@@ -1,10 +1,15 @@
 .o-logo {
-    padding: rem(0 30 0 15);
+    margin: rem(0 15);
+    padding: rem(0);
     &__image {
         display: block;
-        width: rem(200);
+        width: rem(170);
         height: $header-height;
         fill: map-get($colors, 'header-text');
+
+        @include breakpoint(medium) {
+            width: rem(200);
+        }
     }
 }
 
@@ -17,4 +22,50 @@
     margin: 0 0 $global-margin;
     font-size: rem(20);
     font-weight: 700;
+}
+
+
+.o-openmenu {
+    display: block;
+    margin: rem(0);
+    padding: rem(0 15 0 30);
+
+    @include breakpoint($sidebar-breakpoint) {
+        display: none;
+    }
+
+    &__icon {
+        display: block;
+        width: rem(29);
+        height: $header-height;
+        fill: map-get($colors, 'header-text');
+    }
+
+    /*
+    &--opened {
+        .o-openmenu__icon {
+            fill: transparent;
+        }
+    }
+    */
+}
+
+.o-closemenu {
+    z-index: 1;
+    position: absolute;
+    top: rem(10);
+    right: rem(10);
+    display: block;
+    padding: rem(15 15);
+
+    @include breakpoint($sidebar-breakpoint) {
+        display: none;
+    }
+
+    &__icon {
+        display: block;
+        width: rem(30);
+        height: rem(30);
+        fill: map-get($colors, 'primary');
+    }
 }

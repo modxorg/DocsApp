@@ -1,4 +1,4 @@
-.show-for-sr, .show-on-focus {
+.u-show-for-sr, .u-show-on-focus {
     position: absolute !important;
     width: 1px;
     height: 1px;
@@ -79,5 +79,8 @@ html.no-js {
 html.js {
     .u-hide-with-js {
         display: none !important;
+    }
+    .u-hide-with-js-sr {
+        @extend .u-show-for-sr;
     }
 }

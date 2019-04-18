@@ -35,7 +35,7 @@ class DocExtensions extends AbstractExtension
         return $scheme . '://' . $uri->getHost() . $port . '/';
     }
 
-    public static function getInlineSvg($name, $title = '', $classes = '') {
-        return '<svg role="presentation" class="c-icon c-icon--'.$name.' '.$classes.'" title="'.$title.'"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/template/dist/sprite.svg#'.$name.'" href="/template/dist/sprite.svg#'.$name.'"></use></svg>';
+    public static function getInlineSvg($name, $title = '', $classes = '', $role = 'presentation', $attributes = '') {
+        return '<svg role="'.$role.'" class="c-icon c-icon--'.$name.' '.$classes.'" title="'.$title.'" '.$attributes.'><title>'.$title.'</title><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/template/dist/sprite.svg#'.$name.'" href="/template/dist/sprite.svg#'.$name.'"></use></svg>';
     }
 }

@@ -6,10 +6,11 @@ class Nav {
     getClassName() {return 'Nav';}
     constructor() {
         let self = this;
-        self.init();
+        self.collapseNavigation();
+        self.menuButtonToggle();
     }
 
-    init() {
+    collapseNavigation() {
         let self = this;
 
         // iterate items with children
@@ -59,6 +60,26 @@ class Nav {
             if (firstItem) {
                 firstItem.classList.remove('c-nav__item--collapsed');
             }
+        }
+    }
+
+    menuButtonToggle() {
+        // menu button toggle
+        let toggleButton = document.querySelector('a.o-openmenu');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', (e) => {
+                // toggle state class
+                toggleButton.classList.toggle('o-openmenu--opened');
+                // after delay, toggle '#nav' in href attribute
+                setTimeout(function(){
+                    if (window.location.hash === '#nav') {
+                        toggleButton.href = toggleButton.href.replace('#nav', '#');
+                    } else {
+                        toggleButton.href = toggleButton.href.replace('#', '#nav');
+                    }
+                }, 100);
+                return true;
+            });
         }
     }
 }
