@@ -19,7 +19,7 @@ class VersionsService
         $this->router = $router;
     }
 
-    public static function getAvailableVersions(): array
+    public static function getAvailableVersions($includeCurrent = true): array
     {
         $versions = [];
 
@@ -41,7 +41,8 @@ class VersionsService
             $versions[$versionKey] = $details;
         }
 
-        if (!array_key_exists(self::getCurrentVersion(), $versions)
+        if ($includeCurrent
+            && !array_key_exists(self::getCurrentVersion(), $versions)
             && array_key_exists(self::getCurrentVersionBranch(), $versions)) {
             $versions[self::getCurrentVersion()] = $versions[self::getCurrentVersionBranch()];
         }
