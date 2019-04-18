@@ -1,0 +1,9 @@
+@media print {
+    .l-app > * {
+        display: none;
+    }
+
+    .l-app .l-main {
+        display: block;
+    }
+}
