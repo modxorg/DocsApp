@@ -28,7 +28,7 @@
                         {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                     </a>
                     <div class="l-header__search">
-                        <form method="get" action="/search" class="c-searchform">
+                        <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform">
                             <label class="c-searchform__label" for="search"><span class="show-for-sr">Enter a search term</span></label>
                             <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required>
                             <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">

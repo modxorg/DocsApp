@@ -2,6 +2,7 @@
 
 namespace MODXDocs;
 
+use MODXDocs\Views\Search;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -30,6 +31,7 @@ class DocsApp
     private function routes()
     {
         $this->app->get('/', Doc::class . ':get')->setName('home');
+        $this->app->get('/{version}/{language}/search', Search::class . ':get')->setName('search');
         $this->app->get('/{version}/{language}/{path:.*}', Doc::class . ':get')->setName('documentation');
     }
 

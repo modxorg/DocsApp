@@ -1,0 +1,81 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <main id="main" class="l-main">
+        <div class="l-main__title">
+            <nav class="c-breadcrumb" aria-label="Breadcrumb">
+                <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    {% for crumb in crumbs %}
+                        <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                <span itemprop="name">{{ crumb.title }}</span>
+                                <meta itemprop="position" content="{{ loop.index }}">
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </nav>
+
+            <h1 class="u-no-margin--top">
+                {{ page_title }}
+            </h1>
+
+            <p class="o-docmeta">
+                <small>
+                    <em>
+                        {% if versions %}
+                            Search in other versions:
+                            {% for version in versions %}
+                                <a href="{{ path_for('search', {language: language, version: version.key}, {q: search_query}) }}">{{ version.title }}</a>
+                            {% endfor %}
+                            &mdash;
+                        {% endif %}
+                        Didn't find what you were looking for? Please
+                        <a href="https://github.com/modxorg/Docs/issues/new?title=Search+for+{{ search_query }}+insufficient+results&template=incorrect.md"
+                            target="_blank" rel="noopener">report an issue</a>.
+                    </em>
+                </small>
+            </p>
+        </div>
+
+        <div class="l-main__contentwrapper">
+
+            {% if toc is not empty %}
+                <div class="l-main__toc">
+                    <nav class="c-toc" aria-labelledby="toc-title">
+                        <div class="c-toc__wrapper">
+                            <span class="c-toc__title" id="toc-title">In this document:</span>
+                            {{ toc|raw }}
+                        </div>
+                    </nav>
+                </div>
+            {% endif %}
+
+            <div class="l-main__content">
+                <div class="doc-note">
+                    <strong>Note:</strong> the search has not yet been implemented; this page just mocks it so work on the UI can begin before the technical implementation.
+                </div>
+
+                <form method="GET" action="{{ current_uri }}">
+                    <input type="text" name="q" value="{{ search_query }}">
+                    <button type="submit">Search</button>
+                </form>
+
+
+                {% if result_count > 0 %}
+                <ul class="l-main-search__container">
+                    {% for result in results %}
+                        <li class="l-main-search__result">
+                            <h4><a href="{{ result.link }}">{{ result.title }}</a></h4>
+                            <p>{{ result.snippet|raw }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
