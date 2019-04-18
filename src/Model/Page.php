@@ -10,6 +10,7 @@ use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\TocRenderer;
 use MODXDocs\Services\DocumentService;
+use MODXDocs\Services\VersionsService;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
 use Webuni\CommonMark\TableExtension\TableExtension;
@@ -96,6 +97,12 @@ class Page {
     public function getUrl(): string
     {
         return $this->currentUrl;
+    }
+
+    public function getCanonicalUrl(): string
+    {
+        $version = $this->version === VersionsService::getCurrentVersionBranch() ? VersionsService::getCurrentVersion() : $this->version;
+        return getenv('CANONICAL_BASE_URL') . $version . '/' . $this->language . '/' . $this->path;
     }
 
     /**
