@@ -5,7 +5,7 @@
             {% if item.children|length > 0 %}
                 {{ icon('chevron', '', 'c-nav__chevron') }}
             {% endif %}
-            <span class=="c-nav__linktext">{{ item.title }}</span>
+            <span class="c-nav__linktext">{{ item.title }}</span>
         </a>
         {% if item.children|length > 0 %}
             {% include "partials/nav.twig" with { children: item.children, subnav: true } %}
