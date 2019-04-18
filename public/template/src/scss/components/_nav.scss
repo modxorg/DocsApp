@@ -66,6 +66,14 @@
             padding-left: rem(120);
         }
 
+        &--level6 > a {
+            padding-left: rem(140);
+        }
+
+        &--level7> a {
+            padding-left: rem(160);
+        }
+
         &--has-children > a {
             position: relative;
             &:before {
