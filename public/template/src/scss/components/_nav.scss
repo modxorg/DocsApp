@@ -100,6 +100,7 @@
                 display: none;
             }
             > a > .c-nav__chevron {
+                top: rem(1);
                 transform: rotate(90deg);
             }
         }
@@ -109,7 +110,7 @@
     &__chevron {
         display: inline-block;
         position: absolute;
-        top: rem(1);
+        top: 0;
         height: rem(21);
         width: rem(21);
         padding: rem(5);
