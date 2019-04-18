@@ -49,16 +49,26 @@ class Page {
      * @var DocumentService
      */
     private $documentService;
+    /**
+     * @var string
+     */
+    private $relativeFilePath;
 
-    public function __construct(DocumentService $documentService, string $version, string $language, string $path, array $meta, string $body)
+    public function __construct(DocumentService $documentService, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {
         $this->version = $version;
         $this->meta = $meta;
         $this->body = $body;
         $this->language = $language;
-        $this->path = $path;
-        $this->currentUrl = '/' . $version . '/' . $language . '/' . $path;
+        $this->path = $requestPath;
+        $this->currentUrl = '/' . $version . '/' . $language . '/' . $requestPath;
         $this->documentService = $documentService;
+
+        $docRoot = getenv('DOCS_DIRECTORY');
+        if (strpos($filePath, $docRoot) === 0) {
+            $filePath = ltrim(substr($filePath, strlen($docRoot)), '/');
+        }
+        $this->relativeFilePath = $filePath;
     }
 
     private function renderBody(): void
@@ -188,5 +198,13 @@ class Page {
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelativeFilePath(): string
+    {
+        return $this->relativeFilePath;
     }
 }

@@ -75,6 +75,7 @@ class Doc extends Base
             'meta' => $page->getMeta(),
             'parsed' => $page->getRenderedBody(),
             'toc' => $page->getTableOfContents(),
+            'relative_file_path' => $page->getRelativeFilePath(),
 
             'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $this->navigationService->getNavigation($pageRequest),

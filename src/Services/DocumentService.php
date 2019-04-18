@@ -29,7 +29,7 @@ class DocumentService
             throw new NotFoundException();
         }
 
-        $fileContents = file_get_contents($this->filePathService->getFilePath($request));
+        $fileContents = file_get_contents($path);
         $parsed = YamlFrontMatter::parse($fileContents);
 
         return new Page(
@@ -37,6 +37,7 @@ class DocumentService
             $request->getVersion(),
             $request->getLanguage(),
             $request->getPath(),
+            $path,
             $parsed->matter(),
             $parsed->body()
         );
