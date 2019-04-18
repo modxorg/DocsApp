@@ -87,10 +87,12 @@ class VersionsService
 
     private function createVersion(PageRequest $request, \DirectoryIterator $fileInfo)
     {
+        $versionKey = static::getVersionUrl($fileInfo->getFilename());
         return [
             'title' => static::getVersionTitle($fileInfo->getFilename()),
+            'key' => $versionKey,
             'uri' => $this->router->pathFor('documentation', [
-                'version' => static::getVersionUrl($fileInfo->getFilename()),
+                'version' => $versionKey,
                 'language' => $request->getLanguage(),
                 'path' => $request->getPath(),
             ])
