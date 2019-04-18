@@ -49,8 +49,27 @@ class Doc extends Base
             throw new \Slim\Exception\NotFoundException($request, $response);
         }
 
+        $crumbs = [];
+
+        $parent = $page;
+        while ($parent = $parent->getParentPage()) {
+            $crumbs[] = [
+                'title' => $parent->getTitle(),
+                'href' => $parent->getUrl(),
+            ];
+        }
+
+        $crumbs[] = [
+            'title' => 'Home', // @todo i18n
+            'href' => $pageRequest->getContextUrl(),
+        ];
+
+        $crumbs = array_reverse($crumbs);
+
         return $this->render($request, $response, 'documentation.twig', [
-            'page_title' => $page->getTitle(),
+            'title' => $page->getTitle(),
+            'page_title' => $page->getPageTitle(),
+            'crumbs' => $crumbs,
 
             'meta' => $page->getMeta(),
             'parsed' => $page->getRenderedBody(),

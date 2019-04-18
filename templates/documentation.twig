@@ -7,24 +7,20 @@
         <div class="l-main__title">
             <nav class="c-breadcrumb" aria-label="Breadcrumb">
                 <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
-                    <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                        <a class="c-breadcrumb__link" href="/" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
-                            <span itemprop="name">Home</span>
-                            <meta itemprop="position" content="1">
-                        </a>
-                    </li>
-                    <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                        <a class="c-breadcrumb__link" href="/pg2" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
-                            <span itemprop="name">Getting started</span>
-                            <meta itemprop="position" content="2">
-                        </a>
-                    </li>
+                    {% for crumb in crumbs %}
+                        <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                <span itemprop="name">{{ crumb.title }}</span>
+                                <meta itemprop="position" content="{{ loop.index }}">
+                            </a>
+                        </li>
+                    {% endfor %}
                     {# current item gets special markup: #}
                     <li  class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                         {# aria-current for current visible page and --current modifier class  #}
-                        <a class="c-breadcrumb__link c-breadcrumb__link--current" href="/" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item" href="https://example.com/books">
-                            <span itemprop="name">An Overview of MODX</span>
-                            <meta itemprop="position" content="3">
+                        <a class="c-breadcrumb__link c-breadcrumb__link--current" href="{{ current_uri }}" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item">
+                            <span itemprop="name">{{ title }}</span>
+                            <meta itemprop="position" content="{{ crumbs|length + 1 }}">
                         </a>
                     </li>
                 </ol>

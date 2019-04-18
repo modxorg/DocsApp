@@ -93,6 +93,14 @@ class Page {
     /**
      * @return string
      */
+    public function getUrl(): string
+    {
+        return $this->currentUrl;
+    }
+
+    /**
+     * @return string
+     */
     public function getBody(): string
     {
         return $this->body;
@@ -109,30 +117,32 @@ class Page {
         return $this->renderedBody;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle(): string
+    public function getPageTitle(): string
     {
         $titles = [];
-
-        if (array_key_exists('title', $this->meta)) {
-            $titles[] = $this->meta['title'];
-        }
-        else {
-            $paths = explode('/', $this->path);
-            $paths = array_filter($paths, function($v) { return strtolower($v) === 'index'; });
-            $path = end($paths);
-            $path = str_replace('-', ' ', $path);
-            $path = ucfirst($path);
-            $titles[] = $path;
-        }
+        $titles[] = $this->getTitle();
 
         if ($parent = $this->getParentPage()) {
             $titles[] = $parent->getTitle();
         }
 
         return implode(' - ', $titles);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        if (array_key_exists('title', $this->meta)) {
+            return $this->meta['title'];
+        }
+        $paths = explode('/', $this->path);
+        $paths = array_filter($paths, function($v) { return strtolower($v) === 'index'; });
+        $path = end($paths);
+        $path = str_replace('-', ' ', $path);
+        $path = ucfirst($path);
+        return $path;
     }
 
     public function getTableOfContents($topLevel = 2, $depth = 6) : string
