@@ -1,7 +1,7 @@
-@mixin callout($color) {
+@mixin callout($color, $darken: 28%) {
     background-color: rgba($color, 0.3);
     border-color: $color;
-    color: darken($color, 28%);
+    color: darken($color, $darken);
 }
 
 .c-callout {
@@ -9,7 +9,7 @@
     margin: 0 0 $global-margin;
     padding: rem(15 20);
     border-left: rem(8) solid transparent;
-    @include callout(lightendarken(map-get($colors, 'sidebar-bg'), 20%));
+    @include callout(lightendarken(map-get($colors, 'sidebar-bg'), 17%), 50%);
 
     &__title {
         display: block;

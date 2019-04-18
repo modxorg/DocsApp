@@ -10,7 +10,13 @@ table {
 
     @include breakpoint(medium) {
         display: table;
+        table-layout:fixed;
+        width: 100%;
         max-width: 100%;
+
+        td {
+            word-wrap: break-word;
+        }
     }
 
     tr:nth-child(2n) {
