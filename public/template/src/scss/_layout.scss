@@ -39,7 +39,7 @@ html, body {
         flex: auto 0 0;
         position: relative;
 
-        @include breakpoint(xxlarge) {
+        @include breakpoint(xlarge) {
             flex: $sidebar-width 0 0;
             &:after {
                 content: "";
@@ -56,7 +56,14 @@ html, body {
     }
 
     &__search {
-        margin: 0 rem(12);
+        margin: rem(0 30);
+        flex-basis: rem(725);
+        flex-grow: 0;
+        flex-shrink: 1;
+
+        @include breakpoint(xlarge) {
+            margin: rem(0 50 0 75);
+        }
     }
 }
 

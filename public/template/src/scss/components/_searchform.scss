@@ -1,19 +1,21 @@
 .c-searchform {
     position: relative;
+    width: 100%;
 
     &__input {
         display: block;
-        width: rem(220);
+        width: 100%;
         border: none;
         border-radius: rem(3);
-        padding: rem(8 35 8 10);
+        padding: rem(10 35 10 10);
         font-size: rem(15);
     }
 
     &__button {
         position: absolute;
-        top: rem(6);
+        top: rem(0);
         right: rem(10);
+        bottom: rem(0);
         margin: 0;
         padding: 0;
         background: transparent;
@@ -24,5 +26,6 @@
         width: rem(24);
         height: rem(20);
         fill: #717171;
+        vertical-align: middle;
     }
 }
