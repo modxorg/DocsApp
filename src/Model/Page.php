@@ -9,6 +9,7 @@ use League\CommonMark\Environment;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\TocRenderer;
+use MODXDocs\Services\CacheService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
 use TOC\MarkupFixer;
@@ -73,6 +74,14 @@ class Page {
 
     private function renderBody(): void
     {
+        $cache = CacheService::getInstance();
+        $key = 'rendered/' . trim($this->currentUrl, '/');
+        $hash = md5($this->body);
+        if ($rendered = $cache->get($key, $hash)) {
+            $this->renderedBody = $rendered;
+            return;
+        }
+
         // Grab the markdown
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addExtension(new TableExtension());
@@ -91,6 +100,7 @@ class Page {
 
         $fixer = new MarkupFixer();
         $this->renderedBody = $fixer->fix($content);
+        $cache->set($key, $this->renderedBody, null, $hash);
     }
 
     /**
