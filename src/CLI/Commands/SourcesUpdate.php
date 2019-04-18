@@ -62,12 +62,10 @@ class SourcesUpdate extends Command {
         }
 
         // clear cache
-        $command = $this->getApplication()->find('cache:clear');
+        $command = $this->getApplication()->find('cache:refresh');
         return $command->run(new ArrayInput([
-            'command' => 'cache:clear',
+            'command' => 'cache:refresh',
         ]), $output);
-
-        return 0;
     }
 
     public function updateRepository(OutputInterface $output, $version, $url, $branch)
