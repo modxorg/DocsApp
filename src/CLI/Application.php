@@ -3,6 +3,7 @@
 namespace MODXDocs\CLI;
 
 
+use MODXDocs\CLI\Commands\CacheClear;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
 use MODXDocs\DocsApp;
@@ -40,6 +41,7 @@ class Application extends \Symfony\Component\Console\Application {
         $cmds = parent::getDefaultCommands();
         $cmds[] = new SourcesInit();
         $cmds[] = new SourcesUpdate();
+        $cmds[] = new CacheClear();
         return $cmds;
     }
 }

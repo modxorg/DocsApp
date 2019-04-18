@@ -5,6 +5,7 @@ namespace MODXDocs\CLI\Commands;
 use MODXDocs\CLI\Application;
 use MODXDocs\Services\VersionsService;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -59,6 +60,12 @@ class SourcesUpdate extends Command {
                     break;
             }
         }
+
+        // clear cache
+        $command = $this->getApplication()->find('cache:clear');
+        return $command->run(new ArrayInput([
+            'command' => 'cache:clear',
+        ]), $output);
 
         return 0;
     }
