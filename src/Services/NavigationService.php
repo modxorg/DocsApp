@@ -139,6 +139,14 @@ class NavigationService
 
     private function getNavigationForParent(NavigationItem $navigationItem)
     {
+        $cache = CacheService::getInstance();
+        $request = str_replace(getenv('DOCS_DIRECTORY'), '', $navigationItem->getFilePath());
+        $current = md5(str_replace(getenv('DOCS_DIRECTORY'), '', $navigationItem->getCurrentFilePath()));
+        $cacheKey = 'nav/' . $request . '_' . $current;
+        if ($nav = $cache->get($cacheKey)) {
+            return $nav;
+        }
+
         $nav = [];
 
         try {
@@ -232,6 +240,7 @@ class NavigationService
             return $so1 - $so2;
         });
 
+        $cache->set($cacheKey, $nav);
         return $nav;
     }
 
