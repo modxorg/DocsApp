@@ -7,21 +7,27 @@
 // import modnern-normalize (https://github.com/sindresorhus/modern-normalize)
 @import 'node_modules/modern-normalize/modern-normalize';
 
+// import basic utils
 @import 'functions';
 @import 'breakpoints';
 @import 'settings';
+
+// import base styles
 @import 'typography';
 @import 'layout';
 @import 'objects';
 
-@import 'components/searchform';
-@import 'components/nav';
+// import components (sorted A -> Z)
 @import 'components/breadcrumb';
-@import 'components/toc';
-@import 'components/footer';
-@import 'components/code';
-@import 'components/table';
 @import 'components/callout';
+@import 'components/code';
+@import 'components/footer';
+@import 'components/languagepicker';
+@import 'components/nav';
+@import 'components/searchform';
+@import 'components/table';
+@import 'components/toc';
 
+// import helpers and overrides
 @import 'helpers';
 @import 'print';

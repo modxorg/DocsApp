@@ -7,6 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="canonical" href="{{ canonical_url }}">
 
+        {#
+            TODO: add hreflang links into head for SEO (use full https links here!)
+            <link rel="alternate" href="https://docs.modx.org/en/" hreflang="en">
+            <link rel="alternate" href="https://docs.modx.org/de/" hreflang="de">
+        #}
+
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/template/dist/app.css?v={{ revision }}">
         {% block stylesheets %}{% endblock %}
@@ -26,9 +32,11 @@
                 <a href="#nav" title="Open Menu" class="o-openmenu">
                     {{ icon('menu', 'Menu', 'o-openmenu__icon', null, 'aria-hidden="true"') }}
                 </a>
+
                 <a href="{{ logo_link }}" title="MODX Docs" class="l-header__logo o-logo">
                     {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                 </a>
+
                 <div class="l-header__search">
                     <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform">
                         <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
@@ -37,6 +45,36 @@
                             {{ icon('search', 'Search', 'c-searchform__icon') }}
                         </button>
                     </form>
+                </div>
+
+                <div class="l-header__langpicker">
+                    {# TODO: make this dynmiac #}
+                    <nav class="c-languagepicker" arial-label="Language switch">
+                        <a class="c-languagepicker__current" lang="en" href="#changelanguage" aria-label="Change website language">
+                            English {# This should be the current language as a localized string #}
+                            {{ icon('chevron', '', 'c-languagepicker__currentchevron', '', 'aria-hidden="true"') }}
+                        </a>
+                        <ul id="changelanguage" class="c-languagepicker__list">
+                            <li class="c-languagepicker__item c-languagepicker__item--active">
+                                <a class="c-languagepicker__link" hreflang="en" rel="alternate" href="/{{version}}/en/">
+                                    <span class="" lang="en" aria-describedby="lang-en-en">English</span>
+                                    <span class="c-languagepicker__translation" lang="en" id="lang-en-en">English</span>
+                                </a>
+                            </li>
+                            <li class="c-languagepicker__item c-languagepicker__item--active">
+                                <a class="c-languagepicker__link" hreflang="ru" rel="alternate" href="/{{version}}/ru/">
+                                    <span class="" lang="ru" aria-describedby="lang-en-ru">русский</span>
+                                    <span class="c-languagepicker__translation" lang="en" id="lang-en-ru">Russian</span>
+                                </a>
+                            </li>
+                            <li class="c-languagepicker__item c-languagepicker__item--active">
+                                <a class="c-languagepicker__link" hreflang="de" rel="alternate" href="/{{version}}/de/">
+                                    <span class="" lang="de" aria-describedby="lang-en-de">Deutsch</span>
+                                    <span class="c-languagepicker__translation" lang="en" id="lang-en-de">German</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </header>
 

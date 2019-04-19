@@ -1,0 +1,73 @@
+.c-languagepicker {
+
+    &__current {
+        display: block;
+        padding: rem(7 10);
+        color: map-get($colors, 'header-text');
+        white-space: nowrap;
+        background: map-get($colors, 'header-bg');
+        transition: background-color .2s ease-in-out;
+        border-radius: $global-radius;
+        
+        &:hover {
+            color: map-get($colors, 'header-text');
+            background: lighten(map-get($colors, 'header-bg'), 5%);
+        }
+    }
+
+    &__currentchevron {
+        display: inline-block;
+        width: rem(10);
+        height: rem(10);
+        fill: map-get($colors, 'header-text');
+        vertical-align: middle;
+        margin: rem(-1 0 0 3);
+        transform: rotate(90deg);
+    }
+
+    &__list {
+        position: absolute;
+        top: $header-height - rem(1);
+        display: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        background: map-get($colors, 'header-bg');
+        box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
+
+        &:target {
+            display: block;
+
+            &:before {
+                content: none;
+            }
+        }
+    }
+
+    &__item {
+        position: relative;
+        display: block;
+    }
+
+    &__link {
+        display: block;
+        padding: rem(4 10);
+        color: map-get($colors, 'header-text');
+
+        &:hover {
+            color: map-get($colors, 'header-text');
+            background: lighten(map-get($colors, 'header-bg'), 5%);
+        }
+    }
+
+    &__translation {
+        color: darken(map-get($colors, 'header-text'), 15%);
+
+        &:before {
+            content: "(";
+        }
+        &:after {
+            content: ")";
+        }
+    }
+}

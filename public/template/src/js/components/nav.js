@@ -7,7 +7,16 @@ class Nav {
     constructor() {
         let self = this;
         self.collapseNavigation();
-        self.menuButtonToggle();
+
+        let menuButton = document.querySelector('a.o-openmenu');
+        if (menuButton) {
+            self.handleToggle(menuButton, 'nav');
+        }
+
+        let langPicker = document.querySelector('a.c-languagepicker__current');
+        if (langPicker) {
+            self.handleToggle(langPicker, 'changelanguage');
+        }
     }
 
     collapseNavigation() {
@@ -63,24 +72,21 @@ class Nav {
         }
     }
 
-    menuButtonToggle() {
-        // menu button toggle
-        let toggleButton = document.querySelector('a.o-openmenu');
-        if (toggleButton) {
-            toggleButton.addEventListener('click', (e) => {
-                // toggle state class
-                toggleButton.classList.toggle('o-openmenu--opened');
-                // after delay, toggle '#nav' in href attribute
-                setTimeout(function(){
-                    if (window.location.hash === '#nav') {
-                        toggleButton.href = toggleButton.href.replace('#nav', '#');
-                    } else {
-                        toggleButton.href = toggleButton.href.replace('#', '#nav');
-                    }
-                }, 100);
-                return true;
-            });
-        }
+    handleToggle(element, anchor) {
+        element.addEventListener('click', (e) => {
+            // toggle state class
+            element.classList.toggle('is--opened');
+            // after delay, toggle '#nav' in href attribute
+            setTimeout(function(){
+                if (window.location.hash === '#'+anchor) {
+                    element.href = element.href.replace('#'+anchor, '#');
+                } else {
+                    element.href = element.href.replace('#', '#'+anchor);
+                }
+            }, 100);
+            return true;
+        });
+    
     }
 }
 
