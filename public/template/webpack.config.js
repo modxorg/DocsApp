@@ -2,13 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const isModern = process.env.BROWSERSLIST_ENV === 'modern'
 
+let mainEntry = [
+    isModern ? './src/js/polyfills.modern.js' : './src/js/polyfills.legacy.js',
+    './src/js/main.js',
+];
+// add modern polyfills also to legacy main.js
+if (!isModern) mainEntry.push('./src/js/polyfills.modern.js');
+
 module.exports = {
     entry: {
-        main: [
-            isModern ? './src/js/polyfills.modern.js' : './src/js/polyfills.legacy.js',
-            isModern ? '' : './src/js/polyfills.modern.js',
-            './src/js/main.js',
-        ],
+        main: mainEntry,
         //head: './src/js/head.js'
     },
 
