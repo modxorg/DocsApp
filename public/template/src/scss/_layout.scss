@@ -118,6 +118,10 @@ html, body {
             order: 1;
             min-width: 0;
         }
+
+        > :first-child {
+            margin-top: 0;
+        }
     }
 
     &__toc {
