@@ -94,6 +94,11 @@ html, body {
         margin: $main-margin-top rem(50) $global-margin rem(75);
     }
 
+    &__loading {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
     &__title {
         max-width: rem(1000);
     }
