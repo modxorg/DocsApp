@@ -47,55 +47,49 @@
                     </form>
                 </div>
 
-                <div class="l-header__langpicker">
+                <div class="l-header__versionswitch">
                     {# TODO: make this dynmiac #}
-                    <nav class="c-optionswitch c-optionswitch--language" arial-label="Language switch">
-                        <a class="c-optionswitch__current" lang="en" href="#changelanguage" aria-label="Change website language">
+                    <nav class="c-optionswitch" arial-label="Language and version settings">
+                        <a class="c-optionswitch__current" lang="en" href="#switchsettings" aria-label="Change website language or documentation version">
                             English {# This should be the current language as a localized string #}
-                            {{ icon('chevron', '', 'c-optionswitch__currentchevron', '', 'aria-hidden="true"') }}
-                        </a>
-                        <ul id="changelanguage" class="c-optionswitch__list">
-                            <li class="c-optionswitch__item c-optionswitch__item--active">
-                                <a class="c-optionswitch__link" hreflang="en" rel="alternate" href="/{{version}}/en/">
-                                    <span class="" lang="en" aria-describedby="lang-en-en">English</span>
-                                    <span class="c-optionswitch__translation" lang="en" id="lang-en-en">English</span>
-                                </a>
-                            </li>
-                            <li class="c-optionswitch__item c-optionswitch__item--active">
-                                <a class="c-optionswitch__link" hreflang="ru" rel="alternate" href="/{{version}}/ru/">
-                                    <span class="" lang="ru" aria-describedby="lang-en-ru">Русский</span>
-                                    <span class="c-optionswitch__translation" lang="en" id="lang-en-ru">Russian</span>
-                                </a>
-                            </li>
-                            <li class="c-optionswitch__item c-optionswitch__item--active">
-                                <a class="c-optionswitch__link" hreflang="de" rel="alternate" href="/{{version}}/de/">
-                                    <span class="" lang="de" aria-describedby="lang-en-de">Deutsch</span>
-                                    <span class="c-optionswitch__translation" lang="en" id="lang-en-de">German</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-
-                <div class="l-header__versionpicker">
-                    {# TODO: make this dynmiac #}
-                    <nav class="c-optionswitch c-optionswitch--version" arial-label="Documentation Version switch">
-                        <a class="c-optionswitch__current" lang="en" href="#changeversion" aria-label="Change documentation version">
+                            /
                             Version {{version}}
                             {{ icon('chevron', '', 'c-optionswitch__currentchevron', '', 'aria-hidden="true"') }}
                         </a>
-                        <ul id="changeversion" class="c-optionswitch__list">
-                            <li class="c-optionswitch__item c-optionswitch__item--active">
-                                <a class="c-optionswitch__link" rel="alternate" href="/2.x/{{language}}/index">
-                                    2.x (current)
-                                </a>
-                            </li>
-                            <li class="c-optionswitch__item c-optionswitch__item--active">
-                                <a class="c-optionswitch__link" rel="alternate" href="/3.x/{{language}}/index">
-                                    3.x
-                                </a>
-                            </li>
-                        </ul>
+                        <div id="switchsettings" class="c-optionswitch__listwrapper">
+                            <ul class="c-optionswitch__list" aria-label="Languages">
+                                <li class="c-optionswitch__item c-optionswitch__item--active">
+                                    <a class="c-optionswitch__link" hreflang="en" rel="alternate" href="/{{version}}/en/">
+                                        <span class="" lang="en" aria-describedby="lang-en-en">English</span>
+                                        <span class="c-optionswitch__translation" lang="en" id="lang-en-en">English</span>
+                                    </a>
+                                </li>
+                                <li class="c-optionswitch__item">
+                                    <a class="c-optionswitch__link" hreflang="ru" rel="alternate" href="/{{version}}/ru/">
+                                        <span class="" lang="ru" aria-describedby="lang-en-ru">Русский</span>
+                                        <span class="c-optionswitch__translation" lang="en" id="lang-en-ru">Russian</span>
+                                    </a>
+                                </li>
+                                <li class="c-optionswitch__item">
+                                    <a class="c-optionswitch__link" hreflang="de" rel="alternate" href="/{{version}}/de/">
+                                        <span class="" lang="de" aria-describedby="lang-en-de">Deutsch</span>
+                                        <span class="c-optionswitch__translation" lang="en" id="lang-en-de">German</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="c-optionswitch__list" aria-label="Versions">
+                                <li class="c-optionswitch__item c-optionswitch__item--active">
+                                    <a class="c-optionswitch__link" rel="alternate" href="/2.x/{{language}}/index">
+                                        2.x (current)
+                                    </a>
+                                </li>
+                                <li class="c-optionswitch__item">
+                                    <a class="c-optionswitch__link" rel="alternate" href="/3.x/{{language}}/index">
+                                        3.x
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </nav>
                 </div>
             </header>

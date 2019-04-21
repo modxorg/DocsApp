@@ -13,14 +13,9 @@ class Nav {
             self.handleToggle(menuButton, 'nav');
         }
 
-        let langSwitch = document.querySelector('.c-optionswitch--language a.c-optionswitch__current');
+        let langSwitch = document.querySelector('a.c-optionswitch__current');
         if (langSwitch) {
-            self.handleToggle(langSwitch, 'changelanguage');
-        }
-
-        let versionSwitch = document.querySelector('.c-optionswitch--version a.c-optionswitch__current');
-        if (versionSwitch) {
-            self.handleToggle(versionSwitch, 'changeversion');
+            self.handleToggle(langSwitch, 'switchsettings');
         }
     }
 

@@ -25,23 +25,30 @@
         transform: rotate(90deg);
     }
 
-    &__list {
+    &__listwrapper {
         position: absolute;
         top: $header-height - rem(1);
         display: none;
-        margin: 0;
-        padding: 0;
-        list-style: none;
         background: map-get($colors, 'header-bg');
         box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
 
         &:target {
             display: block;
 
+            @include breakpoint(medium) {
+                display: flex;
+            }
+
             &:before {
                 content: none;
             }
         }
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     &__item {
@@ -58,6 +65,10 @@
             color: map-get($colors, 'header-text');
             background: lighten(map-get($colors, 'header-bg'), 5%);
         }
+    }
+
+    &__item--active &__link {
+        background: lighten(map-get($colors, 'header-bg'), 7%);
     }
 
     &__translation {
