@@ -2,6 +2,7 @@ html, body {
     width: 100%;
     overflow-x: hidden;
     background: map-get($colors, 'body-bg');
+    scroll-behavior: smooth;
 }
 
 .l-app {
