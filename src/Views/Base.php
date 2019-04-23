@@ -29,6 +29,7 @@ abstract class Base
 
         $initialData = [
             'revision' => static::getRevision(),
+            'canonical_base' => getenv('CANONICAL_BASE_URL'),
             'current_uri' => $request->getUri()->getPath(),
             'version' => $pageRequest->getVersion(),
             'version_branch' => $pageRequest->getVersionBranch(),

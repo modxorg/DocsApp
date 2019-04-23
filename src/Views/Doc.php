@@ -5,6 +5,7 @@ namespace MODXDocs\Views;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\TranslationService;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -14,6 +15,8 @@ use MODXDocs\Services\VersionsService;
 
 class Doc extends Base
 {
+    /** @var TranslationService */
+    private $translationService;
     /** @var DocumentService */
     private $documentService;
     /** @var VersionsService */
@@ -24,6 +27,7 @@ class Doc extends Base
         parent::__construct($container);
         $this->documentService = $this->container->get(DocumentService::class);
         $this->versionsService = $this->container->get(VersionsService::class);
+        $this->translationService = $this->container->get(TranslationService::class);
     }
 
     /**
@@ -76,6 +80,18 @@ class Doc extends Base
 
             'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
+            'translations' => $this->getTranslations($pageRequest),
         ]);
+    }
+
+    private function getTranslations(PageRequest $pageRequest)
+    {
+        $translations = $this->translationService->getAvailableTranslations($pageRequest);
+        foreach ($translations as $lang => &$uri) {
+            if ($pageRequest->getVersion() !== $pageRequest->getVersionBranch()) {
+                $uri = str_replace('/' . $pageRequest->getVersionBranch() . '/', '/' . $pageRequest->getVersion() . '/', $uri);
+            }
+        }
+        return $translations;
     }
 }

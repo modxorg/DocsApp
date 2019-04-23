@@ -40,6 +40,15 @@
                             {% endfor %}
                             &mdash;
                         {% endif %}
+
+                        {% if translations %}
+                            Other languages:
+                            {% for languageKey, languageUri in translations %}
+                                <a href="{{ languageUri }}">{{ languageKey|upper }}</a>
+                            {% endfor %}
+                            &mdash;
+                        {% endif %}
+
                         Found a problem?
                         <nobr>
                             Please
