@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Containers;
 
+use MODXDocs\Services\TranslationService;
 use Slim\Container;
 
 use MODXDocs\Services\FilePathService;
@@ -24,6 +25,13 @@ class Services
 
         $container[VersionsService::class] = function (Container $container) {
             return new VersionsService(
+                $container->get('router')
+            );
+        };
+
+        $container[TranslationService::class] = function (Container $container) {
+            return new TranslationService(
+                $container->get('db'),
                 $container->get('router')
             );
         };

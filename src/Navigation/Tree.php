@@ -199,5 +199,24 @@ class Tree {
             ]
         );
     }
+
+    private function getSelfAndNested(array $item) {
+        $children = $item['children'];
+        unset($item['children']);
+        $a = [$item];
+        foreach ($children as $child) {
+            $a =  array_merge($a, $this->getSelfAndNested($child));
+        }
+        return $a;
+    }
+
+    public function getAllItems()
+    {
+        $return = [];
+        foreach ($this->items as $item) {
+            $return = array_merge($return, $this->getSelfAndNested($item));
+        }
+        return $return;
+    }
     
 }

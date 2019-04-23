@@ -2,6 +2,7 @@
 
 namespace MODXDocs;
 
+use MODXDocs\Containers\DB;
 use MODXDocs\Views\Search;
 use Slim\App;
 use Slim\Http\Request;
@@ -43,6 +44,7 @@ class DocsApp
     private function dependencies()
     {
         $containers = [
+            DB::class,
             View::class,
             ErrorHandlers::class,
             Logger::class,
