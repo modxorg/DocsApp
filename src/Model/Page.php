@@ -186,12 +186,17 @@ class Page {
             ]
         );
 
-        return $tocGenerator->getHtmlMenu(
-            $this->getRenderedBody(),
-            $topLevel,
-            $depth,
-            $renderer
-        );
+        try {
+            return $tocGenerator->getHtmlMenu(
+                $this->getRenderedBody(),
+                $topLevel,
+                $depth,
+                $renderer
+            );
+        } catch (\TypeError $e) {
+            // https://github.com/caseyamcl/toc/issues/6
+            return 'Error generating table of contents for page.';
+        }
     }
 
     public function getParentPage(): ?Page
