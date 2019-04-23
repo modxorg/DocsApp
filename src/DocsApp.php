@@ -8,7 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 use MODXDocs\Containers\View;
-use MODXDocs\Containers\PageNotFound;
+use MODXDocs\Containers\ErrorHandlers;
 use MODXDocs\Containers\Logger;
 use MODXDocs\Containers\Services;
 use MODXDocs\Middlewares\RequestMiddleware;
@@ -44,7 +44,7 @@ class DocsApp
     {
         $containers = [
             View::class,
-            PageNotFound::class,
+            ErrorHandlers::class,
             Logger::class,
             Services::class
         ];

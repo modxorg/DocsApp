@@ -66,7 +66,7 @@ abstract class Base
         );
     }
 
-    private static function getRevision() : string
+    protected static function getRevision() : string
     {
         $revision = 'dev';
 
