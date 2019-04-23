@@ -63,8 +63,14 @@ class SourcesUpdate extends Command {
 
         // clear cache
         $command = $this->getApplication()->find('cache:refresh');
-        return $command->run(new ArrayInput([
+        $command->run(new ArrayInput([
             'command' => 'cache:refresh',
+        ]), $output);
+
+        // Index translations
+        $command = $this->getApplication()->find('index:translations');
+        return $command->run(new ArrayInput([
+            'command' => 'index:translations',
         ]), $output);
     }
 

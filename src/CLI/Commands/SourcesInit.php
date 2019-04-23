@@ -66,6 +66,11 @@ class SourcesInit extends Command {
             'command' => 'cache:navigation',
         ]), $output);
 
+        // Index translations
+        $command = $this->getApplication()->find('index:init');
+        $command->run(new ArrayInput([
+            'command' => 'index:init',
+        ]), $output);
         return 0;
     }
 
