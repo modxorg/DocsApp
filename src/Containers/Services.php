@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Containers;
 
+use MODXDocs\Services\SearchService;
 use MODXDocs\Services\TranslationService;
 use Slim\Container;
 
@@ -31,6 +32,13 @@ class Services
 
         $container[TranslationService::class] = function (Container $container) {
             return new TranslationService(
+                $container->get('db'),
+                $container->get('router')
+            );
+        };
+
+        $container[SearchService::class] = function (Container $container) {
+            return new SearchService(
                 $container->get('db'),
                 $container->get('router')
             );

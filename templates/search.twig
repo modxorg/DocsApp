@@ -54,25 +54,31 @@
             {% endif %}
 
             <div class="l-main__content">
-                <div class="doc-note">
-                    <strong>Note:</strong> the search has not yet been implemented; this page just mocks it so work on the UI can begin before the technical implementation.
-                </div>
-
                 <form method="GET" action="{{ current_uri }}">
                     <input type="text" name="q" value="{{ search_query }}">
                     <button type="submit">Search</button>
                 </form>
 
+                {% if debug and debug['$tookTime'] %}
+                    <p>Search took {{ debug['$tookTime'] }}ms</p>
+                {% endif %}
 
                 {% if result_count > 0 %}
                 <ul class="l-main-search__container">
                     {% for result in results %}
                         <li class="l-main-search__result">
-                            <h4><a href="{{ result.link }}">{{ result.title }}</a></h4>
+                            <h4><a href="{{ result.link }}">{{ result.title }}</a> ({{ result.actual_score }} = {{ result.score }}/100)</h4>
                             <p>{{ result.snippet|raw }}</p>
                         </li>
                     {% endfor %}
                 </ul>
+                {% endif %}
+
+                {% if debug %}
+                    <details>
+                        <summary>Debug search</summary>
+                        {{ dump(debug) }}
+                    </details>
                 {% endif %}
             </div>
         </div>

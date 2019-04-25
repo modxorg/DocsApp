@@ -4,6 +4,7 @@ namespace MODXDocs\Views;
 
 use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\SearchService;
 use MODXDocs\Services\VersionsService;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
@@ -14,15 +15,18 @@ class Search extends Base
 {
     /** @var Router */
     private $router;
-
     /** @var VersionsService */
     private $versionsService;
+
+    /** @var SearchService */
+    private $searchService;
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->router = $this->container->get('router');
         $this->versionsService = $this->container->get(VersionsService::class);
+        $this->searchService = $this->container->get(SearchService::class);
     }
 
     /**
@@ -51,23 +55,9 @@ class Search extends Base
         $title = 'Search the documentation';
         $results = [];
         $resultCount = 0;
+        $debug = [];
         if (!empty($query)) {
-            $returnFakeResults = random_int(0, 100) > 33;
-
-            if ($returnFakeResults) {
-                $resultCount = random_int(5, 532);
-                $show = random_int(5, 25);
-                $i = 1;
-                while ($i < $show) {
-                    $results[] = [
-                        'title' => 'Using Friendly URLs',
-                        'snippet' => '...when using <span class="search--highlight">Friendly URLs</span> you can get awesome SEO Benefits for freebies..',
-                        'url' => $pageRequest->getContextUrl() . 'foo/bar',
-                        'idx' => $i,
-                    ];
-                    $i++;
-                }
-            }
+            $results = $this->searchService->find($pageRequest, $query, $resultCount, $debug);
 
             if ($resultCount > 0) {
                 $title = $resultCount . ' results for "' . $query . '"';
@@ -88,6 +78,7 @@ class Search extends Base
             'canonical_url' => '',
             'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
+            'debug' => $debug,
         ]);
     }
 }
