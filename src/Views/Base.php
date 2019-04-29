@@ -51,17 +51,11 @@ abstract class Base
 
     protected function render404(Request $request, Response $response, array $data = []): \Psr\Http\Message\ResponseInterface
     {
-        $initialData = [
-            'revision' => static::getRevision(),
-            'is_dev' => (bool) getenv('DEV'),
-            'current_uri' => $request->getUri()->getPath(),
-        ];
-
-        return $this->view->render(
+        return $this->render(
+            $request,
             $response->withStatus(404),
             'notfound.twig',
             \array_merge(
-                $initialData,
                 $data
             )
         );
