@@ -33,6 +33,15 @@ class LinkRenderer implements InlineRendererInterface
             'href' => $href,
         ];
 
+        // Handle hashes in links
+        $hash = '';
+        $hashPosition = strpos($href, '#');
+        if ($hashPosition !== false) {
+            $hash = substr($href, $hashPosition);
+            $href = substr($href, 0, $hashPosition);
+        }
+
+
         if (isset($inline->attributes['title']) && $inline->attributes['title'] !== '') {
             $attributes['title'] = $htmlRenderer->escape($inline->data['title'], true);
         }
@@ -48,7 +57,7 @@ class LinkRenderer implements InlineRendererInterface
             if (!file_exists($docs . $href . '.md') && !file_exists($docs . $href . '/index.md')) {
                 try {
                     $newUri = Redirector::findNewURI($href);
-                    $attributes['href'] = $newUri;
+                    $attributes['href'] = $newUri . $hash;
                 } catch (RedirectNotFoundException $e) {
                     $attributes['class'] = 'is-brokenlink';
                 }
