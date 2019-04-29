@@ -78,3 +78,18 @@ code, kbd, samp, pre {
     background-color: map-get($colors, 'inline-code');
     padding: 0.1rem 0.25rem;
 }
+
+$blockquoteColor: lightendarken(map_get($colors, 'sidebar-bg'), 17%);
+blockquote {
+    display: block;
+    margin: 0 0 $global-margin;
+    padding: rem(15 20);
+    border-left: rem(8) solid $blockquoteColor;
+    background-color: rgba($blockquoteColor, 0.3);
+    border-color: $blockquoteColor;
+    color: darken($blockquoteColor, 50%);
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+}
