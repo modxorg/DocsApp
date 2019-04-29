@@ -1,0 +1,80 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <main id="main" class="l-main">
+        <div class="l-main__title">
+            {% if crumbs|length > 1 %}
+            <nav class="c-breadcrumb" aria-label="Breadcrumb">
+                <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    {% for crumb in crumbs %}
+                        <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                <span itemprop="name">{{ crumb.title }}</span>
+                                <meta itemprop="position" content="{{ loop.index }}">
+                            </a>
+                        </li>
+                    {% endfor %}
+                    {# current item gets special markup: #}
+                    <li  class="c-breadcrumb__item u-show-for-sr" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        {# aria-current for current visible page and --current modifier class  #}
+                        <a class="c-breadcrumb__link c-breadcrumb__link--current" href="{{ current_uri }}" aria-current="page" itemtype="https://schema.org/Thing" itemprop="item">
+                            <span itemprop="name">{{ title }}</span>
+                            <meta itemprop="position" content="{{ crumbs|length + 1 }}">
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+            {% endif %}
+
+            <h1 class="u-no-margin--top">{{ page_title }}</h1>
+
+            <p class="o-docmeta">
+                <small>
+                    <em>
+                        {% if versions %}
+                            Other versions:
+                            {% for version in versions %}
+                                <a href="{{ version.uri }}">{{ version.title }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </em>
+                </small>
+            </p>
+        </div>
+
+        <div class="l-main__contentwrapper">
+
+
+            <div class="l-main__content">
+                <p>This page lists documentation pages with a <code>note</code> or <code>suggest_delete</code> meta item. These are typically pages that may need to be rewritten or contain incorrect information.</p>
+
+                <p>Also see the <a href="https://github.com/modxorg/Docs/issues">issue tracker on GitHub</a>.</p>
+
+                <table>
+                    <thead>
+                    <th>Document</th>
+                    <th>Note</th>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>
+                                <a href="{{ item.uri }}" target="_blank">{{ item.title }}</a>
+                            </td>
+                            <td {% if item.suggest_delete %}style="background: #ffc6e0"{% endif %}>
+                                {{ item.suggest_delete }}
+                                {{ item.note }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="2">No pages found with a note.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}

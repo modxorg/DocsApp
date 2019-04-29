@@ -61,6 +61,20 @@
                     {# {{ icon('close', 'Close', 'o-closemenu__icon', null, 'aria-hidden="true"') }} #}
                 </a>
                 {{ nav|raw }}
+
+                {% include "partials/nav.twig" with {
+                    children: [{
+                        title: 'Meta',
+                        classes: 'c-nav__item c-nav__item--metaroot c-nav__item--has-children',
+                        uri: path_for('meta', {version: 'current'}),
+                        level: 1,
+                        children: [{
+                            title: "Notes",
+                            level: 2,
+                            uri: path_for('meta/notes', {version: 'current'})
+                        }]
+                }]
+                } %}
             </nav>
             {% endif %}
 

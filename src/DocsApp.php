@@ -3,6 +3,7 @@
 namespace MODXDocs;
 
 use MODXDocs\Containers\DB;
+use MODXDocs\Views\Meta\Notes;
 use MODXDocs\Views\Search;
 use Slim\App;
 use Slim\Http\Request;
@@ -32,6 +33,8 @@ class DocsApp
     private function routes()
     {
         $this->app->get('/', Doc::class . ':get')->setName('home');
+        $this->app->get('/{version}/meta', Notes::class . ':get')->setName('meta');
+        $this->app->get('/{version}/meta/notes', Notes::class . ':get')->setName('meta/notes');
         $this->app->get('/{version}/{language}/search', Search::class . ':get')->setName('search');
         $this->app->get('/{version}/{language}/{path:.*}', Doc::class . ':get')->setName('documentation');
     }

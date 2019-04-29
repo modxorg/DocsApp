@@ -45,6 +45,12 @@
 
         }
 
+        &--metaroot {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #ddd;
+        }
+
         &--level1 > a {
             font-size: rem(16);
             font-weight: 700;
