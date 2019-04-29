@@ -78,6 +78,9 @@ code, kbd, samp, pre {
     background-color: map-get($colors, 'inline-code');
     padding: 0.1rem 0.25rem;
 }
+pre > code {
+    padding: 0;
+}
 
 $blockquoteColor: lightendarken(map_get($colors, 'sidebar-bg'), 17%);
 blockquote {
