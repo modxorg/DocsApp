@@ -73,3 +73,8 @@ p {
     margin: 0 0 $global-margin;
     line-height: $global-line-height;
 }
+
+code, kbd, samp, pre {
+    background-color: map-get($colors, 'inline-code');
+    padding: 0.1rem 0.25rem;
+}
