@@ -106,6 +106,14 @@ When you've set up sources with the "git" type, `php docs.app sources:update` wi
 
 When using "local" source types, you need to keep things in sync manually.
 
+### Branches (for "type":"git")
+
+When initializing sources as explained, only the specified branch is fetched to keep the download size small. To be able of checking out other branches from your origin, you can run the following git command in the `docs/{version}` directory, after which a `git fetch` will once again let you access other branches:
+
+```bash
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+```
+
 ## Building assets
 
 From the root of the project first load the dependencies with `npm install`. 
