@@ -12,6 +12,7 @@ use Slim\Http\Response;
 
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
+use Slim\Http\Stream;
 
 class Doc extends Base
 {
@@ -44,6 +45,10 @@ class Doc extends Base
         try {
             $page = $this->documentService->load($pageRequest);
         } catch (NotFoundException $e) {
+            $filePath = VersionsService::getDocsRoot() . $pageRequest->getActualContextUrl() . $pageRequest->getPath();
+            if (file_exists($filePath)) {
+                return $this->renderFile($request, $response, $filePath);
+            }
             throw new \Slim\Exception\NotFoundException($request, $response);
         }
 
@@ -93,5 +98,38 @@ class Doc extends Base
             }
         }
         return $translations;
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $filePath
+     * @return Response
+     * @throws \Slim\Exception\NotFoundException
+     */
+    protected function renderFile(Request $request, Response $response, $filePath): Response
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $filePath);
+        finfo_close($finfo);
+
+        // If it's an image, allow it
+        if (strpos($mime, 'image/') === 0) {
+            $etag = 'm-' . filemtime($filePath);
+            $provided = $request->getHeaderLine('If-None-Match');
+            $age = getenv('DEV') ? 10 : 3600;
+            if ($etag === $provided) {
+                return $response->withStatus(304)
+                    ->withHeader('Cache-Control', 'max-age=' . $age)
+                    ->withHeader('ETag', filemtime($filePath));
+            }
+
+            return $response->withBody(new Stream(fopen($filePath, 'rb')))
+                ->withHeader('Content-Type', $mime)
+                ->withHeader('Cache-Control', 'max-age=' . $age)
+                ->withHeader('ETag', $etag);
+        }
+
+        throw new \Slim\Exception\NotFoundException($request, $response);
     }
 }
