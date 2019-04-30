@@ -1,6 +1,6 @@
 # MODX DocsApp
 
-The DocsApp is a slim application that serves up the [MODX documentation](https://github.com/Mark-H/Docs) from markdown format into a fully functional site.
+The DocsApp is a slim application that serves up the [MODX documentation](https://github.com/modxorg/Docs) from markdown format into a fully functional site.
 
 It's in development, help is welcome.
 
@@ -14,9 +14,7 @@ Version-specific copies of the documentation should go into the `/doc-sources` d
 3. Edit `.env` in your favorite file editor to fix the paths. 
 4. To run the latest version of the documentation (i.e. the version published on the modxorg/Docs repository), initialise the default documentation sources with `php docs.php sources:init`. To run a local clone of the documentation source, allowing you to immediately see your local changes inside the app, see custom sources below.
 5. Point a webserver, running at least PHP 7.1, to the `/public` directory. 
-6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required.
-
-Version-specific copies of the [documentation](https://github.com/Mark-H/Docs) should go into the `/doc-sources` directory. Then point a webserver at the `/public` directory to browse the documentation.
+6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required. For nginx, set up the equivalent rewrites in your configuration.
 
 ### Custom Sources
 
@@ -102,7 +100,7 @@ This places your git repository in `/docs/2.x/`.
 
 ### Keeping sources up-to-date
 
-When you've set up sources with the "git" type, `php docs.app sources:update` will automatically pull in the latest changes. **This uses a hard reset, removing any uncommitted changes, forcing the local version to take the state of the origin branch.**
+When you've set up sources with the "git" type, `php docs.php sources:update` will automatically pull in the latest changes. **This uses a hard reset, removing any uncommitted changes, forcing the local version to take the state of the origin branch.**
 
 When using "local" source types, you need to keep things in sync manually.
 
@@ -113,6 +111,12 @@ When initializing sources as explained, only the specified branch is fetched to 
 ```bash
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 ```
+
+### Searching / Indexing
+
+To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:search` to populate the index. This may take a minute or two. 
+
+For the language switch to work, you also need to index the translations with `php docs.php index:translations`. This is also called automatically after updating sources with `php docs.php sources:update`. 
 
 ## Building assets
 
