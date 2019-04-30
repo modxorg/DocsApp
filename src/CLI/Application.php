@@ -8,6 +8,7 @@ use MODXDocs\CLI\Commands\CacheRefresh;
 use MODXDocs\CLI\Commands\Index\Init;
 use MODXDocs\CLI\Commands\Index\Search;
 use MODXDocs\CLI\Commands\Index\Translations;
+use MODXDocs\CLI\Commands\ScrapeImages;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
 use MODXDocs\DocsApp;
@@ -50,6 +51,7 @@ class Application extends \Symfony\Component\Console\Application {
         $cmds[] = new Init();
         $cmds[] = new Translations();
         $cmds[] = new Search();
+        $cmds[] = new ScrapeImages();
         return $cmds;
     }
 }
