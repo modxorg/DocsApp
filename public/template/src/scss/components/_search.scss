@@ -78,3 +78,11 @@ $tipColor: map_get($colors, primary);
     color: darken($tipColor, 50%);
 }
 
+$errorColor: map_get($colors, alert);
+.l-search__no_results {
+    border-left: rem(8) solid $errorColor;
+    padding: rem(15 20);
+    background-color: rgba($errorColor, 0.3);
+    color: darken($errorColor, 50%);
+}
+

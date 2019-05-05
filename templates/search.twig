@@ -131,6 +131,11 @@
                         </ul>
                     </div>
                     {% endif %}
+                {% elseif search_query %}
+
+                    <p class="l-search__no_results">
+                        No results found for your search. :(
+                    </p>
                 {% endif %}
 
                 <div class="l-search__matchers">
