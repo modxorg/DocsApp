@@ -69,6 +69,9 @@ class SearchService
     {
         $results = new SearchResults($this->documentService, $query);
         $allTerms = $query->getSearchTermReferences();
+        if (count($allTerms) === 0) {
+            return $results;
+        }
 
         $placeholders = str_repeat ('?, ',  count ($allTerms) - 1) . '?';
         $selectOccurrencesStmt = $this->db->prepare('SELECT page, term, weight FROM Search_Terms_Occurrences WHERE term IN (' . $placeholders . ')');
@@ -86,6 +89,10 @@ class SearchService
 
     public function getPageMetas(array $pageIDs)
     {
+        if (count($pageIDs) === 0) {
+            return [];
+        }
+
         $placeholders = str_repeat ('?, ',  count ($pageIDs) - 1) . '?';
         $getPagesStmt = $this->db->prepare('SELECT rowid, url, title FROM Search_Pages WHERE rowid IN (' . $placeholders . ')');
         $getPagesStmt->execute($pageIDs);
