@@ -2,117 +2,107 @@
 
 namespace MODXDocs\Services;
 
-use MODXDocs\Model\PageRequest;
-use Slim\Router;
+use MODXDocs\Model\SearchQuery;
+use MODXDocs\Model\SearchResults;
 use voku\helper\StopWords;
 use voku\helper\StopWordsLanguageNotExists;
 
 class SearchService
 {
+    public const MIN_TERM_LENGTH = 2;
+
     /**
      * @var \PDO
      */
     private $db;
 
     private static $stopwords;
+    /**
+     * @var DocumentService
+     */
+    private $documentService;
 
-    public function __construct(\PDO $db, Router $router)
+    public function __construct(\PDO $db, DocumentService $documentService)
     {
         $this->db = $db;
+        $this->documentService = $documentService;
     }
 
-    public function find(PageRequest $pageRequest, string $query, &$resultCount, &$debug): array
+    public function getExactTermReferences($version, $language, $term): array
     {
-        $startTime = microtime(true);
-        $terms = array_keys(self::filterStopwords($pageRequest->getLanguage(), self::stringToMap($query)));
+        $statement = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE term = :term AND language = :language AND version = :version');
+        $statement->bindValue(':language', $language);
+        $statement->bindValue(':version', $version);
+        $statement->bindValue(':term', $term);
 
-        $matchingTerms = [];
-
-        $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');
-        $findTermsStmt->bindValue(':language', $pageRequest->getLanguage());
-        $findTermsStmt->bindValue(':version', $pageRequest->getVersionBranch());
-
-        $findExactTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE term = :term AND language = :language AND version = :version');
-        $findExactTermsStmt->bindValue(':language', $pageRequest->getLanguage());
-        $findExactTermsStmt->bindValue(':version', $pageRequest->getVersionBranch());
-
-        foreach ($terms as $term) {
-            $findTermsStmt->bindValue(':phonetic', soundex($term));
-            if ($findTermsStmt->execute() && $phoneticTerms = $findTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
-                if (count($phoneticTerms) > 50) {
-                    // too generic; fallback to exact match
-                    $findExactTermsStmt->bindValue(':term', $term);
-                    if ($findExactTermsStmt->execute() && $exactTerms = $findExactTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
-                        foreach ($exactTerms as $exactTerm) {
-                            $matchingTerms[$exactTerm['term']] = $exactTerm['rowid'];
-                        }
-                    }
-                }
-                else {
-                    foreach ($phoneticTerms as $phoneticTerm) {
-                        $matchingTerms[$phoneticTerm['term']] = $phoneticTerm['rowid'];
-                    }
-                }
+        $return = [];
+        if ($statement->execute() && $exactTerms = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+            foreach ($exactTerms as $exactTerm) {
+                $return[$exactTerm['rowid']] = $exactTerm['term'];
             }
         }
+        return $return;
+    }
 
-        $debug['$matchingTerms'] = $matchingTerms;
-        if (count($matchingTerms) === 0) {
-            $resultCount = 0;
-            return [];
+    public function getFuzzyTermReferences($version, $language, $term): array
+    {
+        $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');
+        $findTermsStmt->bindValue(':language', $language);
+        $findTermsStmt->bindValue(':version', $version);
+        $findTermsStmt->bindValue(':phonetic', soundex($term));
+
+        $return = [];
+        if ($findTermsStmt->execute() && $phoneticTerms = $findTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
+            if (count($phoneticTerms) > 50) {
+                // too generic; fallback to exact match
+                return $this->getExactTermReferences($version, $language, $term);
+            }
+
+            foreach ($phoneticTerms as $phoneticTerm) {
+                $return[$phoneticTerm['rowid']] = $phoneticTerm['term'];
+            }
         }
+        return $return;
+    }
 
-        $placeholders = str_repeat ('?, ',  count ($matchingTerms) - 1) . '?';
+    public function execute(SearchQuery $query)
+    {
+        $results = new SearchResults($this->documentService, $query);
+        $allTerms = $query->getSearchTermReferences();
+
+        $placeholders = str_repeat ('?, ',  count ($allTerms) - 1) . '?';
         $selectOccurrencesStmt = $this->db->prepare('SELECT page, term, weight FROM Search_Terms_Occurrences WHERE term IN (' . $placeholders . ')');
 
-        $pages = [];
-        $debugPages = [];
-        if ($selectOccurrencesStmt->execute(array_values($matchingTerms)) && $occurrences = $selectOccurrencesStmt->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($selectOccurrencesStmt->execute(array_values($allTerms))) {
+            $occurrences = $selectOccurrencesStmt->fetchAll(\PDO::FETCH_ASSOC);
             foreach ($occurrences as $occurrence) {
-                if (!array_key_exists($occurrence['page'], $pages)) {
-                    $pages[$occurrence['page']] = 0;
-                    $debugPages[$occurrence['page']] = [];
-                }
-                $pages[$occurrence['page']] += (int)$occurrence['weight'];
-                $debugPages[$occurrence['page']][] = 'Term ' . $occurrence['term'] . ' +' . $occurrence['weight'];
+                $results->addMatch($occurrence['term'], $occurrence['page'], $occurrence['weight']);
             }
         }
 
-        // Sort best match first
-        arsort($pages, SORT_NUMERIC);
+        $results->process();
+        return $results;
+    }
 
-        $debug['$pages'] = $pages;
-        $debug['$debugPages'] = $debugPages;
-
-        $resultCount = count($pages);
-
-        $page = 1;
-        $limit = 10;
-        $start = 0 + ($page - 1) * $limit;
-
-        $paginatedResults = array_slice($pages, $start, $limit, true);
-
-        $debug['$paginatedResults'] = $paginatedResults;
-
-        $placeholders = str_repeat ('?, ',  count ($paginatedResults) - 1) . '?';
+    public function getPageMetas(array $pageIDs)
+    {
+        $placeholders = str_repeat ('?, ',  count ($pageIDs) - 1) . '?';
         $getPagesStmt = $this->db->prepare('SELECT rowid, url, title FROM Search_Pages WHERE rowid IN (' . $placeholders . ')');
-        $getPagesStmt->execute(array_keys($paginatedResults));
+        $getPagesStmt->execute($pageIDs);
+
+        $metas = [];
 
         while ($row = $getPagesStmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['rowid'];
-            $paginatedResults[$id] = [
-                'link' => str_replace('/' . $pageRequest->getVersionBranch() . '/', '/' . $pageRequest->getVersion() . '/', $row['url']),
+            $metas[$id] = [
+                'id' => $row['rowid'],
+                'link' => $row['url'],
                 'title' => $row['title'],
-                'weight' => $paginatedResults[$id],
-                'actual_score' => $paginatedResults[$id],
-                'score' => (int)min(100, $paginatedResults[$id] / 40 * 100),
             ];
         }
 
-        $tookTime = microtime(true) - $startTime;
-        $debug['$tookTime'] = round($tookTime * 1000, 3);
+        return $metas;
 
-        return $paginatedResults;
     }
 
     public static function stringToMap(string $value): array
@@ -122,7 +112,7 @@ class SearchService
         $map = array_map(static function($v) { return trim($v, '"\'$,.-():;&#_?/\\'); }, $map);
         $map = array_filter($map);
         $map = array_filter($map, static function($v) {
-            return mb_strlen($v) >= 2;
+            return mb_strlen($v) >= SearchService::MIN_TERM_LENGTH;
         });
         $map = array_count_values($map);
         return $map;

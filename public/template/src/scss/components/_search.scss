@@ -1,0 +1,80 @@
+.l-main-search__container {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.l-main-search__result {
+    border-top: 1px solid map_get($colors, 'header-bg');
+    padding-top: 1rem;
+    margin-top: 1rem;
+
+    &:last-child {
+        border-bottom: 1px solid map_get($colors, 'header-bg');
+    }
+
+    .c-breadcrumb {
+        margin-bottom: 0;
+    }
+
+    h4 {
+        margin-top: 0;
+    }
+}
+
+.l-main-search__match {
+    summary {
+        float: right;
+        color: #777;
+    }
+}
+
+.l-search__pagination-holder {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+.l-search-page {
+    margin: 0.5rem;
+    display: inline-block;
+}
+.l-search-page__link {
+    display: block;
+    padding: 0.67rem 1rem;
+    background: map_get($colors, 'header-bg');
+    color: map_get($colors, 'header-text');
+    border-radius: 0.25rem;
+    border: 1px solid map_get($colors, 'header-bg');
+
+    &--active {
+        background: map_get($colors, 'header-text');
+        color: map_get($colors, 'header-bg');
+    }
+}
+
+.c-searchform--resultspage {
+    margin-bottom: 1rem;
+    .c-searchform__input {
+        border: 1px solid map_get($colors, 'header-bg');
+    }
+}
+.l-search__meta {
+    color: map_get($colors, gray);
+}
+
+
+$ignoredColor: map_get($colors, warning);
+.l-search__ignored {
+    border-left: rem(8) solid $ignoredColor;
+    padding: rem(15 20);
+    background-color: rgba($ignoredColor, 0.3);
+    color: darken($ignoredColor, 50%);
+}
+$tipColor: map_get($colors, primary);
+.l-search__tip {
+    border-left: rem(8) solid $tipColor;
+    padding: rem(15 20);
+    background-color: rgba($tipColor, 0.3);
+    color: darken($tipColor, 50%);
+}
+

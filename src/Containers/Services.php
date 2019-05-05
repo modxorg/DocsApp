@@ -40,7 +40,7 @@ class Services
         $container[SearchService::class] = function (Container $container) {
             return new SearchService(
                 $container->get('db'),
-                $container->get('router')
+                $container->get(DocumentService::class)
             );
         };
     }

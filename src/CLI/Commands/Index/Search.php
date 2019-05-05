@@ -106,7 +106,11 @@ class Search extends Command {
             foreach ($titleTerms as $term => $termRowId) {
                 $insertTermOcc->bindValue(':page', $pageId);
                 $insertTermOcc->bindValue(':term', $termRowId);
-                $insertTermOcc->bindValue(':weight', 15);
+                $weight = 15;
+                if (isset($titleMap[$term]) && $titleMap[$term] >= 2) {
+                    $weight = 25;
+                }
+                $insertTermOcc->bindValue(':weight', $weight);
                 $insertTermOcc->execute();
             }
             $db->commit();

@@ -19,7 +19,13 @@
             </nav>
 
             <h1 class="u-no-margin--top">
-                {{ page_title }}
+                {% if result_count > 0 %}
+                    {{ result_count }} results for <code>{{ search_query }}</code>
+                {% elseif search_query %}
+                    No results for <code>{{ search_query }}</code>
+                {% else %}
+                    Search the documentation
+                {% endif %}
             </h1>
 
             <p class="o-docmeta">
@@ -42,44 +48,102 @@
 
         <div class="l-main__contentwrapper">
 
-            {% if toc is not empty %}
-                <div class="l-main__toc">
-                    <nav class="c-toc" aria-labelledby="toc-title">
-                        <div class="c-toc__wrapper">
-                            <span class="c-toc__title" id="toc-title">In this document:</span>
-                            {{ toc|raw }}
-                        </div>
-                    </nav>
-                </div>
-            {% endif %}
-
             <div class="l-main__content">
-                <form method="GET" action="{{ current_uri }}">
-                    <input type="text" name="q" value="{{ search_query }}">
-                    <button type="submit">Search</button>
+
+                <form method="GET" action="{{ current_uri }}" class="c-searchform c-searchform--resultspage">
+                    <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
+                    <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required value="{{ search_query }}">
+                    <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
+                        {{ icon('search', 'Search', 'c-searchform__icon') }}
+                    </button>
                 </form>
 
-                {% if debug and debug['$tookTime'] %}
-                    <p>Search took {{ debug['$tookTime'] }}ms</p>
-                {% endif %}
+                <div class="l-search__meta">
+                    <p class="l-search__timing">
+                        Search took {{ timing }}ms
+                    </p>
+
+                    {% if ignored_terms %}
+                        <p class="l-search__ignored">
+                            {% if ignored_terms|length > 1 %}
+                                The words <b>"{{ ignored_terms|join('", "') }}"</b> are ignored because they are too short or common stopwords.
+                            {% else %}
+                                <b>"{{ ignored_terms|join('') }}"</b> is ignored because it is too short or a common stopword.
+                            {% endif %}
+                        </p>
+                    {% endif %}
+
+                    {% if fuzzy_terms %}
+                        <p class="l-search__tip">
+                            Using fuzzy matching. Wrap words in <code>"double" "quotes"</code> to find exact matches.
+                        </p>
+                    {% endif %}
+
+                </div>
 
                 {% if result_count > 0 %}
-                <ul class="l-main-search__container">
-                    {% for result in results %}
-                        <li class="l-main-search__result">
-                            <h4><a href="{{ result.link }}">{{ result.title }}</a> ({{ result.actual_score }} = {{ result.score }}/100)</h4>
-                            <p>{{ result.snippet|raw }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
+                    <ul class="l-main-search__container">
+                        {% for result in results %}
+                            <li class="l-main-search__result">
+                                <details class="l-main-search__match">
+                                    <summary>Score: <b>{{ result.score }}</b>/100</summary>
+                                    <ul>
+                                        {% for match in result.details %}
+                                            <li>
+                                                {% if match[0] %} {# = exact #}
+                                                    Exact match on
+                                                {% else %}
+                                                    Fuzzy match
+                                                {% endif %}
+                                                <code>{{ terms[match[1]] }}</code> with weight <code>{{ match[2] }}</code>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p>Total weight <code>{{ result.weight }}</code> (= a score of <code>{{ result.weight }} / 40 * 100 = {{ result.score }}</code>)</p>
+                                </details>
+
+                                <nav class="c-breadcrumb" aria-label="Breadcrumb">
+                                    <ol class="c-breadcrumb__list" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+                                        {% for crumb in result.crumbs %}
+                                            <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                                <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                                    <span itemprop="name">{{ crumb.title }}</span>
+                                                    <meta itemprop="position" content="{{ loop.index }}">
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                </nav>
+                                <h4><a href="{{ result.link }}">{{ result.title }}</a></h4>
+                                <p>{{ result.snippet|raw }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if pagination|length > 1 %}
+                    <div class="l-search__pagination">
+                        <ul class="l-search__pagination-holder">
+                            {% for page in pagination %}
+                            <li class="l-search-page {% if page.current %}l-search-page--active{% endif %}">
+                                <a href="{{ page.href }}" class="l-search-page__link {% if page.current %}l-search-page__link--active{% endif %}">{{ page.page|raw }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 {% endif %}
 
-                {% if debug %}
+                <div class="l-search__matchers">
                     <details>
-                        <summary>Debug search</summary>
-                        <pre>{{ dump(debug) }}</pre>
+                        <summary>See terms used for this search</summary>
+                        {% if exact_terms %}
+                            <p>Exact terms (100% weight): <code>{{ exact_terms|join(' || ') }}</code></p>
+                        {% endif %}
+                        {% if fuzzy_terms %}
+                            <p>Fuzzy terms (75% weight): <code>{{ fuzzy_terms|join(' || ') }}</code></p>
+                        {% endif %}
                     </details>
-                {% endif %}
+                </div>
             </div>
         </div>
 
