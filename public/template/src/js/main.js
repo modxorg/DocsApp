@@ -6,4 +6,6 @@ import 'prismjs/components/prism-php.min.js';
 document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, '') + ' js';
 
 import Nav from './components/nav.js';
-let nav = new Nav();
+import Search from './components/search.js';
+let nav = new Nav(),
+    search = new Search();

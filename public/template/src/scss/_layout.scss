@@ -45,6 +45,7 @@ html, body {
         flex-basis: rem(725);
         flex-grow: 0;
         flex-shrink: 1;
+        position: relative;
 
         @include breakpoint(xlarge) {
             margin: rem(0 50 0 75);

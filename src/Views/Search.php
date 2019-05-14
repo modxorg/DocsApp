@@ -59,7 +59,8 @@ class Search extends Base
         ];
 
         $startTime = microtime(true);
-        $sq = new SearchQuery($this->searchService, $query, $pageRequest);
+        $live = (bool)$request->getParam('live');
+        $sq = new SearchQuery($this->searchService, $query, $pageRequest, $live);
 
         $result = $this->searchService->execute($sq);
         $resultCount = $result->getCount();
@@ -125,53 +126,7 @@ class Search extends Base
         if (!empty($query)) {
             if ($resultCount > 0) {
                 $title = $resultCount . ' results for "' . $query . '"';
-
-                $max = 3;
-                $looped = 0;
-                $prev = $page - 1;
-                while ($prev > 1 && $looped < $max) {
-                    $looped++;
-                    $pagination[] = [
-                        'page' => $prev,
-                        'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query, 'page' => $prev])
-                    ];
-                    $prev--;
-                }
-
-                if ($page > 1) {
-                    $pagination[] = [
-                        'page' => 'First',
-                        'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query])
-                    ];
-                }
-
-                $pagination = array_reverse($pagination);
-
-
-                $pagination[] = [
-                    'current' => true,
-                    'page' => $page,
-                    'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query, 'page' => $page])
-                ];
-
-                $looped = 0;
-                $next = $page + 1;
-                while ($next > 1 && $looped < $max && $next < $totalPages) {
-                    $looped++;
-                    $pagination[] = [
-                        'page' => $next,
-                        'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query, 'page' => $next])
-                    ];
-                    $next++;
-                }
-
-                if ($next < $totalPages) {
-
-                    $pagination[] = [
-                        'page' => 'Last',
-                        'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query, 'page' => $totalPages])
-                    ];
-                }
+                $pagination = $this->getPagination($page, $pageRequest, $query, $totalPages);
             }
             else {
                 $title = 'No results for "' . $query . '"';
@@ -181,7 +136,10 @@ class Search extends Base
 
         $tree = Tree::get($pageRequest->getVersion(), $pageRequest->getLanguage());
         $tree->setActivePath($pageRequest->getContextUrl() . $pageRequest->getPath());
-        return $this->render($request, $response, 'search.twig', [
+
+        $template = $live ? 'search_ajax.twig' : 'search.twig';
+
+        return $this->render($request, $response, $template, [
             'page_title' => $title,
             'search_query' => $query,
             'result_count' => $resultCount,
@@ -198,5 +156,68 @@ class Search extends Base
             'ignored_terms' => $sq->getIgnoredTerms(),
             'pagination' => $pagination,
         ]);
+    }
+
+    protected function getPagination(int $page, PageRequest $pageRequest, string $query, int $totalPages): array
+    {
+        $pagination = [];
+        $max = 3;
+        $looped = 0;
+        $prev = $page - 1;
+        while ($prev > 1 && $looped < $max) {
+            $looped++;
+            $pagination[] = [
+                'page' => $prev,
+                'href' => $this->router->pathFor('search',
+                    ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
+                    ['q' => $query, 'page' => $prev])
+            ];
+            $prev--;
+        }
+
+        if ($page > 1) {
+            $pagination[] = [
+                'page' => 'First',
+                'href' => $this->router->pathFor('search',
+                    ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
+                    ['q' => $query])
+            ];
+        }
+
+        $pagination = array_reverse($pagination);
+
+
+        $pagination[] = [
+            'current' => true,
+            'page' => $page,
+            'href' => $this->router->pathFor('search',
+                ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
+                ['q' => $query, 'page' => $page])
+        ];
+
+        $looped = 0;
+        $next = $page + 1;
+        while ($next > 1 && $looped < $max && $next < $totalPages) {
+            $looped++;
+            $pagination[] = [
+                'page' => $next,
+                'href' => $this->router->pathFor('search',
+                    ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
+                    ['q' => $query, 'page' => $next])
+            ];
+            $next++;
+        }
+
+        if ($next < $totalPages) {
+
+            $pagination[] = [
+                'page' => 'Last',
+                'href' => $this->router->pathFor('search',
+                    ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
+                    ['q' => $query, 'page' => $totalPages])
+            ];
+        }
+
+        return $pagination;
     }
 }

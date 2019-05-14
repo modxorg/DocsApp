@@ -1,0 +1,39 @@
+<div class="l-search__live">
+    {% if result_count > 0 %}
+        <ul class="l-live-search__results">
+            {% for result in results %}
+                <li class="l-live-search__result">
+                    <nav class="c-breadcrumb c-live-search__result-crumbs" aria-label="Breadcrumb">
+                        <ol class="c-breadcrumb__list" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+                            {% for crumb in result.crumbs %}
+                                <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                    <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                        <span itemprop="name">{{ crumb.title }}</span>
+                                        <meta itemprop="position" content="{{ loop.index }}">
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </nav>
+                    <a href="{{ result.link }}" class="c-live-search__result-link">
+                        {{ result.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <p class="l-live-search__search">
+            <a href="{{ path_for('search', {language: language, version: version}, {q: search_query}) }}">
+                All {{ result_count }} results &amp; details &raquo;
+            </a>
+        </p>
+    {% elseif search_query %}
+        <p class="l-search__no_results l-search__no_results--live">
+            No results found for your search. :(
+
+            <a href="{{ path_for('search', {language: language, version: version}, {q: search_query}) }}">
+                View search details &raquo;
+            </a>
+        </p>
+    {% endif %}
+</div>

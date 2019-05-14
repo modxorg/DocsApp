@@ -44,6 +44,27 @@ class SearchService
         return $return;
     }
 
+    public function getStartsWithReferences($version, $language, $term): array
+    {
+        $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE term LIKE :term AND language = :language AND version = :version');
+        $findTermsStmt->bindValue(':language', $language);
+        $findTermsStmt->bindValue(':version', $version);
+        $findTermsStmt->bindValue(':term', $term . '%');
+
+        $return = [];
+        if ($findTermsStmt->execute() && $startingTerms = $findTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
+            if (count($startingTerms) > 50) {
+                // too generic; ignore
+                return [];
+            }
+
+            foreach ($startingTerms as $startingTerm) {
+                $return[$startingTerm['rowid']] = $startingTerm['term'];
+            }
+        }
+        return $return;
+    }
+
     public function getFuzzyTermReferences($version, $language, $term): array
     {
         $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');

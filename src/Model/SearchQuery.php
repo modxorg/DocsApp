@@ -29,13 +29,17 @@ class SearchQuery {
      * @var PageRequest
      */
     private $pageRequest;
+    /**
+     * @var bool
+     */
+    private $isLive;
 
-    public function __construct(SearchService $searchService, $queryString, PageRequest $pageRequest)
+    public function __construct(SearchService $searchService, $queryString, PageRequest $pageRequest, $isLive = false)
     {
         $this->searchService = $searchService;
         $this->pageRequest = $pageRequest;
         $this->stopwords = (new StopWords())->getStopWordsFromLanguage($pageRequest->getLanguage());
-
+        $this->isLive = (bool)$isLive;
         $this->parseQueryString($queryString);
     }
 
@@ -83,10 +87,17 @@ class SearchQuery {
         }
 
         // Get fuzzy matches
-        $references = $this->searchService->getFuzzyTermReferences(
-            $this->pageRequest->getVersionBranch(),
-            $this->pageRequest->getLanguage(),
-            $term
+        $references = array_replace(
+            $this->searchService->getStartsWithReferences(
+                $this->pageRequest->getVersionBranch(),
+                $this->pageRequest->getLanguage(),
+                $term
+            ),
+            $this->searchService->getFuzzyTermReferences(
+                $this->pageRequest->getVersionBranch(),
+                $this->pageRequest->getLanguage(),
+                $term
+            )
         );
 
         foreach ($references as $ref => $t) {
