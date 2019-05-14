@@ -17,7 +17,6 @@ class Search {
 
         input.addEventListener('input', this.debounce(function (e) {
             let v = input.value;
-            console.log(v);
             if (v.length > 0) {
                 targetDom.classList.add('l-live-search__container--loading');
                 self.doRequest(searchUrl + '&q=' + encodeURIComponent(v));
@@ -46,11 +45,9 @@ class Search {
                     if (current) {
                         current.classList.remove('l-live-search__result--selected');
                         if (e.keyCode === KEY_DOWN && current.nextElementSibling) {
-                            console.log('nextSibling', current.nextElementSibling);
                             next = current.nextElementSibling;
                         }
                         else if (e.keyCode === KEY_UP && current.previousElementSibling) {
-                            console.log('previousSibling', current.previousElementSibling);
                             next = current.previousElementSibling;
                         }
                     }
@@ -82,7 +79,6 @@ class Search {
 
         document.addEventListener('click', (e) => {
             let inSearch = e.target.closest('.l-header__search');
-            console.log(inSearch);
             if (!inSearch) {
                 targetDom.classList.remove('l-live-search__container--visible');
             }
