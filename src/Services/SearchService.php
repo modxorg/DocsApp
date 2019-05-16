@@ -17,6 +17,9 @@ class SearchService
     private $db;
 
     private static $stopwords;
+
+    /** @var BMDM */
+    private static $mbdm;
     /**
      * @var DocumentService
      */
@@ -70,7 +73,7 @@ class SearchService
         $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');
         $findTermsStmt->bindValue(':language', $language);
         $findTermsStmt->bindValue(':version', $version);
-        $findTermsStmt->bindValue(':phonetic', soundex($term));
+        $findTermsStmt->bindValue(':phonetic', self::fuzzyTerm($term, $language));
 
         $return = [];
         if ($findTermsStmt->execute() && $phoneticTerms = $findTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
@@ -130,7 +133,11 @@ class SearchService
         }
 
         return $metas;
+    }
 
+    public static function fuzzyTerm(string $term, string $language): string
+    {
+        return soundex($term);
     }
 
     public static function stringToMap(string $value): array

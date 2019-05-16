@@ -36,12 +36,18 @@ class Init extends Command {
 
 
         $db->exec('CREATE TABLE IF NOT EXISTS Search_Terms (
-  term VARCHAR(100) PRIMARY KEY,
+  term VARCHAR(100),
   phonetic_term VARCHAR(100),
   language VARCHAR(10),
   version VARCHAR(25),
   total_occurrences VARCHAR(255)
 )');
+        try {
+            $db->exec('CREATE INDEX term ON Search_Terms (term)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating Search_Terms.phonetic_term index: ' . $e->getMessage() . '</comment>');
+        }
         try {
             $db->exec('CREATE INDEX phonetic_term ON Search_Terms (phonetic_term)');
         }

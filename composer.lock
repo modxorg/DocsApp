@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "728c7a5ff5efdcc2ec7a048b37dbb2fe",
+    "content-hash": "ef86333ede981a1bcc1b34a2bbd4cb53",
     "packages": [
         {
             "name": "caseyamcl/toc",
@@ -3308,7 +3308,8 @@
         "php": ">=7.1.0",
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-sqlite3": "*"
+        "ext-sqlite3": "*",
+        "ext-fileinfo": "*"
     },
     "platform-dev": []
 }
