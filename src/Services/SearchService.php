@@ -18,8 +18,6 @@ class SearchService
 
     private static $stopwords;
 
-    /** @var BMDM */
-    private static $mbdm;
     /**
      * @var DocumentService
      */
