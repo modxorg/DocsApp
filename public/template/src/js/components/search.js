@@ -117,7 +117,6 @@ class Search {
             })
             .catch(function(error) {
                 console.error(error);
-                alert(error.message);
             })
             .finally(function() {
                 targetDom.classList.remove('l-live-search__container--loading');
