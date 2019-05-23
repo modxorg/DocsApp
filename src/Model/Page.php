@@ -8,6 +8,7 @@ use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Helpers\LinkRenderer;
+use MODXDocs\Helpers\RelativeImageRenderer;
 use MODXDocs\Helpers\TocRenderer;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\DocumentService;
@@ -15,6 +16,8 @@ use MODXDocs\Services\VersionsService;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
 use Webuni\CommonMark\TableExtension\TableExtension;
+use League\CommonMark\Inline\Element\Image;
+use League\CommonMark\Inline\Element\Link;
 
 class Page {
 
@@ -85,10 +88,15 @@ class Page {
         // Grab the markdown
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addExtension(new TableExtension());
-        $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link',
+        $environment->addInlineRenderer(Link::class,
             new LinkRenderer(
                 '/' . $this->version . '/' . $this->language . '/',
                 $this->currentUrl
+            )
+        );
+        $environment->addInlineRenderer(Image::class,
+            new RelativeImageRenderer(
+                $this->relativeFilePath
             )
         );
 
