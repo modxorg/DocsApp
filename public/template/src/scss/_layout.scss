@@ -6,6 +6,10 @@ html, body {
 }
 
 .l-app {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
     padding-top: $header-height;
     background: map-get($colors, 'body-bg');
     //filter: invert(100%);
@@ -91,6 +95,8 @@ html, body {
 .l-main {
     position: relative;
     margin: $main-margin-top rem(20) $global-margin;
+
+    flex: 1;
 
     @include breakpoint(medium) {
         margin: $main-margin-top rem(50) $global-margin rem(75);
