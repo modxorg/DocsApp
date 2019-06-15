@@ -6,9 +6,18 @@
         display: block;
         width: 100%;
         border: none;
-        border-radius: rem(3);
-        padding: rem(10 35 10 10);
-        font-size: rem(15);
+        border-radius: .5rem;
+        padding: rem(10 35 10 20);
+        line-height: 1.5!important;
+        font-family: inherit;
+        font-size: 100%;
+        transition: all .1s ease-in;
+        background-color: #edf2f7;
+
+        &:focus{
+            border-color: #e2e8f0;
+            background-color: #fff;
+        }
     }
 
     &__button {

@@ -20,9 +20,9 @@
 
             <h1 class="u-no-margin--top">
                 {% if result_count > 0 %}
-                    {{ result_count }} results for <code>{{ search_query }}</code>
+                    {{ result_count }} results for <code class="size_code">{{ search_query }}</code>
                 {% elseif search_query %}
-                    No results for <code>{{ search_query }}</code>
+                    No results for <code class="size_code">{{ search_query }}</code>
                 {% else %}
                     Search the documentation
                 {% endif %}
