@@ -30,7 +30,7 @@
 
             > a {
                 position: relative;
-                color: #314a97;
+                color: map-get($colors, sapphire);
                 transition: all .2s ease;
                 padding: 0.35rem 0 0.35rem 3.5rem;
 
@@ -50,7 +50,7 @@
                     position: absolute;
                     border-radius: .25rem;
                     opacity: .25;
-                    background-color: #b2c9f5;
+                    background-color: map-get($colors, perano);
                 }
             }
 

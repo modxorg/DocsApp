@@ -78,6 +78,12 @@ p {
 code, kbd, samp, pre {
     background-color: map-get($colors, 'inline-code');
     padding: 0.1rem 0.25rem;
+    font-size: .875rem;
+    border-radius: .125rem;
+    padding-left: .25rem;
+    padding-right: .25rem;
+    color: map-get($colors, sapphire);
+    font-family: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 }
 pre > code {
     padding: 0;
