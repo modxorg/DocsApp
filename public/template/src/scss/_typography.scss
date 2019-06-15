@@ -89,6 +89,12 @@ pre > code {
     padding: 0;
 }
 
+code[class*="language-"], pre[class*="language-"] {
+    border-radius: .5rem;
+    font-size: .875rem !important;
+    line-height: 1.5 !important;
+}
+
 $blockquoteColor: lightendarken(map_get($colors, 'sidebar-bg'), 17%);
 blockquote {
     display: block;
