@@ -1,14 +1,14 @@
 // include prisimjs styles
-@import '../../../node_modules/prismjs/themes/prism';
+@import '../../../node_modules/prismjs/themes/prism-tomorrow';
 @import '../../../node_modules/prismjs/plugins/command-line/prism-command-line';
 @import '../../../node_modules/prismjs/plugins/line-highlight/prism-line-highlight';
 @import '../../../node_modules/prismjs/plugins/line-numbers/prism-line-numbers';
 @import '../../../node_modules/prismjs/plugins/toolbar/prism-toolbar';
 
 // override background color
-:not(pre)>code[class*="language-"], pre[class*="language-"] {
-    background: map-get($colors, 'sidebar-bg');
-}
+// :not(pre)>code[class*="language-"], pre[class*="language-"] {
+//     background: map-get($colors, 'sidebar-bg');
+// }
 
 .token.operator {
     background: none;
