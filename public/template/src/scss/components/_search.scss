@@ -47,15 +47,16 @@
     border-radius: 0.25rem;
     border: 1px solid #e2e8f0;
 
-    &:hover{
+    &:hover, &:focus{
         background: map_get($colors, slateGray);
         border: 1px solid map_get($colors, slateGray);
+        color: map_get($colors, light);
     }
 
     &--active {
         background: map_get($colors, sapphire);
         border: 1px solid map_get($colors, sapphire);
-        color: map_get($colors, 'header-bg');
+        color: map_get($colors, light);
     }
 }
 
