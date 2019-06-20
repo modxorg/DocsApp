@@ -27,7 +27,9 @@
         }
 
         &--activepage {
-
+            > .c-nav__chevron {
+                top: 0.35rem;
+            }
             > a {
                 position: relative;
                 color: map-get($colors, sapphire);
