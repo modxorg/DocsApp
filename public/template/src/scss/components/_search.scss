@@ -35,19 +35,26 @@
     text-align: center;
 }
 .l-search-page {
-    margin: 0.5rem;
     display: inline-block;
 }
 .l-search-page__link {
     display: block;
-    padding: 0.67rem 1rem;
-    background: map_get($colors, 'header-bg');
-    color: map_get($colors, 'header-text');
+    cursor: pointer;
+    padding: .5rem 1rem;
+    line-height: initial;
+    background: #e2e8f0;
+    color: map-get($colors, mirage);
     border-radius: 0.25rem;
-    border: 1px solid map_get($colors, 'header-bg');
+    border: 1px solid #e2e8f0;
+
+    &:hover{
+        background: map_get($colors, slateGray);
+        border: 1px solid map_get($colors, slateGray);
+    }
 
     &--active {
-        background: map_get($colors, 'header-text');
+        background: map_get($colors, sapphire);
+        border: 1px solid map_get($colors, sapphire);
         color: map_get($colors, 'header-bg');
     }
 }
@@ -80,7 +87,7 @@ $tipColor: map_get($colors, primary);
 
 $errorColor: map_get($colors, alert);
 .l-search__no_results {
-    border-left: rem(8) solid $errorColor;
+    border-left: rem(4) solid $errorColor;
     padding: rem(15 20);
     background-color: rgba($errorColor, 0.3);
     color: darken($errorColor, 50%);
@@ -129,13 +136,16 @@ $errorColor: map_get($colors, alert);
     top: 0;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding: 1rem;
+    padding: 0.7rem 1rem;
     height: 3rem;
     overflow: hidden;
+    font-weight: 500;
 }
 .c-live-search__result-link {
+    color: map-get($colors, sapphire);
     display: block;
-    padding: 3rem 1rem 1rem;
+    padding: 2.2rem 1rem 0.7rem;
+    font-weight: 500;
     &:hover, &:focus, .l-live-search__result--selected & {
         background: #f0f6ff;
     }
@@ -143,11 +153,16 @@ $errorColor: map_get($colors, alert);
 .l-live-search__search {
     margin: 0;
     a {
+        font-weight: 500;
         display: block;
-        padding: 1rem;
+        padding: 0.7rem 1rem;
         width: 100%;
         color: map_get($colors, 'header-text');
         background: map_get($colors, 'header-bg');
         border-radius: 0 0 5px 5px;
     }
+}
+
+.size_code{
+    font-size: 1em;
 }

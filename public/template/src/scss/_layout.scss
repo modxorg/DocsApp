@@ -156,3 +156,37 @@ html, body {
         padding: rem(30 75 15);
     }
 }
+
+@media (max-width: 768px) {
+    .o-openmenu{
+        order: 3;
+        padding: 0 .9375rem 0 .9375rem !important;
+    }
+    .l-header__search{
+        order: 2;
+        margin: 0 0.475rem;
+    }
+    .l-header__logo{
+        order: 1;
+    }
+}
+@media (max-width: 425px) {
+    .l-footer {
+        font-size: 14px;
+        line-height: 1;
+        padding: .9375rem .9375rem;
+        .c-footer__nav{
+            display: flex;
+            justify-content: center;
+            &link {
+                padding: .425rem;
+            }
+        }
+        .c-footer__copyright{
+            font-size: 14px;
+            line-height: 1;
+            padding: .3rem .9375rem 0;
+            text-align: center;
+        }
+    }
+}
