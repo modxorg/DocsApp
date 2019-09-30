@@ -138,7 +138,7 @@ $errorColor: map_get($colors, alert);
     overflow-y: scroll;
 
     @include breakpoint(small only) {
-        height: calc(100vh - 12.67rem);
+        max-height: calc(100vh - 15rem);
     }
 }
 .l-live-search__result {
