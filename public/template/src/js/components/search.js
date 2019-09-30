@@ -28,52 +28,88 @@ class Search {
 
         input.addEventListener('keydown', (e) => {
             const KEY_TAB = 9, KEY_ESC = 27, KEY_DOWN = 40, KEY_UP = 38, KEY_ENTER = 13;
-
             let current = targetDom.querySelector('.l-live-search__result--selected');
 
+            // Use e.key when available (most modern browsers)
+            if (e.key) {
+                switch (e.key) {
+                    case 'Escape':
+                    case 'Tab':
+                        _close();
+                        break;
+
+                    case 'ArrowDown':
+                    case 'ArrowUp':
+                        _prevOrNext(current, e.key === 'ArrowUp');
+                        break;
+
+                    case 'Enter':
+                        _chooseResult(current, e);
+                        break;
+                }
+                return;
+            }
+
+            // Fallback to e.keyCode for older browsers
             switch(e.keyCode) {
                 case KEY_TAB:
                 case KEY_ESC:
-                    targetDom.classList.remove('l-live-search__container--visible');
+                    _close();
                     break;
 
                 case KEY_DOWN:
                 case KEY_UP:
-                    let results = targetDom.querySelectorAll('.l-live-search__result'),
-                        next = results.item(0);
-
-                    if (current) {
-                        current.classList.remove('l-live-search__result--selected');
-                        if (e.keyCode === KEY_DOWN && current.nextElementSibling) {
-                            next = current.nextElementSibling;
-                        }
-                        else if (e.keyCode === KEY_UP && current.previousElementSibling) {
-                            next = current.previousElementSibling;
-                        }
-                    }
-
-                    if (next) {
-                        next.classList.add('l-live-search__result--selected');
-                    }
+                    _prevOrNext(current, e.keyCode === KEY_UP);
                     break;
 
                 case KEY_ENTER:
-                    if (current) {
-                        e.preventDefault();
-
-                        let link = current.querySelector('.c-live-search__result-link'),
-                            url = link ? link.getAttribute('href') : '';
-
-                        if (url) {
-                            e.preventDefault();
-                            window.location = url;
-                            return false;
-                        }
-                    }
+                    _chooseResult(current, e);
                     break;
 
                 default:
                     break;
+            }
+
+
+            // Close the search results
+            function _close() {
+                targetDom.classList.remove('l-live-search__container--visible');
+            }
+
+            // Navigate up/down in the search
+            function _prevOrNext(current, isNext) {
+                let results = targetDom.querySelectorAll('.l-live-search__result'),
+                    next = results.item(0);
+
+                if (current) {
+                    current.classList.remove('l-live-search__result--selected');
+                    if (!isNext && current.nextElementSibling) {
+                        next = current.nextElementSibling;
+                    }
+                    else if (isNext && current.previousElementSibling) {
+                        next = current.previousElementSibling;
+                    }
+                }
+
+                if (next) {
+                    next.classList.add('l-live-search__result--selected');
+                }
+            }
+
+            // Choose a result and load the new page
+            function _chooseResult(current, e) {
+                if (current) {
+                    e.preventDefault();
+
+                    let link = current.querySelector('.c-live-search__result-link'),
+                        url = link ? link.getAttribute('href') : '';
+
+                    if (url) {
+                        e.preventDefault();
+                        window.location = url;
+                        return false;
+                    }
+                }
             }
         });
 
