@@ -134,11 +134,11 @@ $errorColor: map_get($colors, alert);
 }
 .c-live-search__result-crumbs {
     position: absolute;
-    top: 0;
+    top: 0.7rem;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding: 0.7rem 1rem;
-    height: 3rem;
+    padding: 0 1rem;
+    height: 1.6em; // = line-height
     overflow: hidden;
     font-weight: 500;
 }
