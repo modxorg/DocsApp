@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Containers;
 
+use MODXDocs\Services\IndexService;
 use MODXDocs\Services\SearchService;
 use MODXDocs\Services\TranslationService;
 use Slim\Container;
@@ -39,6 +40,12 @@ class Services
 
         $container[SearchService::class] = function (Container $container) {
             return new SearchService(
+                $container->get('db'),
+                $container->get(DocumentService::class)
+            );
+        };
+        $container[IndexService::class] = function (Container $container) {
+            return new IndexService(
                 $container->get('db'),
                 $container->get(DocumentService::class)
             );

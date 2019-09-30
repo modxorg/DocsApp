@@ -3,6 +3,8 @@
 namespace MODXDocs\CLI\Commands;
 
 use MODXDocs\CLI\Application;
+use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\IndexService;
 use MODXDocs\Services\VersionsService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -12,6 +14,14 @@ use Symfony\Component\Process\Process;
 
 class SourcesUpdate extends Command {
     protected static $defaultName = 'sources:update';
+
+    public function getDescription()
+    {
+        return 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), and reindexes translations (`index:translations`). Meant to be run in response to git hooks.';
+    }
+
+    /** @var IndexService */
+    private $indexService;
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -26,6 +36,7 @@ class SourcesUpdate extends Command {
             return 1;
         }
         $container = $docsApp->getContainer();
+        $this->indexService = $container->get(IndexService::class);
 
         /** @var VersionsService $versionService */
         $versionService = $container->get(VersionsService::class);
@@ -129,9 +140,13 @@ class SourcesUpdate extends Command {
 
         if (count($changedFiles) > 0) {
             $output->writeln('Changed files: <info>' . implode('</info>, <info>', $changedFiles) . '</info>');
+            foreach ($changedFiles as $changedFile) {
+                $this->updateIndexFor($output, '/' . $version . '/' . $changedFile);
+            }
+            $output->writeln('Done.');
         }
         else {
-            $output->writeln('No changed files.');
+            $output->writeln('Done, no changed files.');
         }
     }
 
@@ -141,5 +156,15 @@ class SourcesUpdate extends Command {
         $process->run();
         $out = $process->getOutput();
         return trim($out);
+    }
+
+    private function updateIndexFor(OutputInterface $output, $changedFile)
+    {
+        [$version, $language] = explode('/', trim($changedFile, '/'));
+        $output->writeln('- Updating index for ' . $changedFile);
+        $result = $this->indexService->indexFile($language, $version, $changedFile);
+        if ($result !== true) {
+            $output->writeln('<error>- Error indexing ' . $changedFile . ': ' . $result . '</error>');
+        }
     }
 }
