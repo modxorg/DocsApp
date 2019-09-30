@@ -118,8 +118,19 @@ $errorColor: map_get($colors, alert);
     }
 
     &--loading {
-        pointer-events: none;
-        opacity: 0.5;
+        &::before {
+            content: "Loading...";
+            width: 100%;
+            display: block;
+            padding: 0.5em 0.5em 0.5em 1em;
+            border-radius: 5px 5px 0 0;
+            color: map_get($colors, 'header-text');
+            background: map_get($colors, 'header-bg');
+
+        }
+        &:empty::before {
+            border-radius: 5px;
+        }
     }
 
     @include breakpoint(small only) {

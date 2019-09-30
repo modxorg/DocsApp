@@ -6,6 +6,7 @@ class Search {
     getClassName() {return 'Search';}
     constructor() {
         let self = this;
+        self.abortController = null;
         self.initListener();
     }
 
@@ -24,7 +25,7 @@ class Search {
             else {
                 targetDom.classList.remove('l-live-search__container--visible');
             }
-        }, 150));
+        }, 250));
 
         input.addEventListener('keydown', (e) => {
             const KEY_TAB = 9, KEY_ESC = 27, KEY_DOWN = 40, KEY_UP = 38, KEY_ENTER = 13;
@@ -136,7 +137,18 @@ class Search {
     doRequest(url) {
         let targetDom = document.querySelector('.l-live-search__container');
         targetDom.classList.add('l-live-search__container--visible');
-        fetch(url)
+
+        // Another request - halt the previous
+        if (this.abortController) {
+            this.abortController.abort();
+        }
+
+        let opts = { };
+        if (window.AbortController) {
+            this.abortController = new AbortController();
+            opts.signal = this.abortController.signal;
+        }
+        fetch(url, opts)
             .then(function(response) {
                 if (!response.ok) {
                     throw new Error("HTTP error, status = " + response.status);
@@ -144,6 +156,7 @@ class Search {
                 return response.text();
             })
             .then(function(response) {
+                targetDom.classList.remove('l-live-search__container--loading');
                 let responseDom = document.createRange().createContextualFragment(response);
 
                 targetDom.innerHTML = '';
@@ -152,11 +165,13 @@ class Search {
                 }
             })
             .catch(function(error) {
-                console.error(error);
+                if (error.name === 'AbortError') {
+                    console.debug('Request aborted');
+                }
+                else {
+                    console.error(error);
+                }
             })
-            .finally(function() {
-                targetDom.classList.remove('l-live-search__container--loading');
-            });
     }
 
     // Returns a function, that, as long as it continues to be invoked, will not
