@@ -106,6 +106,9 @@ class SearchService
         }
 
         $results->process();
+        
+        $this->logSearch($query, $results);
+        
         return $results;
     }
 
@@ -171,5 +174,31 @@ class SearchService
         } catch (StopWordsLanguageNotExists $e) {
         }
         return $map;
+    }
+
+    private function logSearch(SearchQuery $query, SearchResults $results)
+    {
+        try {
+            $fetch = $this->db->prepare('SELECT rowid,* FROM Searches WHERE search_query = :query LIMIT 1');
+            $fetch->bindValue(':query', $query->getQueryString());
+            if ($fetch->execute() && $log = $fetch->fetch(\PDO::FETCH_ASSOC)) {
+                $update = $this->db->prepare('UPDATE Searches SET result_count = :result_count, search_count = :search_count, last_seen = :last_seen WHERE ROWID = :rowid');
+                $update->bindValue('result_count', $results->getCount());
+                $update->bindValue('search_count', (int)$log['search_count'] + 1);
+                $update->bindValue('last_seen', time());
+                $update->bindValue('rowid', $log['rowid']);
+                $update->execute();
+            } else {
+                $insert = $this->db->prepare('INSERT INTO Searches (search_query, result_count, search_count, first_seen, last_seen) VALUES (:search_query, :result_count, 1, :first_seen, :last_seen)');
+                $insert->bindValue('search_query', $query->getQueryString());
+                $insert->bindValue('result_count', $results->getCount());
+                $insert->bindValue('first_seen', time());
+                $insert->bindValue('last_seen', time());
+                $insert->execute();
+            }
+        }
+        catch (\PDOException $e) {
+            // Silence logging errors.. not critical enough to bother
+        }
     }
 }

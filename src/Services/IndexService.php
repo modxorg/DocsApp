@@ -37,6 +37,7 @@ class IndexService
         // Grab the old page id
         $selectPageId = $this->db->prepare('SELECT ROWID FROM Search_Pages WHERE url = :url');
         $selectPageId->bindValue(':url', $uri);
+        $selectPageId->execute();
         $pageId = $selectPageId->fetchColumn();
 
         // Delete term associations, if any

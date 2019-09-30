@@ -94,6 +94,24 @@ class Init extends Command {
   title VARCHAR(190)
 )');
 
+
+        $db->exec('CREATE TABLE IF NOT EXISTS Searches (
+  search_query VARCHAR(190),
+  result_count INTEGER(10),
+  search_count INTEGER(10),
+  first_seen INTEGER(15),
+  last_seen INTEGER(15)
+)');
+        try {
+            $db->exec('CREATE INDEX search_query ON Searches (search_query)');
+            $db->exec('CREATE INDEX result_count ON Searches (result_count)');
+            $db->exec('CREATE INDEX first_seen ON Searches (first_seen)');
+            $db->exec('CREATE INDEX last_seen ON Searches (last_seen)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating index for Searches table: ' . $e->getMessage() . '</comment>');
+        }
+
         return 0;
     }
 }
