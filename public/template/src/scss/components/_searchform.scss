@@ -22,6 +22,10 @@
             border-color: #e2e8f0;
             background-color: #fff;
         }
+
+        @include breakpoint(small only) {
+            border: 1px solid map_get($colors, 'header-bg');
+        }
     }
 
     &__button {
