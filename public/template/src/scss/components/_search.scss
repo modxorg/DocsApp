@@ -9,10 +9,6 @@
     padding-top: 1rem;
     margin-top: 1rem;
 
-    &:last-child {
-        border-bottom: 1px solid map_get($colors, 'header-bg');
-    }
-
     .c-breadcrumb {
         margin-bottom: 0;
     }
@@ -125,7 +121,7 @@ $errorColor: map_get($colors, alert);
     padding: 0;
     margin: 0;
     max-height: 70vh;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .l-live-search__result {
     padding: 0;
