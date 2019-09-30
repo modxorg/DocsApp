@@ -16,6 +16,12 @@
     h4 {
         margin-top: 0;
     }
+
+    @include breakpoint(small only) {
+        &:first-child {
+            border-top: none;
+        }
+    }
 }
 
 .l-main-search__match, .l-live-search__match {
@@ -114,6 +120,14 @@ $errorColor: map_get($colors, alert);
     &--loading {
         pointer-events: none;
         opacity: 0.5;
+    }
+
+    @include breakpoint(small only) {
+        position: initial;
+        margin-top: 1em;
+        border-radius: 7px;
+        box-shadow: none;
+        border: 1px solid #3b68af;
     }
 }
 .l-live-search__results {

@@ -2,6 +2,10 @@
     position: relative;
     width: 100%;
 
+    @include breakpoint(small only) {
+        margin-top: 1rem;
+    }
+
     &__input {
         display: block;
         width: 100%;
@@ -37,4 +41,11 @@
         fill: #717171;
         vertical-align: middle;
     }
+}
+
+// Undo helpers.scss:14 for the searchform target; without this there's an unclickable area before the search.
+#searchform:target:before {
+    content: "";
+    height: 0;
+    margin: 0;
 }

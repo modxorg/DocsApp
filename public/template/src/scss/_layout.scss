@@ -54,6 +54,23 @@ html, body {
         @include breakpoint(xlarge) {
             margin: rem(0 50 0 75);
         }
+
+        @include breakpoint(small only) {
+            position: fixed;
+            width: 100%;
+            margin: 0 !important;
+            top: 3.75rem;
+            background: map-get($colors, 'body-bg');
+            height: calc(100vh - 2.25rem);
+            padding: 0 1rem 1rem 1rem;
+            transform: translateY(100%);
+            transition: transform .4s ease-in-out, -webkit-transform .4s ease-in-out;
+        }
+    }
+}
+@include breakpoint(small only) {
+    #searchform:target {
+        transform: translateY(0);
     }
 }
 
@@ -158,15 +175,15 @@ html, body {
 }
 
 @media (max-width: 768px) {
-    .o-openmenu{
+    .o-openmenu {
         order: 3;
         padding: 0 .9375rem 0 .9375rem !important;
     }
-    .l-header__search{
+    .o-search {
         order: 2;
-        margin: 0 0.475rem;
+        margin: 0 0.475rem 0 auto;
     }
-    .l-header__logo{
+    .l-header__logo {
         order: 1;
     }
 }

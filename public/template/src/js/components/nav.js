@@ -8,6 +8,7 @@ class Nav {
         let self = this;
         self.collapseNavigation();
         self.menuButtonToggle();
+        self.searchButtonToggle();
     }
 
     collapseNavigation() {
@@ -68,16 +69,29 @@ class Nav {
         let toggleButton = document.querySelector('a.o-openmenu');
         if (toggleButton) {
             toggleButton.addEventListener('click', (e) => {
-                // toggle state class
-                toggleButton.classList.toggle('o-openmenu--opened');
-                // after delay, toggle '#nav' in href attribute
-                setTimeout(function(){
-                    if (window.location.hash === '#nav') {
-                        toggleButton.href = toggleButton.href.replace('#nav', '#');
-                    } else {
-                        toggleButton.href = toggleButton.href.replace('#', '#nav');
-                    }
-                }, 100);
+                let isOpenBefore = window.location.hash === '#nav';
+                toggleButton.href = toggleButton.href.replace('#nav', '#').replace('#', isOpenBefore ? '#' : '#nav');
+                toggleButton.classList[isOpenBefore ? 'remove' : 'add']('o-openmenu--opened');
+                return true;
+            });
+        }
+    }
+
+    searchButtonToggle() {
+        // search button toggle
+        let toggleButton = document.querySelector('a.o-search'),
+            searchInput = document.getElementById('search');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', (e) => {
+                let isOpenBefore = window.location.hash === '#searchform';
+                toggleButton.href = toggleButton.href.replace('#searchform', '#').replace('#', isOpenBefore ? '#' : '#searchform');
+                toggleButton.classList[isOpenBefore ? 'remove' : 'add']('o-search--opened');
+                if (!isOpenBefore) {
+                    setTimeout(function() {
+                        console.log('setting focus', searchInput);
+                        searchInput.focus();
+                    }, 100);
+                }
                 return true;
             });
         }
