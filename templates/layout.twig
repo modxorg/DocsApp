@@ -22,6 +22,15 @@
         {% block scripts %}{% endblock %}
         {% if is_dev == true %}
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+        {% elseif analytics_id %}
+            <!-- Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{ analytics_id }}');
+            </script>
         {% endif %}
     </head>
     <body>

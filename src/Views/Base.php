@@ -37,6 +37,7 @@ abstract class Base
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
             'is_dev' => (bool) getenv('DEV'),
+            'analytics_id' => (string) getenv('ANALYTICS_ID'),
         ];
 
         return $this->view->render(
