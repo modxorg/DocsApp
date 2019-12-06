@@ -1,0 +1,82 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <main id="main" class="l-main">
+        <div class="l-main__title">
+            <nav class="c-breadcrumb" aria-label="Breadcrumb">
+                <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    {% for crumb in crumbs %}
+                        <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                <span itemprop="name">{{ crumb.title }}</span>
+                                <meta itemprop="position" content="{{ loop.index }}">
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </nav>
+
+            <h1 class="u-no-margin--top">
+                {{ page_title }}
+            </h1>
+        </div>
+
+        <div class="l-main__contentwrapper">
+            <div class="l-main__content">
+
+                <p>
+                    This page lists searches made on the documentation site. External searches are not shown.
+                </p>
+
+                <div class="c-callout c-callout--warning">
+                    The searches shown are <strong>unfiltered</strong>. It's easy to manipulate these listings, or for inappropriate results to be shown. They're meant to be informational only.
+                </div>
+
+                <h3>Top 50 most searched</h3>
+                <p>Search queries that were seen most often. Cached for 48 hours.</p>
+                <ul>
+                    {% for term in top_searches %}
+                        <li>
+                            <code>{{ term.search_query }}</code>
+                            <span>
+                                {{ term.search_count|number_format }} search{% if term.search_count > 1 %}es{% endif %} -
+                                {{ term.result_count|number_format }} result{% if term.result_count > 1 %}s{% endif %}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <h3>Top 50 without results</h3>
+                <p>Search queries with no, or limited results. Ordered by number of results, and then number of searches. Cached for 48 hours.</p>
+                <ul>
+                    {% for term in searches_without_results %}
+                        <li>
+                            <code>{{ term.search_query }}</code>
+                            <span>
+                                {{ term.search_count|number_format }} search{% if term.search_count > 1 %}es{% endif %} -
+                                {{ term.result_count|number_format }} result{% if term.result_count > 1 %}s{% endif %}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Last 50 searches</h3>
+                <p>50 most recent searches. Cached for 3 hours.</p>
+                <ul>
+                    {% for term in recent_searches %}
+                        <li>
+                            [{{ term.last_seen|date('H:i T') }}]
+                            <code>{{ term.search_query }}</code>
+                            <span>
+                                {{ term.search_count|number_format }} search{% if term.search_count > 1 %}es{% endif %} -
+                                {{ term.result_count|number_format }} result{% if term.result_count > 1 %}s{% endif %}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
