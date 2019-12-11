@@ -38,9 +38,6 @@ class Searches extends Base
      */
     public function get(Request $request, Response $response)
     {
-        // The PageRequest gives us the version/language/etc.
-        $pageRequest = PageRequest::fromRequest($request);
-
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Search Statistics', // @todo i18n

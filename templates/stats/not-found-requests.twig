@@ -1,0 +1,70 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <main id="main" class="l-main">
+        <div class="l-main__title">
+            <nav class="c-breadcrumb" aria-label="Breadcrumb">
+                <ol class="c-breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    {% for crumb in crumbs %}
+                        <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                                <span itemprop="name">{{ crumb.title }}</span>
+                                <meta itemprop="position" content="{{ loop.index }}">
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </nav>
+
+            <h1 class="u-no-margin--top">
+                {{ page_title }}
+            </h1>
+        </div>
+
+        <div class="l-main__contentwrapper">
+            <div class="l-main__content">
+
+                <p>
+                    This page lists requests made on the documentation site that ended up serving a 404 page not found.
+                </p>
+
+                <div class="c-callout c-callout--warning">
+                    The requests shown are <strong>unfiltered</strong>. It's easy to manipulate these listings, or for inappropriate results to be shown. They're meant to be informational only.
+                </div>
+
+                <h3>Top 50 most common requests</h3>
+                <p>Commonly occurring 404 requests. Cached for 12 hours.</p>
+                <ul>
+                    {% for request in top_requests %}
+                        <li>
+                            <code>{{ request.url }}</code>
+                            <span>
+                                {{ request.hit_count|number_format }} request{% if request.hit_count > 1 %}s{% endif %}
+                                -
+                                Last seen {{ request.last_seen|date('Y-m-d H:i T') }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Last 50 requests</h3>
+                <p>50 most recent requests that resulted in a page not found error. Cached for 3 hours.</p>
+                <ul>
+                    {% for request in recent_requests %}
+                        <li>
+                            <code>{{ request.url }}</code>
+                            <span>
+                                {{ request.hit_count|number_format }} request{% if request.hit_count > 1 %}s{% endif %}
+                                -
+                                Last seen {{ request.last_seen|date('Y-m-d H:i T') }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}

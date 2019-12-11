@@ -4,6 +4,7 @@ namespace MODXDocs;
 
 use MODXDocs\Containers\DB;
 use MODXDocs\Views\Search;
+use MODXDocs\Views\Stats\NotFoundRequests;
 use MODXDocs\Views\Stats\Searches;
 use Slim\App;
 use Slim\Http\Request;
@@ -34,6 +35,7 @@ class DocsApp
     {
         $this->app->get('/', Doc::class . ':get')->setName('home');
         $this->app->get('/stats/searches', Searches::class . ':get')->setName('stats/searches');
+        $this->app->get('/stats/page-not-found', NotFoundRequests::class . ':get')->setName('stats/page-not-found');
         $this->app->get('/{version}/{language}/search', Search::class . ':get')->setName('search');
         $this->app->get('/{version}/{language}/{path:.*}', Doc::class . ':get')->setName('documentation');
     }
