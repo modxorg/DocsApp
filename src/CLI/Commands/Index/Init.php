@@ -112,6 +112,30 @@ class Init extends Command {
             $output->writeln('<comment>Error creating index for Searches table: ' . $e->getMessage() . '</comment>');
         }
 
+        $db->exec('CREATE TABLE IF NOT EXISTS PageNotFound (
+  url VARCHAR(190),
+  hit_count INTEGER(10),
+  last_seen INTEGER(15)
+)');
+        try {
+            $db->exec('CREATE INDEX url ON PageNotFound (url)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('CREATE INDEX hit_count ON PageNotFound (hit_count)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('CREATE INDEX last_seen ON PageNotFound (last_seen)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
+        }
+
         return 0;
     }
 }
