@@ -3,6 +3,8 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Navigation\Tree;
+use MODXDocs\Services\VersionsService;
 use PDO;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
@@ -42,10 +44,15 @@ class NotFound extends Base
 
             $this->logNotFoundRequest($currentUri);
 
+            // Render the default tree on the 404 page
+            // @todo See if it's possible to use version/language specific trees without breaking when invalid
+            $tree = Tree::get(VersionsService::getCurrentVersion(), VersionsService::getDefaultLanguage());
+
             $pageRequest = PageRequest::fromRequest($request);
             return $this->render404($request, $response, [
                 'req_url' => urlencode($currentUri),
                 'page_title' => 'Oops, page not found.',
+                'nav' => $tree->renderTree($this->view),
 
                 'version' => $pageRequest->getVersion(),
                 'version_branch' => $pageRequest->getVersionBranch(),
