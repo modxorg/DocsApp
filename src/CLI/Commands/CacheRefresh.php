@@ -18,9 +18,9 @@ class CacheRefresh extends Command {
         $output->writeln('<info>Emptying caches...</info>');
 
         $directories = [
-            $root . 'nav/', // @deprecated, this was from the old NavigationService which is no longer being written to
             $root . 'rendered/',
             $root . 'twig/',
+            $root . 'stats/',
         ];
         foreach ($directories as $directory) {
             if (file_exists($directory) && is_dir($directory)) {
