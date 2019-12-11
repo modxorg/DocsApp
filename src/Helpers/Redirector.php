@@ -43,10 +43,19 @@ class Redirector
 
         $baseDir = '/';
 
+        $uriWithSlash = rtrim($uri, '/') . '/';
+        $uriWithoutSlash = rtrim($uri, '/');
+
         // First, check if the requested URI exists in the preferred version
         if (array_key_exists($preferredVersion, $redirects)) {
             if (array_key_exists($uri, $redirects[$preferredVersion])) {
                 return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uri];
+            }
+            if (array_key_exists($uriWithSlash, $redirects[$preferredVersion])) {
+                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uriWithSlash];
+            }
+            if (array_key_exists($uriWithoutSlash, $redirects[$preferredVersion])) {
+                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uriWithoutSlash];
             }
             unset($redirects[$preferredVersion]);
         }
@@ -55,6 +64,12 @@ class Redirector
         foreach ($redirects as $version => $options) {
             if (array_key_exists($uri, $options)) {
                 return $baseDir . $version . '/' . $options[$uri];
+            }
+            if (array_key_exists($uriWithSlash, $options)) {
+                return $baseDir . $version . '/' . $options[$uriWithSlash];
+            }
+            if (array_key_exists($uriWithoutSlash, $options)) {
+                return $baseDir . $version . '/' . $options[$uriWithoutSlash];
             }
         }
 
