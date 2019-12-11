@@ -64,7 +64,7 @@ class Redirector
 
     private static function cleanRequestUri($uri): string
     {
-        $uri = strtolower($uri);
+        $uri = urldecode(strtolower($uri));
         $uri = '/' . ltrim($uri, '/');
         $currentBranchString = '/' . VersionsService::getCurrentVersion() . '/';
 
