@@ -34,19 +34,26 @@ abstract class Base
             'version' => $pageRequest->getVersion(),
             'version_branch' => $pageRequest->getVersionBranch(),
             'language' => $pageRequest->getLanguage(),
+            'locale' => $pageRequest->getLocale(),
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
             'is_dev' => (bool) getenv('DEV'),
             'analytics_id' => (string) getenv('ANALYTICS_ID'),
         ];
 
+        $data = \array_merge(
+            $initialData,
+            $data
+        );
+
+        if (!array_key_exists('canonical_url', $data) || empty($data['canonical_url'])) {
+            $data['canonical_url'] = $data['canonical_base'] . ltrim($data['current_uri'], '/');
+        }
+
         return $this->view->render(
             $response,
             $template,
-            \array_merge(
-                $initialData,
-                $data
-            )
+            $data
         );
     }
 

@@ -6,7 +6,6 @@
         <meta name="description" content="{{ meta.description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="canonical" href="{{ canonical_url }}">
-
         {% if translations %}
             {% for langKey, relativeUri in translations %}
             <link rel="alternate" href="{{ canonical_base|trim('/', 'right') }}{{ relativeUri }}" hreflang="{{ langKey }}" />
@@ -15,11 +14,28 @@
         {% endif %}
 
         <link rel="shortcut icon" href="/favicon.ico" />
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="MODX Documentation">
+        <meta property="og:title" content="{{ block('title') }}">
+        <meta property="og:description" content="{{ meta.description }}">
+        <meta property="og:url" content="{{ canonical_url }}">
+        <meta property="og:locale" content="{{ locale }}">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="{{ block('title') }} | MODX">
+        <meta name="twitter:description" content="{{ meta.description }}">
+        <meta name="twitter:url" content="{{ canonical_url }}">
+        <meta name="twitter:domain" content="{{ canonical_base }}">
+        <meta name="twitter:site" content="@modx">
+
         <link rel="stylesheet" href="/template/dist/app.css?v={{ revision }}">
+
         {% block stylesheets %}{% endblock %}
+
         <script defer src="/template/dist/main-modern.js?v={{ revision }}" type="module"></script>
         <script defer src="/template/dist/main-legacy.js?v={{ revision }}" nomodule></script>
+
         {% block scripts %}{% endblock %}
+
         {% if is_dev == true %}
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
         {% elseif analytics_id %}
@@ -32,6 +48,7 @@
                 gtag('config', '{{ analytics_id }}');
             </script>
         {% endif %}
+
     </head>
     <body>
         <a href="#main" class="u-show-for-sr">Jump to main content</a>

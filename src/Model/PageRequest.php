@@ -70,4 +70,15 @@ class PageRequest {
     {
         return $this->versionBranch;
     }
+
+    public function getLocale(): string
+    {
+        switch ($this->language) {
+            case 'ru':
+                return 'ru_RU';
+            case 'nl':
+                return 'nl_NL';
+        }
+        return 'en_US';
+    }
 }
