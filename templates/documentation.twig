@@ -62,6 +62,22 @@
                 </small>
             </p>
 
+            {% if 'en' in suggested_languages %}
+            <div class="c-callout c-callout--info">
+                Hello! <a href="{{ path_for('documentation', {version: version, language: 'en', path: 'index'}) }}">The MODX documentation is also available in English</a>.
+            </div>
+            {% endif %}
+            {% if 'nl' in suggested_languages %}
+            <div class="c-callout c-callout--info">
+                Hoi! <a href="{{ path_for('documentation', {version: version, language: 'nl', path: 'index'}) }}">De MODX documentatie is ook (deels) in het Nederlandstalig beschikbaar</a>.
+            </div>
+            {% endif %}
+            {% if 'ru' in suggested_languages %}
+            <div class="c-callout c-callout--info">
+                Здравствуй! <a href="{{ path_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
+            </div>
+            {% endif %}
+
             {% if meta.suggest_delete %}
                 <div class="c-callout c-callout--warning">
                     This page is marked as a candidate to be deleted: {{ meta.suggest_delete }}

@@ -86,6 +86,8 @@ class Doc extends Base
             'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
             'translations' => $this->getTranslations($pageRequest),
+
+            'suggested_languages' => $this->getSuggestedLanguages($request, $pageRequest),
         ]);
     }
 
@@ -131,5 +133,48 @@ class Doc extends Base
         }
 
         throw new \Slim\Exception\NotFoundException($request, $response);
+    }
+
+    private function getSuggestedLanguages(Request $request, PageRequest $pageRequest)
+    {
+        // Only run on the homepage, suggest alternative languages
+        if ($request->getAttribute('path') !== null && $pageRequest->getPath() !== 'index') {
+            return [];
+        }
+
+        // Based on the wonderful https://www.codingwithjesse.com/blog/use-accept-language-header/
+        $requestedLanguages = [];
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            // break up string into pieces (languages and q factors)
+            preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
+
+            if (count($lang_parse[1])) {
+                // create a list like "en" => 0.8
+                $requestedLanguages = array_combine($lang_parse[1], $lang_parse[4]);
+
+                // set default to 1 for any without q factor
+                foreach ($requestedLanguages as $requestLanguage => $val) {
+                    if ($val === '') {
+                        $requestedLanguages[$requestLanguage] = 1;
+                    }
+                }
+
+                // sort list based on value
+                arsort($requestedLanguages, SORT_NUMERIC);
+            }
+        }
+
+        $currentLanguage = $pageRequest->getLanguage();
+        $suggestions = [];
+        $documentationLanguages = ['en', 'ru', 'nl'];
+        // look through sorted list and use first one that matches a supported language
+        foreach ($requestedLanguages as $requestLanguage => $priority) {
+            foreach ($documentationLanguages as $docLanguage) {
+                if ($docLanguage !== $currentLanguage && strpos($requestLanguage, $docLanguage) === 0) {
+                    $suggestions[] = $docLanguage;
+                }
+            }
+        }
+        return array_unique($suggestions);
     }
 }
