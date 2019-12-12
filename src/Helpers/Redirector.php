@@ -43,33 +43,34 @@ class Redirector
 
         $baseDir = '/';
 
-        $uriWithSlash = rtrim($uri, '/') . '/';
-        $uriWithoutSlash = rtrim($uri, '/');
+        // The uri may be stored in different formats in the redirects file, so we account for some different options
+        $decodedUri = urldecode($uri);
+        $possibilities = [
+            $uri,
+            rtrim($uri, '/') . '/',
+            rtrim($uri, '/'),
+            $decodedUri,
+            rtrim($decodedUri, '/') . '/',
+            rtrim($decodedUri, '/'),
+        ];
+        $possibilities = array_unique($possibilities);
 
         // First, check if the requested URI exists in the preferred version
         if (array_key_exists($preferredVersion, $redirects)) {
-            if (array_key_exists($uri, $redirects[$preferredVersion])) {
-                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uri];
-            }
-            if (array_key_exists($uriWithSlash, $redirects[$preferredVersion])) {
-                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uriWithSlash];
-            }
-            if (array_key_exists($uriWithoutSlash, $redirects[$preferredVersion])) {
-                return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uriWithoutSlash];
+            foreach ($possibilities as $possibility) {
+                if (array_key_exists($possibility, $redirects[$preferredVersion])) {
+                    return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uri];
+                }
             }
             unset($redirects[$preferredVersion]);
         }
 
-        // If not in the prefered version, check the others
+        // If not in the preferred version, check the others
         foreach ($redirects as $version => $options) {
-            if (array_key_exists($uri, $options)) {
-                return $baseDir . $version . '/' . $options[$uri];
-            }
-            if (array_key_exists($uriWithSlash, $options)) {
-                return $baseDir . $version . '/' . $options[$uriWithSlash];
-            }
-            if (array_key_exists($uriWithoutSlash, $options)) {
-                return $baseDir . $version . '/' . $options[$uriWithoutSlash];
+            foreach ($possibilities as $possibility) {
+                if (array_key_exists($possibility, $options)) {
+                    return $baseDir . $version . '/' . $options[$possibility];
+                }
             }
         }
 
@@ -79,7 +80,7 @@ class Redirector
 
     private static function cleanRequestUri($uri): string
     {
-        $uri = urldecode(strtolower($uri));
+        $uri = strtolower($uri);
         $uri = '/' . ltrim($uri, '/');
         $currentBranchString = '/' . VersionsService::getCurrentVersion() . '/';
 
