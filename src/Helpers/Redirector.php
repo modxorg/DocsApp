@@ -12,6 +12,7 @@ class Redirector
         $uri = static::cleanRequestUri($uri);
 
         $preferredVersion = VersionsService::getCurrentVersionBranch();
+        $preferredVersionUrl = VersionsService::getCurrentVersion();
         $redirects = [];
 
         // Start by collecting the available redirects per version
@@ -28,6 +29,9 @@ class Redirector
             // version accordingly, and removing the version from the uri we're looking for
             if (substr($uri, 1, \strlen($key)) === $key) {
                 $preferredVersion = $key;
+                $preferredVersionUrl = $preferredVersion === VersionsService::getCurrentVersionBranch()
+                    ? VersionsService::getCurrentVersion()
+                    : $key;
                 $uri = substr($uri, 1 + \strlen($preferredVersion));
             }
 
@@ -59,7 +63,7 @@ class Redirector
         if (array_key_exists($preferredVersion, $redirects)) {
             foreach ($possibilities as $possibility) {
                 if (array_key_exists($possibility, $redirects[$preferredVersion])) {
-                    return $baseDir . VersionsService::getCurrentVersion() . '/' . $redirects[$preferredVersion][$uri];
+                    return $baseDir . $preferredVersionUrl . '/' . $redirects[$preferredVersion][$uri];
                 }
             }
             unset($redirects[$preferredVersion]);
