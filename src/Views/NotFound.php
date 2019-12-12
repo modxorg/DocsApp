@@ -3,7 +3,9 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Model\SearchQuery;
 use MODXDocs\Navigation\Tree;
+use MODXDocs\Services\SearchService;
 use MODXDocs\Services\VersionsService;
 use PDO;
 use Psr\Container\ContainerInterface;
@@ -17,6 +19,9 @@ class NotFound extends Base
 {
     private const MARKDOWN_SUFFIX = '.md';
 
+    /** @var SearchService */
+    private $searchService;
+
     /** @var PDO */
     private $db;
 
@@ -24,6 +29,7 @@ class NotFound extends Base
     {
         parent::__construct($container);
         $this->db = $container->get('db');
+        $this->searchService = $this->container->get(SearchService::class);
     }
 
     public function get(Request $request, Response $response)
@@ -48,6 +54,26 @@ class NotFound extends Base
             // @todo See if it's possible to use version/language specific trees without breaking when invalid
             $tree = Tree::get(VersionsService::getCurrentVersion(), VersionsService::getDefaultLanguage());
 
+            // Prepare a somewhat normalised search query
+            $query = str_replace(['-', '_', '+', '/'], ' ', strtolower(urldecode($currentUri)));
+            $query = explode(' ', $query);
+            // Filter out some common old url structures
+            $query = array_diff($query, ['display', 'revolution20', 'revo', '_legacy', '1.x', '2.x']);
+            $query = trim(implode(' ', $query));
+
+            // Run the search
+            $pageRequest = new PageRequest(VersionsService::getCurrentVersion(), VersionsService::getDefaultLanguage(), '');
+            $sq = new SearchQuery($this->searchService, $query, $pageRequest, false);
+            $result = $this->searchService->execute($sq);
+
+            // Maximum 5 results, with a score of at least 30 (75% confidence)
+            $pageIDs = $result->getResults(0, 5);
+            $pageIDs = array_filter($pageIDs, static function($value) {
+                return $value >= 30;
+            });
+
+            $searchResults = $this->searchService->populateResults($pageRequest, $result, $pageIDs);
+
             return $this->render404($request, $response, [
                 'req_url' => urlencode($currentUri),
                 'page_title' => 'Oops, page not found.',
@@ -56,6 +82,10 @@ class NotFound extends Base
                 'version' => VersionsService::getCurrentVersion(),
                 'version_branch' => VersionsService::getCurrentVersionBranch(),
                 'language' => VersionsService::getDefaultLanguage(),
+
+                'search_results' => $searchResults,
+                'search_query' => $query,
+                'terms' => $sq->getAllTerms(),
 
                 // We always disregard the path here, because we know the request is always invalid
                 'path' => null,
@@ -85,5 +115,10 @@ class NotFound extends Base
         catch (\PDOException $e) {
             // Silence logging errors.. not interesting
         }
+    }
+
+    private function searchForPage(string $currentUri)
+    {
+
     }
 }

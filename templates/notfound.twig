@@ -4,19 +4,37 @@
 
 {% block content %}
     <main class="l-main">
-        <h1>Oops, page not found</h1>
-        <p>We're sorry, but it appears that you've come across a page that does not exist.</p>
 
-        <div class="c-callout">
-            Try using the search at the top of the page to find what you're looking for.
+        <div class="l-main__contentwrapper">
+
+            <div class="l-main__content">
+                <h1>Page not found</h1>
+                <p>Uh oh, you've reached a page that does not exist.</p>
+                <p>It may have gotten lost on <a href="https://community.modx.com/t/improving-the-modx-documentation/379" target="_blank" rel="noopener">the new documentation platform</a> or it was removed because it was no longer relevant. It could also be a really old link from two (or more) documentation systems ago, which is not part of the 2000+ automatic redirects currently in place.</p>
+
+                {% if search_results|length > 0 %}
+                    <p>Based on your request, this may be what you're looking for:</p>
+
+                    <ul class="l-main-search__container">
+                        {% for result in search_results %}
+                            {% include "partials/search_result.twig" with {result: result} %}
+                        {% endfor %}
+                    </ul>
+
+
+                    <div class="l-search__pagination">
+                        <ul class="l-search__pagination-holder">
+                            <li class="l-search-page l-search-page--active">
+                                <a href="{{ path_for('search', {version: version, language: language}, {q: search_query}) }}" class="l-search-page__link l-search-page__link--active">
+                                    More results for "{{ search_query }}"
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <p>Please use the search at the top to find what you're looking for.</p>
+                {% endif %}
+            </div>
         </div>
-
-        <p>As you may notice, this is a new documentation space. It has been <a href="https://community.modx.com/t/improving-the-modx-documentation/379" target="_blank" rel="noopener">in the works as a community project for a while now</a> and allows <a href="https://github.com/modxorg/Docs" target="_blank" rel="noopener">anyone to contribute via GitHub</a>. While there are over 2,000 redirects in place to help you find your way, it is possible an old link (okay, <em>maybe</em> two) are missing.</p>
-
-        <p>Fun fact: you can help fix this error!</p>
-        <ul>
-            <li><a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/redirects.json" target="_blank" rel="noopener">Propose a new redirect if you know where this page should go</a>.</li>
-            <li>Or <a href="https://github.com/modxorg/Docs/issues/new?title=Page+not+found:+{{ current_uri|url_encode }}&template=not_found.md" target="_blank" rel="noopener">report a broken link</a>.</li>
-        </ul>
     </main>
 {% endblock %}

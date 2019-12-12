@@ -1,0 +1,34 @@
+
+<li class="l-main-search__result">
+    <details class="l-main-search__match">
+        <summary>Score: <b>{{ result.score }}</b>/100</summary>
+        <ul>
+            {% for match in result.details %}
+                <li>
+                    {% if match[0] %} {# = exact #}
+                        Exact match on
+                    {% else %}
+                        Fuzzy match
+                    {% endif %}
+                    <code>{{ terms[match[1]] }}</code> with weight <code>{{ match[2] }}</code>
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Total weight <code>{{ result.weight }}</code> (= a score of <code>{{ result.weight }} / 40 * 100 = {{ result.score }}</code>)</p>
+    </details>
+
+    <nav class="c-breadcrumb" aria-label="Breadcrumb">
+        <ol class="c-breadcrumb__list" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+            {% for crumb in result.crumbs %}
+                <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="c-breadcrumb__link" href="{{ crumb.href }}" itemtype="https://schema.org/Thing" itemprop="item">
+                        <span itemprop="name">{{ crumb.title }}</span>
+                        <meta itemprop="position" content="{{ loop.index }}">
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+    </nav>
+    <h4><a href="{{ result.link }}">{{ result.title }}</a></h4>
+    <p>{{ result.snippet|raw }}</p>
+</li>

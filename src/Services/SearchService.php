@@ -2,6 +2,8 @@
 
 namespace MODXDocs\Services;
 
+use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Model\PageRequest;
 use MODXDocs\Model\SearchQuery;
 use MODXDocs\Model\SearchResults;
 use voku\helper\StopWords;
@@ -174,6 +176,62 @@ class SearchService
         } catch (StopWordsLanguageNotExists $e) {
         }
         return $map;
+    }
+
+    public function populateResults(PageRequest $pageRequest, SearchResults $result, array $pageIDs): array
+    {
+        $return = [];
+        $metas = $this->getPageMetas(array_keys($pageIDs));
+
+        foreach ($pageIDs as $id => $score) {
+            $sr = $metas[$id] ?? [];
+            $sr['link'] = str_replace('/' . $pageRequest->getVersionBranch() . '/', '/' . $pageRequest->getVersion() . '/', $sr['link']);
+            $sr['weight'] = $score;
+            $sr['score'] = (int)($pageIDs[$id] / 40 * 100);
+            $sr['details'] = $result->getDetailedMatches($id);
+
+            $sr['crumbs'] = [];
+            $sr['snippet'] = '';
+
+            try {
+                $document = $this->documentService->load(
+                    new PageRequest(
+                        $pageRequest->getVersion(),
+                        $pageRequest->getLanguage(),
+                        str_replace(
+                            '/' . $pageRequest->getVersion() . '/' . $pageRequest->getLanguage() . '/',
+                            '',
+                            $sr['link']
+                        )
+                    )
+                );
+
+                $parent = $document;
+                while ($parent = $parent->getParentPage()) {
+                    $sr['crumbs'][] = [
+                        'title' => $parent->getTitle(),
+                        'href' => $parent->getUrl(),
+                    ];
+                }
+                $sr['crumbs'] = array_reverse($sr['crumbs']);
+
+                $meta = $document->getMeta();
+                if (array_key_exists('description', $meta) && !empty($meta['description'])) {
+                    $sr['snippet'] = $meta['description'];
+                }
+                else {
+                    $body = $document->getRenderedBody();
+                    $body = strip_tags($body);
+                    $sr['snippet'] = mb_substr($body, 0, 250) . (mb_strlen($body) > 255 ? '...' : '');
+                }
+            } catch (NotFoundException $e) {
+                $sr['snippet'] = '<em>Unable to load result details.</em>';
+            }
+
+            $return[] = $sr;
+        }
+
+        return $return;
     }
 
     private function logSearch(SearchQuery $query, SearchResults $results)
