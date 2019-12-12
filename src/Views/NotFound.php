@@ -48,15 +48,14 @@ class NotFound extends Base
             // @todo See if it's possible to use version/language specific trees without breaking when invalid
             $tree = Tree::get(VersionsService::getCurrentVersion(), VersionsService::getDefaultLanguage());
 
-            $pageRequest = PageRequest::fromRequest($request);
             return $this->render404($request, $response, [
                 'req_url' => urlencode($currentUri),
                 'page_title' => 'Oops, page not found.',
                 'nav' => $tree->renderTree($this->view),
 
-                'version' => $pageRequest->getVersion(),
-                'version_branch' => $pageRequest->getVersionBranch(),
-                'language' => $pageRequest->getLanguage(),
+                'version' => VersionsService::getCurrentVersion(),
+                'version_branch' => VersionsService::getCurrentVersionBranch(),
+                'language' => VersionsService::getDefaultLanguage(),
 
                 // We always disregard the path here, because we know the request is always invalid
                 'path' => null,
