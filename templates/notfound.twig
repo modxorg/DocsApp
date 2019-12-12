@@ -5,10 +5,18 @@
 {% block content %}
     <main class="l-main">
         <h1>Oops, page not found</h1>
-        <p>We're sorry, but it appears that you've come across a broken link.</p>
+        <p>We're sorry, but it appears that you've come across a page that does not exist.</p>
 
-        <p>
-            <a href="https://github.com/modxorg/Docs/issues/new?title=Page+not+found:+{{ current_uri|url_encode }}&template=not_found.md" target="_blank" rel="noopener" class="btn">Report broken link on GitHub</a>
-        </p>
+        <div class="c-callout">
+            Try using the search at the top of the page to find what you're looking for.
+        </div>
+
+        <p>As you may notice, this is a new documentation space. It has been <a href="https://community.modx.com/t/improving-the-modx-documentation/379" target="_blank" rel="noopener">in the works as a community project for a while now</a> and allows <a href="https://github.com/modxorg/Docs" target="_blank" rel="noopener">anyone to contribute via GitHub</a>. While there are over 2,000 redirects in place to help you find your way, it is possible an old link (okay, <em>maybe</em> two) are missing.</p>
+
+        <p>Fun fact: you can help fix this error!</p>
+        <ul>
+            <li><a href="https://github.com/modxorg/Docs/edit/{{ version_branch }}/redirects.json" target="_blank" rel="noopener">Propose a new redirect if you know where this page should go</a>.</li>
+            <li>Or <a href="https://github.com/modxorg/Docs/issues/new?title=Page+not+found:+{{ current_uri|url_encode }}&template=not_found.md" target="_blank" rel="noopener">report a broken link</a>.</li>
+        </ul>
     </main>
 {% endblock %}
