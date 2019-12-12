@@ -51,7 +51,7 @@
                 <div class="l-header__search" id="searchform">
                     <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
                         <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
-                        <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" required>
+                        <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" autocomplete="off" required>
                         <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
                             {{ icon('search', 'Search', 'c-searchform__icon') }}
                         </button>
