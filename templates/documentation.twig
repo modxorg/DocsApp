@@ -111,3 +111,17 @@
 
     </main>
 {% endblock %}
+
+{% block footer_scripts %}
+    {# Make the search autofocus on the homepage #}
+    {% if path == 'index' %}
+        <script>
+            (function() {
+                var search = document.getElementById('search');
+                if (search) {
+                    search.focus();
+                }
+            })()
+        </script>
+    {% endif %}
+{% endblock %}
