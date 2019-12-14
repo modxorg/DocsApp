@@ -28,15 +28,24 @@
     &__listwrapper {
         position: absolute;
         top: $header-height - rem(1);
-        right: 0;
         display: none;
         background: map-get($colors, 'header-bg');
         box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
 
+        @include breakpoint(xxlarge) {
+            right: auto;
+        }
+        @include breakpoint(1440 down) {
+            right: 0;
+        }
+        @include breakpoint(768 down) {
+            right: auto;
+        }
+
         &:target {
             display: block;
 
-            @include breakpoint($sidebar-breakpoint) {
+            @include breakpoint(medium up) {
                 display: flex;
             }
 
