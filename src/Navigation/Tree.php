@@ -50,6 +50,9 @@ class Tree {
 
     private static function _getNestedItems($root, $directoryPrefix, $directoryPath, $version, $language, $level): array
     {
+        if (!file_exists($directoryPath) || !is_dir($directoryPath)) {
+            return [];
+        }
         $nav = [];
         $dir = new \DirectoryIterator($directoryPath);
         foreach ($dir as $file) {
