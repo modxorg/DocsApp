@@ -58,65 +58,69 @@
                     </button>
                 </form>
 
-                <div class="l-search__meta">
-                    <p class="l-search__timing">
-                        Search took {{ timing }}ms
-                    </p>
-
-                    {% if ignored_terms %}
-                        <p class="l-search__ignored">
-                            {% if ignored_terms|length > 1 %}
-                                The words <b>"{{ ignored_terms|join('", "') }}"</b> are ignored because they are too short or common stopwords.
-                            {% else %}
-                                <b>"{{ ignored_terms|join('') }}"</b> is ignored because it is too short or a common stopword.
-                            {% endif %}
+                {% if search_query %}
+                    <div class="l-search__meta">
+                        <p class="l-search__timing">
+                            Search took {{ timing }}ms
                         </p>
-                    {% endif %}
 
-                    {% if fuzzy_terms %}
-                        <p class="l-search__tip">
-                            Using fuzzy matching. Wrap words in <code>"double" "quotes"</code> to find exact matches.
-                        </p>
-                    {% endif %}
+                        {% if ignored_terms %}
+                            <p class="l-search__ignored">
+                                {% if ignored_terms|length > 1 %}
+                                    The words <b>"{{ ignored_terms|join('", "') }}"</b> are ignored because they are too short or common stopwords.
+                                {% else %}
+                                    <b>"{{ ignored_terms|join('') }}"</b> is ignored because it is too short or a common stopword.
+                                {% endif %}
+                            </p>
+                        {% endif %}
 
-                </div>
+                        {% if fuzzy_terms %}
+                            <p class="l-search__tip">
+                                Using fuzzy matching. Wrap words in <code>"double" "quotes"</code> to find exact matches.
+                            </p>
+                        {% endif %}
 
-                {% if result_count > 0 %}
-                    <ul class="l-main-search__container">
-                        {% for result in results %}
-                            {% include "partials/search_result.twig" with {result: result} %}
-                        {% endfor %}
-                    </ul>
+                    </div>
 
-                    {% if pagination|length > 1 %}
-                    <div class="l-search__pagination">
-                        <ul class="l-search__pagination-holder">
-                            {% for page in pagination %}
-                            <li class="l-search-page {% if page.current %}l-search-page--active{% endif %}">
-                                <a href="{{ page.href }}" class="l-search-page__link {% if page.current %}l-search-page__link--active{% endif %}">{{ page.page|raw }}</a>
-                            </li>
+                    {% if result_count > 0 %}
+                        <ul class="l-main-search__container">
+                            {% for result in results %}
+                                {% include "partials/search_result.twig" with {result: result} %}
                             {% endfor %}
                         </ul>
-                    </div>
+
+                        {% if pagination|length > 1 %}
+                        <div class="l-search__pagination">
+                            <ul class="l-search__pagination-holder">
+                                {% for page in pagination %}
+                                <li class="l-search-page {% if page.current %}l-search-page--active{% endif %}">
+                                    <a href="{{ page.href }}" class="l-search-page__link {% if page.current %}l-search-page__link--active{% endif %}">{{ page.page|raw }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    {% elseif search_query %}
+
+                        <p class="l-search__no_results">
+                            No results found for your search. :(
+                        </p>
                     {% endif %}
-                {% elseif search_query %}
 
-                    <p class="l-search__no_results">
-                        No results found for your search. :(
-                    </p>
+                    <div class="l-search__matchers">
+                        <details>
+                            <summary>See terms used for this search</summary>
+                            {% if exact_terms %}
+                                <p>Exact terms (100% weight): <code>{{ exact_terms|join(' || ') }}</code></p>
+                            {% endif %}
+                            {% if fuzzy_terms %}
+                                <p>Fuzzy terms (75% weight): <code>{{ fuzzy_terms|join(' || ') }}</code></p>
+                            {% endif %}
+                        </details>
+                    </div>
+                {% else %}
+                    <p>Please enter a search term. Wrap terms in <code>"double" "quotes"</code> to only include exact matches.</p>
                 {% endif %}
-
-                <div class="l-search__matchers">
-                    <details>
-                        <summary>See terms used for this search</summary>
-                        {% if exact_terms %}
-                            <p>Exact terms (100% weight): <code>{{ exact_terms|join(' || ') }}</code></p>
-                        {% endif %}
-                        {% if fuzzy_terms %}
-                            <p>Fuzzy terms (75% weight): <code>{{ fuzzy_terms|join(' || ') }}</code></p>
-                        {% endif %}
-                    </details>
-                </div>
             </div>
         </div>
 

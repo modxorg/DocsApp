@@ -47,50 +47,67 @@ class Search extends Base
 
         $query = trim((string)$request->getParam('q', ''));
 
+        $title = 'Search the documentation';
+        $live = (bool)$request->getParam('live');
+
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Search ' . $pageRequest->getVersion(), // @todo i18n
             'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()])
         ];
-        $crumbs[] = [
-            'title' => '"' . $query . '"',
-            'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query])
-        ];
 
-        $startTime = microtime(true);
-        $live = (bool)$request->getParam('live');
-        $sq = new SearchQuery($this->searchService, $query, $pageRequest, $live);
-
-        $result = $this->searchService->execute($sq);
-        $resultCount = $result->getCount();
-
-        $limit = 10;
-        $page = abs((int)$request->getParam('page', 1));
-        $totalPages = ceil($resultCount / $limit);
-        $start = 0 + ($page - 1) * $limit;
-
-        $pageIDs = $result->getResults($start, $limit);
-        $results = $this->searchService->populateResults($pageRequest, $result, $pageIDs);
-
-        $title = 'Search the documentation';
-        $pagination = [];
+        $searchValues = [];
         if (!empty($query)) {
-            if ($resultCount > 0) {
-                $title = $resultCount . ' results for "' . $query . '"';
-                $pagination = $this->getPagination($page, $pageRequest, $query, $totalPages);
-            }
-            else {
-                $title = 'No results for "' . $query . '"';
-            }
-        }
+            $crumbs[] = [
+                'title' => '"' . $query . '"',
+                'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query])
+            ];
 
+            $startTime = microtime(true);
+            $sq = new SearchQuery($this->searchService, $query, $pageRequest, $live);
+
+            $result = $this->searchService->execute($sq);
+            $resultCount = $result->getCount();
+
+            $limit = 10;
+            $page = abs((int)$request->getParam('page', 1));
+            $totalPages = ceil($resultCount / $limit);
+            $start = 0 + ($page - 1) * $limit;
+
+            $pageIDs = $result->getResults($start, $limit);
+            $results = $this->searchService->populateResults($pageRequest, $result, $pageIDs);
+
+            $pagination = [];
+            if (!empty($query)) {
+                if ($resultCount > 0) {
+                    $title = $resultCount . ' results for "' . $query . '"';
+                    $pagination = $this->getPagination($page, $pageRequest, $query, $totalPages);
+                }
+                else {
+                    $title = 'No results for "' . $query . '"';
+                }
+            }
+
+            $searchValues = [
+                'timing' => number_format((microtime(true) - $startTime) * 1000),
+                'terms' => $sq->getAllTerms(),
+                'exact_terms' => $sq->getExactTerms(),
+                'fuzzy_terms' => $sq->getFuzzyTerms(),
+                'ignored_terms' => $sq->getIgnoredTerms(),
+                'pagination' => $pagination,
+            ];
+        }
+        else {
+            $resultCount = 0;
+            $results = [];
+        }
 
         $tree = Tree::get($pageRequest->getVersion(), $pageRequest->getLanguage());
         $tree->setActivePath($pageRequest->getContextUrl() . $pageRequest->getPath());
 
         $template = $live ? 'search_ajax.twig' : 'search.twig';
 
-        return $this->render($request, $response, $template, [
+        $values = array_merge([
             'page_title' => $title,
             'search_query' => $query,
             'result_count' => $resultCount,
@@ -99,14 +116,9 @@ class Search extends Base
             'canonical_url' => '',
             'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
+        ], $searchValues);
 
-            'timing' => number_format((microtime(true) - $startTime) * 1000),
-            'terms' => $sq->getAllTerms(),
-            'exact_terms' => $sq->getExactTerms(),
-            'fuzzy_terms' => $sq->getFuzzyTerms(),
-            'ignored_terms' => $sq->getIgnoredTerms(),
-            'pagination' => $pagination,
-        ]);
+        return $this->render($request, $response, $template, $values);
     }
 
     protected function getPagination(int $page, PageRequest $pageRequest, string $query, int $totalPages): array
