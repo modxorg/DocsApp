@@ -20,7 +20,7 @@ class TranslationService
     public function getAvailableTranslations(PageRequest $request): array
     {
         $language = $request->getLanguage();
-        $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';
+        $q = 'SELECT * FROM Translations WHERE ' . $this->db->quote($language) . ' = :uri';
         $stmt = $this->db->prepare($q);
         $stmt->bindValue(':uri', $request->getActualContextUrl() . $request->getPath());
 
