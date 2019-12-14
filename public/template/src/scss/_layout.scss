@@ -176,15 +176,23 @@ html, body {
 
 @media (max-width: 768px) {
     .o-openmenu {
-        order: 3;
+        order: 4;
         padding: 0 .9375rem 0 .9375rem !important;
     }
-    .o-search {
-        order: 2;
+    .o-search, .l-header__search {
+        order: 3;
         margin: 0 0.475rem 0 auto;
+    }
+    .l-header__versionswitch {
+        order: 2;
+
+        .c-optionswitch__listwrapper {
+            right: auto;
+        }
     }
     .l-header__logo {
         order: 1;
+        max-width: 25%;
     }
 }
 @media (max-width: 425px) {

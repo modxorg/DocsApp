@@ -4,6 +4,7 @@
     &__image {
         display: block;
         width: rem(170);
+        max-width: 100%;
         height: $header-height;
         fill: map-get($colors, 'header-text');
 
@@ -30,10 +31,6 @@
     margin: rem(0);
     padding: rem(0 15 0 30);
 
-    @include breakpoint($sidebar-breakpoint) {
-        display: none;
-    }
-
     &__icon {
         display: block;
         width: rem(29);
@@ -48,6 +45,16 @@
         }
     }
     */
+}
+@include breakpoint($sidebar-breakpoint) {
+    .o-openmenu {
+        display: none;
+    }
+}
+@include breakpoint(medium) {
+    .o-search {
+        display: none;
+    }
 }
 @include breakpoint(small only) {
     .o-search {

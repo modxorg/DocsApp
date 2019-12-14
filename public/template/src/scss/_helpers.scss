@@ -39,7 +39,7 @@
 
         background: svg-url('
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 76">
-            <g fill="#000" fill-rule="nonzero">
+            <g fill="#{map-get($colors, 'body-text')}" fill-rule="nonzero">
                 <path d="M27.37215 46.13316994L72.34371002 1.16160993l2.61627 2.61627L29.98842 48.74943995z"/>
                 <path d="M75.6 28.7h-3.8V4.4H47.4V.6h28.2zM68.1 75.6H.6V8.1h33.7v3.8h-30v60h60v-30h3.8z"/>
             </g>

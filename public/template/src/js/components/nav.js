@@ -7,8 +7,21 @@ class Nav {
     constructor() {
         let self = this;
         self.collapseNavigation();
-        self.menuButtonToggle();
-        self.searchButtonToggle();
+
+        let menuButton = document.querySelector('a.o-openmenu');
+        if (menuButton) {
+            self.handleToggle(menuButton, 'nav');
+        }
+
+        let searchButton = document.querySelector('a.o-search');
+        if (searchButton) {
+            self.handleToggle(searchButton, 'searchform');
+        }
+
+        let langSwitch = document.querySelector('a.c-optionswitch__current');
+        if (langSwitch) {
+            self.handleToggle(langSwitch, 'switchsettings');
+        }
     }
 
     collapseNavigation() {
@@ -64,37 +77,20 @@ class Nav {
         }
     }
 
-    menuButtonToggle() {
-        // menu button toggle
-        let toggleButton = document.querySelector('a.o-openmenu');
-        if (toggleButton) {
-            toggleButton.addEventListener('click', (e) => {
-                let isOpenBefore = window.location.hash === '#nav';
-                toggleButton.href = toggleButton.href.replace('#nav', '#').replace('#', isOpenBefore ? '#' : '#nav');
-                toggleButton.classList[isOpenBefore ? 'remove' : 'add']('o-openmenu--opened');
-                return true;
-            });
-        }
-    }
-
-    searchButtonToggle() {
-        // search button toggle
-        let toggleButton = document.querySelector('a.o-search'),
-            searchInput = document.getElementById('search');
-        if (toggleButton) {
-            toggleButton.addEventListener('click', (e) => {
-                let isOpenBefore = window.location.hash === '#searchform';
-                toggleButton.href = toggleButton.href.replace('#searchform', '#').replace('#', isOpenBefore ? '#' : '#searchform');
-                toggleButton.classList[isOpenBefore ? 'remove' : 'add']('o-search--opened');
-                if (!isOpenBefore) {
-                    setTimeout(function() {
-                        console.log('setting focus', searchInput);
-                        searchInput.focus();
-                    }, 100);
+    handleToggle(element, anchor) {
+        element.addEventListener('click', (e) => {
+            // toggle state class
+            element.classList.toggle('is--opened');
+            // after delay, toggle '#nav' in href attribute
+            setTimeout(function(){
+                if (window.location.hash === '#'+anchor) {
+                    element.href = element.href.replace('#'+anchor, '#');
+                } else {
+                    element.href = element.href.replace('#', '#'+anchor);
                 }
-                return true;
-            });
-        }
+            }, 100);
+            return true;
+        });
     }
 }
 

@@ -19,8 +19,22 @@ class TranslationService
 
     public function getAvailableTranslations(PageRequest $request): array
     {
+        /**
+         * Index pages don't show up in the translation index - so return them manually.
+         */
+        if ($request->getPath() === 'index') {
+            return [
+                'en' => '/' . $request->getVersionBranch() . '/en/index',
+                'ru' => '/' . $request->getVersionBranch() . '/ru/index',
+                'nl' => '/' . $request->getVersionBranch() . '/nl/index',
+            ];
+        }
+
         $language = $request->getLanguage();
-        $q = 'SELECT * FROM Translations WHERE ' . $this->db->quote($language) . ' = :uri';
+        if (!in_array($language, ['nl', 'ru', 'en'])) {
+            $language = 'en';
+        }
+        $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';
         $stmt = $this->db->prepare($q);
         $stmt->bindValue(':uri', $request->getActualContextUrl() . $request->getPath());
 

@@ -59,6 +59,7 @@
                 <a href="#nav" title="Open Menu" class="o-openmenu">
                     {{ icon('menu', 'Menu', 'o-openmenu__icon', null, 'aria-hidden="true"') }}
                 </a>
+
                 <a href="{{ logo_link }}" title="MODX Docs" class="l-header__logo o-logo">
                     {{ icon('logo', 'MODX Docs', 'o-logo__image') }}
                 </a>
@@ -75,6 +76,66 @@
                     </form>
 
                     <div class="l-live-search__container"></div>
+                </div>
+
+                <div class="l-header__versionswitch">
+                    <nav class="c-optionswitch" arial-label="Language and version settings">
+                        {% set _languages = {
+                            "en": {
+                                "en": "English",
+                                "local": "English"
+                            },
+                            "ru": {
+                                "en": "Russian",
+                                "local": "Русский"
+                            },
+                            "nl": {
+                                "en": "Dutch",
+                                "local": "Nederlands"
+                            }
+                        } %}
+                        <a class="c-optionswitch__current" lang="en" href="#switchsettings" aria-label="Change website language or documentation version">
+                            {{ _languages[language].en }}
+                            /
+                            {{ version_branch }}
+                            {{ icon('chevron', '', 'c-optionswitch__currentchevron', '', 'aria-hidden="true"') }}
+                        </a>
+                        <div id="switchsettings" class="c-optionswitch__listwrapper">
+                            {% set showPageNote = false %}
+                            <ul class="c-optionswitch__list" aria-label="Languages">
+                                {% for langKey, langInfo in _languages %}
+                                    {% set link = translations[langKey] ?? path_for('documentation', { version: version, language: langKey, path: 'index'}) %}
+                                    <li class="c-optionswitch__item {% if langKey == language %}c-optionswitch__item--active{% endif %}">
+                                        <a class="c-optionswitch__link" hreflang="{{ langKey }}" rel="alternate" href="{{ link }}">
+                                            <span class="" lang="{{ langKey }}" aria-describedby="lang-{{ langKey }}-en">{{ langInfo.local }}</span>
+                                            <span class="c-optionswitch__translation" lang="en" id="lang-{{ langKey }}-en">{{ langInfo.en }}</span>
+                                            {% if not translations[langKey] %}
+                                                *
+                                                {% set showPageNote = true %}
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% if showPageNote %}
+                                <li class="c-optionswitch__note">
+                                    <small>* This page is not yet translated.</small>
+                                </li>
+                                {% endif %}
+                            </ul>
+                            <ul class="c-optionswitch__list" aria-label="Versions">
+                                <li class="c-optionswitch__item c-optionswitch__item--active">
+                                    <a class="c-optionswitch__link" rel="alternate" href="/2.x/{{language}}/index">
+                                        2.x (current)
+                                    </a>
+                                </li>
+                                <li class="c-optionswitch__item">
+                                    <a class="c-optionswitch__link" rel="alternate" href="/3.x/{{language}}/index">
+                                        3.x
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
             </header>
 
