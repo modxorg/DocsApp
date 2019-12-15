@@ -21,13 +21,11 @@ class Doc extends Base
     /** @var DocumentService */
     private $documentService;
     /** @var VersionsService */
-    private $versionsService;
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->documentService = $this->container->get(DocumentService::class);
-        $this->versionsService = $this->container->get(VersionsService::class);
         $this->translationService = $this->container->get(TranslationService::class);
     }
 
@@ -83,7 +81,7 @@ class Doc extends Base
             'toc' => $page->getTableOfContents(),
             'relative_file_path' => $page->getRelativeFilePath(),
 
-            'versions' => $this->versionsService->getVersions($pageRequest),
+//            'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
             'translations' => $this->getTranslations($pageRequest),
 

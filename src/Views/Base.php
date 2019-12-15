@@ -16,11 +16,14 @@ abstract class Base
 
     /** @var Twig */
     protected $view;
+    /** @var VersionsService */
+    protected $versionsService;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->view = $this->container->get('view');
+        $this->versionsService = $this->container->get(VersionsService::class);
     }
 
     protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
@@ -33,6 +36,7 @@ abstract class Base
             'current_uri' => $request->getUri()->getPath(),
             'version' => $pageRequest->getVersion(),
             'version_branch' => $pageRequest->getVersionBranch(),
+            'versions' => $this->versionsService->getVersions($pageRequest),
             'language' => $pageRequest->getLanguage(),
             'locale' => $pageRequest->getLocale(),
             'path' => $pageRequest->getPath(),

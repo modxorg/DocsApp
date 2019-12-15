@@ -15,12 +15,8 @@ use Slim\Router;
 
 class Search extends Base
 {
-    /** @var DocumentService */
-    private $documentService;
     /** @var Router */
     private $router;
-    /** @var VersionsService */
-    private $versionsService;
 
     /** @var SearchService */
     private $searchService;
@@ -29,9 +25,7 @@ class Search extends Base
     {
         parent::__construct($container);
         $this->router = $this->container->get('router');
-        $this->versionsService = $this->container->get(VersionsService::class);
         $this->searchService = $this->container->get(SearchService::class);
-        $this->documentService = $this->container->get(DocumentService::class);
     }
 
     /**

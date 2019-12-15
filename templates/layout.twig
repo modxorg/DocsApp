@@ -123,16 +123,13 @@
                                 {% endif %}
                             </ul>
                             <ul class="c-optionswitch__list" aria-label="Versions">
-                                <li class="c-optionswitch__item c-optionswitch__item--active">
-                                    <a class="c-optionswitch__link" rel="alternate" href="/2.x/{{language}}/index">
-                                        2.x (current)
+                                {% for version in versions %}
+                                <li class="c-optionswitch__item {% if version.active %}c-optionswitch__item--active{% endif %}">
+                                    <a class="c-optionswitch__link" rel="alternate" href="{{ version.uri }}">
+                                        {{ version.title }}
                                     </a>
                                 </li>
-                                <li class="c-optionswitch__item">
-                                    <a class="c-optionswitch__link" rel="alternate" href="/3.x/{{language}}/index">
-                                        3.x
-                                    </a>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </nav>

@@ -61,16 +61,6 @@ class VersionsService
                 continue;
             }
 
-            // Do not include the current branch
-            if ($request->getVersion() === $fileInfo->getFilename()) {
-                continue;
-            }
-
-            // If we're on the current aliased branch (i.e. if getVersion is current, getVersionBranch is 2.x), skip it
-            if ($request->getVersionBranch() === $fileInfo->getFilename()) {
-                continue;
-            }
-
             $file = $fileInfo->getPathname()
                 . '/'
                 . $request->getLanguage()
@@ -90,6 +80,7 @@ class VersionsService
         $versionKey = static::getVersionUrl($fileInfo->getFilename());
         return [
             'title' => static::getVersionTitle($fileInfo->getFilename()),
+            'active' => $versionKey === $request->getVersion(),
             'key' => $versionKey,
             'uri' => $this->router->pathFor('documentation', [
                 'version' => $versionKey,
