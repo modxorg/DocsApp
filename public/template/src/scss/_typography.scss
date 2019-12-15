@@ -109,3 +109,7 @@ blockquote {
         margin-bottom: 0;
     }
 }
+
+iframe, object, video {
+    max-width: 100%;
+}
