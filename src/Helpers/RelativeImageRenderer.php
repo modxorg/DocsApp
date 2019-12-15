@@ -37,8 +37,11 @@ class RelativeImageRenderer implements InlineRendererInterface
         }
 
         $url = $inline->getUrl();
-        if (strpos($this->relativeFilePath, '/index.md') !== false && strpos($url, '/') === false) {
-            $url = basename(dirname($this->relativeFilePath)) . '/' . $url;
+
+        $path = '/' . dirname($this->relativeFilePath) . '/';
+        $imageIsRelative = strpos($url, '/') !== 0 && strpos($url, 'http') !== 0;
+        if ($imageIsRelative) {
+            $url = $path . $url;
         }
 
         if (RegexHelper::isLinkPotentiallyUnsafe($url)) {
