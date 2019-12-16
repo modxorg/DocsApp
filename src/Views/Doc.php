@@ -117,7 +117,7 @@ class Doc extends Base
         if (strpos($mime, 'image/') === 0) {
             $etag = 'm-' . filemtime($filePath);
             $provided = $request->getHeaderLine('If-None-Match');
-            $age = getenv('DEV') ? 10 : 3600;
+            $age = getenv('DEV') ? 10 : 86400;
             if ($etag === $provided) {
                 return $response->withStatus(304)
                     ->withHeader('Cache-Control', 'max-age=' . $age)
