@@ -148,6 +148,14 @@ class SourcesUpdate extends Command {
         else {
             $output->writeln('Done, no changed files.');
         }
+
+        $output->writeln('Running git gc...');
+
+        $gc = new Process(['git', 'gc']);
+        $gc->setWorkingDirectory($fullPath);
+        $gc->run(function ($type, $buffer) use ($output) {
+            $output->writeln($buffer);
+        });
     }
 
     private function getCommitHash($path) {
