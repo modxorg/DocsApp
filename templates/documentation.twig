@@ -33,11 +33,12 @@
             <p class="o-docmeta">
                 <small>
                     {
-                    <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">Page history</a>
+                    <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">
+                    {% if language == 'en' %} Page history {% elseif language == 'ru' %} История страницы {% elseif language == 'nl' %} Pagina geschiedenis: {% endif %}</a>
                     |
-                    <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">Improve this page</a>
+                    <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% endif %}</a>
                     |
-                    <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">Report an issue</a>
+                    <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{% if language == 'en' %} Report an issue {% elseif language == 'ru' %} Сообщить о проблеме {% elseif language == 'nl' %} Rapporteer een probleem {% endif %}</a>
                     }
                 </small>
             </p>
@@ -60,7 +61,14 @@
 
             {% if meta.suggest_delete %}
                 <div class="c-callout c-callout--warning">
-                    This page is marked as a candidate to be deleted: {{ meta.suggest_delete }}
+                    {% if language == 'en' %}
+                    This page is marked as a candidate to be deleted:
+                    {% elseif language == 'ru' %}
+                    Эта страница помечена как кандидат на удаление:
+                    {% elseif language == 'nl' %}
+                    Deze pagina is gemarkeerd als een te verwijderen kandidaat:
+                    {% endif %}
+                    {{ meta.suggest_delete }}
                 </div>
             {% endif %}
         </div>
@@ -71,7 +79,9 @@
                 <div class="l-main__toc">
                     <nav class="c-toc" aria-labelledby="toc-title">
                         <div class="c-toc__wrapper">
-                            <span class="c-toc__title" id="toc-title">In this document:</span>
+                            <span class="c-toc__title" id="toc-title">
+                            {% if language == 'en' %} In this document: {% elseif language == 'ru' %} В этом документе: {% elseif language == 'nl' %} In dit document: {% endif %}
+                            </span>
                             {{ toc|raw }}
                         </div>
                     </nav>
@@ -81,7 +91,9 @@
             <div class="l-main__content">
                 {% if meta.note %}
                     <div class="c-callout">
-                        <strong class="c-callout__title">Note:</strong> {{ meta.note }}
+                        <strong class="c-callout__title">
+                        {% if language == 'en' %} Note: {% elseif language == 'ru' %} Заметка: {% elseif language == 'nl' %} Notitie: {% endif %}
+                        </strong> {{ meta.note }}
                     </div>
                 {% endif %}
 

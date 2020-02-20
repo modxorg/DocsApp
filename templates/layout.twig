@@ -145,8 +145,8 @@
 
             {% if nav is not empty %}
             <nav id="nav" aria-label="Navigation" class="l-sidebar">
-                <a href="#" title="Close menu" class="o-closemenu u-hide-with-js-sr">
-                    Close menu
+                <a href="#" title="{% if language == 'en' %} Close menu {% elseif language == 'ru' %} Закрыть меню {% elseif language == 'nl' %} Menu sluiten {% endif %}" class="o-closemenu u-hide-with-js-sr">
+                    {% if language == 'en' %} Close menu {% elseif language == 'ru' %} Закрыть меню {% elseif language == 'nl' %} Menu sluiten {% endif %}
                     {# {{ icon('close', 'Close', 'o-closemenu__icon', null, 'aria-hidden="true"') }} #}
                 </a>
                 {{ nav|raw }}
@@ -174,11 +174,15 @@
                             <ul class="c-footer__nav">
                                 {% if relative_file_path %}
                                     <li class="c-footer__navitem">
-                                        <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" rel="noopener noreferrer" target="_blank">Improve this page</a>
+                                        <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" rel="noopener noreferrer" target="_blank">
+                                        {% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% endif %}
+                                        </a>
                                     </li>
                                 {% endif %}
                                 <li class="c-footer__navitem">
-                                    <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" rel="noopener noreferrer" target="_blank">Report an issue with this page</a>
+                                    <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" rel="noopener noreferrer" target="_blank">
+                                    {% if language == 'en' %} Report an issue with this page {% elseif language == 'ru' %} Сообщить о проблеме на этой странице {% elseif language == 'nl' %} Meld een probleem met deze pagina {% endif %}
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -186,7 +190,13 @@
 
                     <p class="c-footer__copyright">
                         <small>
+                            {% if language == 'en' %}
                             <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Designed, built</a> and <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">written</a> with all the love in the world by the MODX Community</a>.
+                            {% elseif language == 'ru' %}
+                            <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Разработано, построено</a> и <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">написано</a> со всей любовью в мире от сообщества MODX</a>.
+                            {% elseif language == 'nl' %}
+                            <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Ontworpen, gebouwd</a> en <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">geschreven</a> met alle liefde in de wereld door de MODX Community</a>.
+                            {% endif %}
                         </small>
                     </p>
                 </div>
