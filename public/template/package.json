@@ -68,7 +68,7 @@
         "@babel/polyfill": "^7.4.0",
         "modern-normalize": "^0.5.0",
         "prism-github": "^1.1.0",
-        "prismjs": "^1.16.0",
+        "prismjs": "^1.21.0",
         "svg-sprite": "^1.5.0",
         "svg4everybody": "^2.1.9"
     },
