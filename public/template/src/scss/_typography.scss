@@ -1,5 +1,6 @@
 body {
     background:map-get($colors, 'body-bg');
+    color: map-get($colors, 'gray');
     font-family: $body-font-family;
     font-weight: 400;
     line-height: $global-line-height;
@@ -83,7 +84,7 @@ code, kbd, samp, pre {
     padding-left: .25rem;
     padding-right: .25rem;
     color: map-get($colors, sapphire);
-    font-family: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace !important;
 }
 pre > code {
     padding: 0;

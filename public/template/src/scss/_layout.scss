@@ -29,10 +29,11 @@ html, body {
     left: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: $header-height;
     background: map-get($colors, 'header-bg');
     border-bottom: 1px solid lightendarken(map-get($colors, border), 10%);
-    box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.1);
 
     &__logo {
         flex: auto 0 0;

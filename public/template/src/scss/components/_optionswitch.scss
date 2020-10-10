@@ -8,7 +8,7 @@
         background: map-get($colors, 'header-bg');
         transition: background-color .2s ease-in-out;
         border-radius: $global-radius;
-        
+
         &:hover {
             color: map-get($colors, 'header-text');
             background: lighten(map-get($colors, 'header-bg'), 5%);
@@ -33,13 +33,13 @@
         box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
 
         @include breakpoint(xxlarge) {
-            right: auto;
+            right: 0;
         }
         @include breakpoint(1440 down) {
             right: 0;
         }
         @include breakpoint(768 down) {
-            right: auto;
+            right: 0;
         }
 
         &:target {
