@@ -1,6 +1,6 @@
 html, body {
+    height: 100%;
     width: 100%;
-    overflow-x: hidden;
     background: map-get($colors, 'body-bg');
     scroll-behavior: smooth;
 }
@@ -46,8 +46,7 @@ html, body {
     }
 
     &__search {
-        margin: rem(0 30);
-        flex-basis: rem(725);
+        flex-basis: 50%;
         flex-grow: 0;
         flex-shrink: 1;
         position: relative;
@@ -67,6 +66,9 @@ html, body {
             transform: translateY(100%);
             transition: transform .4s ease-in-out, -webkit-transform .4s ease-in-out;
         }
+    }
+    &__versionswitch{
+        margin: rem(0 15);
     }
 }
 @include breakpoint(small only) {
@@ -138,7 +140,7 @@ html, body {
         }
 
         @include breakpoint(xlarge) {
-            flex-basis: rem(750);
+            flex-basis: 80%;
             flex-grow: 0;
             flex-shrink: 1;
             order: 1;
@@ -152,11 +154,14 @@ html, body {
 
     &__toc {
         @include breakpoint(xlarge) {
-            flex-basis: rem(250);
+            flex-basis: 20%;
             flex-grow: 1;
             flex-shrink: 0;
+            align-self: flex-start;
             order: 2;
             padding: rem(0 0 0 25);
+            top: rem(75);
+            position: sticky;
         }
     }
 

@@ -1,5 +1,5 @@
 .c-callout {
-    color: #5d6778;
+    color: map-get($colors, gray);
     display: block;
     margin: 0 0 $global-margin;
     padding: rem(15 20);
@@ -11,12 +11,15 @@
         text-transform: uppercase;
         letter-spacing: 1.1;
     }
+    a:hover{
+        color: lightendarken(map-get($colors, 'link-color'), 15%);
+    }
 
     &--info{
         background-color: map-get($colors, 'callout-info-bg');
         border-color: map-get($colors, 'callout-info-border');
         a{
-            color: #1c6fdc;
+            color: map-get($colors, 'link-color');
         }
     }
 
