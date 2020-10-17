@@ -4,16 +4,16 @@ The DocsApp is a slim application that serves up the [MODX documentation](https:
 
 It's in development, help is welcome.
 
-Version-specific copies of the documentation should go into the `/doc-sources` directory. Then point a webserver at the `/public` directory to browse the documentation.
+Version-specific copies of the documentation should go into the `/docs` directory. Then point a webserver at the `/public` directory to browse the documentation.
 
 
 ## Setting up
 
 1. Run a [composer install](https://getcomposer.org) in the root: `composer install`
 2. Copy the default settings: `cp .env-dev .env`
-3. Edit `.env` in your favorite file editor to fix the paths. 
+3. Edit `.env` in your favorite file editor to fix the paths.
 4. To run the latest version of the documentation (i.e. the version published on the modxorg/Docs repository), initialise the default documentation sources with `php docs.php sources:init`. To run a local clone of the documentation source, allowing you to immediately see your local changes inside the app, see custom sources below.
-5. Point a webserver, running at least PHP 7.1, to the `/public` directory. 
+5. Point a webserver, running at least PHP 7.1, to the `/public` directory.
 6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required. For nginx, set up the equivalent rewrites in your configuration.
 
 ### Custom Sources
@@ -52,11 +52,11 @@ Cloning into 'upstream'...
 
 If you see an error "Doc sources definition is missing or invalid JSON", make sure that your JSON is valid. Especially commas at the end of the last entries can be troublesome.
 
-The "upstream" version has been cloned, and you can keep that up-to-date easily now with `php docs.php sources:update`, but you still need to set up the local version of 2.x. You can add the files directly in a `/docs/2.x/` directory, or you can symlink them in from elsewhere. 
+The "upstream" version has been cloned, and you can keep that up-to-date easily now with `php docs.php sources:update`, but you still need to set up the local version of 2.x. You can add the files directly in a `/docs/2.x/` directory, or you can symlink them in from elsewhere.
 
-For this, you need to clone the modxorg/Docs repository, or better yet a fork of your own that you have commit access to. Where the directory is doesn't matter for the application, but let's say we want it in a `/markdown/` directory. 
+For this, you need to clone the modxorg/Docs repository, or better yet a fork of your own that you have commit access to. Where the directory is doesn't matter for the application, but let's say we want it in a `/markdown/` directory.
 
-Clone it like this: 
+Clone it like this:
 
 ```bash
 $ git clone -b 2.x git@github.com:modxorg/Docs.git markdown
@@ -75,7 +75,7 @@ Now you need to create a symlink to dynamically pull in the version from `markdo
 ln -s ../markdown docs/2.x
 ```
 
-The first path is the target, and the second path is where the link should be. Because we use relative links and we placed `markdown` in the root of the project, the target first has to go up a directory. 
+The first path is the target, and the second path is where the link should be. Because we use relative links and we placed `markdown` in the root of the project, the target first has to go up a directory.
 
 ### Alternative: direct from fork
 
@@ -114,15 +114,17 @@ git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
 ### Searching / Indexing
 
-To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:search` to populate the index. This may take a minute or two. 
+To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:search` to populate the index. This may take a while as that will scan all files in the documentation.
 
-For the language switch to work, you also need to index the translations with `php docs.php index:translations`. This is also called automatically after updating sources with `php docs.php sources:update`. 
+For the language switch to work, you also need to index the translations with `php docs.php index:translations`. This is also called automatically after updating sources with `php docs.php sources:update`.
 
 ## Building assets
 
-From the root of the project first load the dependencies with `npm install`. 
+From the `public/template/` directory, first load the dependencies with `npm install`.
 
-Then use `npm build:css` to build the styles or `npm run watch:css` to watch for changes to the sass files in `public/assets/scss/` and automatically build them.
+Then use `npm run build:css` to build the styles or `npm run watch:css` to watch for changes to the sass files in `public/template/src/` and automatically build them.
+
+Similarly, for the javascript and SVG sprites, you can use `npm run build:js` and `npm run build:svg`.
 
 ## Running in a Docker Container
 
