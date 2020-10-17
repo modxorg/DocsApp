@@ -80,7 +80,7 @@ p {
 code, kbd, samp, pre {
     background-color: map-get($colors, 'inline-code');
     padding: 0.1rem 0.25rem;
-    font-size: .875rem;
+    font-size: .775rem;
     border-radius: .125rem;
     padding-left: .25rem;
     padding-right: .25rem;
@@ -93,7 +93,7 @@ pre > code {
 
 code[class*="language-"], pre[class*="language-"] {
     border-radius: .5rem;
-    font-size: .875rem !important;
+    font-size: .775rem !important;
     line-height: 1.5 !important;
 }
 

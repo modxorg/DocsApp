@@ -95,6 +95,7 @@ $errorColor: map_get($colors, alert);
     padding: rem(15 20);
     background-color: rgba($errorColor, 0.3);
     color: darken($errorColor, 50%);
+    max-width: 100%;
 
     &--live {
         margin: 0;

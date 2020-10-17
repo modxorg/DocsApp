@@ -3,7 +3,11 @@
     display: block;
     margin: 0 0 $global-margin;
     padding: rem(15 20);
-    border-left: rem(3) solid transparent;
+    background-color: map-get($colors, 'callout-info-bg');
+    border-left: rem(3) solid map-get($colors, 'callout-info-border');
+    a{
+        color: map-get($colors, 'link-color');
+    }
 
     &__title {
         display: block;
