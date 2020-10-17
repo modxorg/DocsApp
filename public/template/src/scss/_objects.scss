@@ -57,8 +57,11 @@
     }
 }
 @include breakpoint(small only) {
+    .o-logo{
+        margin: rem(0 7);
+    }
     .o-search {
-        margin-left: auto !important;
+        padding: rem(0 7);
     }
 }
 .o-closemenu {

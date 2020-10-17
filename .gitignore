@@ -10,3 +10,4 @@ node_modules/
 .env
 sources.json
 markdown/
+public/template/package-lock.json

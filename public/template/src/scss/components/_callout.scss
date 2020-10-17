@@ -1,15 +1,9 @@
-@mixin callout($color, $darken: 28%) {
-    background-color: rgba($color, 0.3);
-    border-color: $color;
-    color: darken($color, $darken);
-}
-
 .c-callout {
+    color: map-get($colors, gray);
     display: block;
     margin: 0 0 $global-margin;
     padding: rem(15 20);
-    border-left: rem(8) solid transparent;
-    @include callout(lightendarken(map-get($colors, 'sidebar-bg'), 17%), 50%);
+    border-left: rem(3) solid transparent;
 
     &__title {
         display: block;
@@ -17,12 +11,39 @@
         text-transform: uppercase;
         letter-spacing: 1.1;
     }
+    a:hover{
+        color: lightendarken(map-get($colors, 'link-color'), 15%);
+    }
+
+    &--info{
+        background-color: map-get($colors, 'callout-info-bg');
+        border-color: map-get($colors, 'callout-info-border');
+        a{
+            color: map-get($colors, 'link-color');
+        }
+    }
 
     &--warning {
-        @include callout(map-get($colors, 'warning'));
+        background-color: map-get($colors, 'callout-warning-bg');
+        border-color: map-get($colors, 'callout-warning-border');
+        a{
+            color: #d09c13;
+        }
     }
 
     &--alert {
-        @include callout(map-get($colors, 'alert'));
+        background-color: map-get($colors, 'callout-alert-bg');
+        border-color: map-get($colors, 'callout-alert-border');
+        a{
+            color: #d26d69;
+        }
+    }
+
+    &--success {
+        background-color: map-get($colors, 'callout-success-bg');
+        border-color: map-get($colors, 'callout-success-border');
+        a{
+            color:#3e8554;
+        }
     }
 }

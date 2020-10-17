@@ -21,20 +21,20 @@
             transition: all .2s ease;
 
             &:hover {
-                color: map-get($colors, mirage);
+                color: lightendarken(map-get($colors, 'link-color'), 15%);
                 transform: translateX(2px);
             }
         }
 
         &--activepage {
-            > .c-nav__chevron {
+            .c-nav__chevron {
                 top: 0.35rem;
             }
             > a {
                 position: relative;
-                color: map-get($colors, sapphire);
-                transition: all .2s ease;
+                color: map-get($colors, 'nav-active');
                 padding: 0.35rem 0 0.35rem 3.5rem;
+                transition: all .2s ease;
 
                 &:after, &:before {
                     border: 0 solid #e2e8f0;
@@ -52,7 +52,7 @@
                     position: absolute;
                     border-radius: .25rem;
                     opacity: .25;
-                    background-color: map-get($colors, perano);
+                    background-color:map-get($colors, 'nav-active-bg');
                 }
             }
 

@@ -8,7 +8,7 @@
         background: map-get($colors, 'header-bg');
         transition: background-color .2s ease-in-out;
         border-radius: $global-radius;
-        
+
         &:hover {
             color: map-get($colors, 'header-text');
             background: lighten(map-get($colors, 'header-bg'), 5%);
@@ -29,17 +29,17 @@
         position: absolute;
         top: $header-height - rem(1);
         display: none;
-        background: map-get($colors, 'header-bg');
+        background: map-get($colors, 'optionswitch-bg');
         box-shadow: rem(0 3 8 0) rgba(116, 129, 141, 0.1);
 
         @include breakpoint(xxlarge) {
-            right: auto;
+            right: 0;
         }
         @include breakpoint(1440 down) {
             right: 0;
         }
         @include breakpoint(768 down) {
-            right: auto;
+            right: 0;
         }
 
         &:target {
@@ -70,6 +70,9 @@
         display: block;
         padding: rem(4 10);
         color: map-get($colors, 'header-text');
+        transition-duration: .2s;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+        transition-property: background-color,border-color,color;
 
         &:hover {
             color: map-get($colors, 'header-text');
