@@ -1,23 +1,23 @@
 
 <li class="l-main-search__result">
-    <details class="l-main-search__match">
-        <summary>Score: <b>{{ result.score }}</b>/100</summary>
-        <ul>
-            {% for match in result.details %}
-                <li>
-                    {% if match[0] %} {# = exact #}
-                        Exact match on
-                    {% else %}
-                        Fuzzy match
-                    {% endif %}
-                    <code>{{ terms[match[1]] }}</code> with weight <code>{{ match[2] }}</code>
-                </li>
-            {% endfor %}
-        </ul>
-        <p>Total weight <code>{{ result.weight }}</code> (= a score of <code>{{ result.weight }} / 40 * 100 = {{ result.score }}</code>)</p>
-    </details>
+{#    <details class="l-main-search__match">#}
+{#        <summary>Score: <b>{{ result.score }}</b>/100</summary>#}
+{#        <ul>#}
+{#            {% for match in result.details %}#}
+{#                <li>#}
+{#                    {% if match[0] %} #}{# = exact #}
+{#                        Exact match on#}
+{#                    {% else %}#}
+{#                        Fuzzy match#}
+{#                    {% endif %}#}
+{#                    <code>{{ terms[match[1]] }}</code> with weight <code>{{ match[2] }}</code>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#        <p>Total weight <code>{{ result.weight }}</code> (= a score of <code>{{ result.weight }} / 40 * 100 = {{ result.score }}</code>)</p>#}
+{#    </details>#}
 
-    <nav class="c-breadcrumb" aria-label="Breadcrumb">
+    <nav class="c-breadcrumb l-main-search__crumbs" aria-label="Breadcrumb">
         <ol class="c-breadcrumb__list" itemscope="" itemtype="https://schema.org/BreadcrumbList">
             {% for crumb in result.crumbs %}
                 <li class="c-breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -29,6 +29,8 @@
             {% endfor %}
         </ol>
     </nav>
-    <h4><a href="{{ result.link }}">{{ result.title }}</a></h4>
-    <p>{{ result.snippet|raw }}</p>
+    <a href="{{ result.link }}" class="l-main-search__link">
+        <h4 class="l-main-search__title">{{ result.title }}</h4>
+        <p class="l-main-search__snippet">{{ result.snippet|raw }}</p>
+    </a>
 </li>
