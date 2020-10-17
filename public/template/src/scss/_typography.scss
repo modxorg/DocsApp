@@ -74,6 +74,7 @@ img {
 p {
     margin: 0 0 $global-margin;
     line-height: $global-line-height;
+    max-width: $paragraph-max-width;
 }
 
 code, kbd, samp, pre {
