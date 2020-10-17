@@ -27,11 +27,12 @@ class TranslationService
                 'en' => '/' . $request->getVersionBranch() . '/en/index',
                 'ru' => '/' . $request->getVersionBranch() . '/ru/index',
                 'nl' => '/' . $request->getVersionBranch() . '/nl/index',
+                'es' => '/' . $request->getVersionBranch() . '/es/index',
             ];
         }
 
         $language = $request->getLanguage();
-        if (!in_array($language, ['nl', 'ru', 'en'])) {
+        if (!in_array($language, ['nl', 'ru', 'en', 'es'])) {
             $language = 'en';
         }
         $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';

@@ -34,11 +34,11 @@
                 <small>
                     {
                     <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">
-                    {% if language == 'en' %} Page history {% elseif language == 'ru' %} История страницы {% elseif language == 'nl' %} Pagina geschiedenis: {% endif %}</a>
+                    {% if language == 'en' %} Page history {% elseif language == 'ru' %} История страницы {% elseif language == 'nl' %} Pagina geschiedenis: {% elseif language == 'es' %}Historial de la página{% endif %}</a>
                     |
-                    <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% endif %}</a>
+                    <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% elseif language == 'es' %}Mejorar esta página{% endif %}</a>
                     |
-                    <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{% if language == 'en' %} Report an issue {% elseif language == 'ru' %} Сообщить о проблеме {% elseif language == 'nl' %} Rapporteer een probleem {% endif %}</a>
+                    <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{% if language == 'en' %} Report an issue {% elseif language == 'ru' %} Сообщить о проблеме {% elseif language == 'nl' %} Rapporteer een probleem {% elseif language == 'es' %}Reportar un problema{% endif %}</a>
                     }
                 </small>
             </p>
@@ -58,15 +58,22 @@
                 Здравствуй! <a href="{{ path_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
             </div>
             {% endif %}
+            {% if 'es' in suggested_languages %}
+            <div class="c-callout c-callout--info">
+                ¡Hola! <a href="{{ path_for('documentation', {version: version, language: 'es', path: 'index'}) }}">La documentación MODX también está (parcialmente) disponible en español.</a>
+            </div>
+            {% endif %}
 
             {% if meta.suggest_delete %}
                 <div class="c-callout c-callout--warning">
                     {% if language == 'en' %}
-                    This page is marked as a candidate to be deleted:
+                        This page is marked as a candidate to be deleted:
                     {% elseif language == 'ru' %}
-                    Эта страница помечена как кандидат на удаление:
+                        Эта страница помечена как кандидат на удаление:
                     {% elseif language == 'nl' %}
-                    Deze pagina is gemarkeerd als een te verwijderen kandidaat:
+                        Deze pagina is gemarkeerd als een te verwijderen kandidaat:
+                    {% elseif language == 'es' %}
+                        Esta página está marcada como candidato a ser eliminado:
                     {% endif %}
                     {{ meta.suggest_delete }}
                 </div>
@@ -80,7 +87,7 @@
                     <nav class="c-toc" aria-labelledby="toc-title">
                         <div class="c-toc__wrapper">
                             <span class="c-toc__title" id="toc-title">
-                            {% if language == 'en' %} In this document: {% elseif language == 'ru' %} В этом документе: {% elseif language == 'nl' %} In dit document: {% endif %}
+                            {% if language == 'en' %} In this document: {% elseif language == 'ru' %} В этом документе: {% elseif language == 'nl' %} In dit document: {% elseif language == 'es' %}En este documento:{% endif %}
                             </span>
                             {{ toc|raw }}
                         </div>
@@ -92,7 +99,7 @@
                 {% if meta.note %}
                     <div class="c-callout">
                         <strong class="c-callout__title">
-                        {% if language == 'en' %} Note: {% elseif language == 'ru' %} Заметка: {% elseif language == 'nl' %} Notitie: {% endif %}
+                        {% if language == 'en' %} Note: {% elseif language == 'ru' %} Заметка: {% elseif language == 'nl' %} Notitie: {% elseif language == 'nl' %} Nota: {% endif %}
                         </strong> {{ meta.note }}
                     </div>
                 {% endif %}

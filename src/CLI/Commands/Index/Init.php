@@ -30,10 +30,18 @@ class Init extends Command {
         $db->exec('CREATE TABLE IF NOT EXISTS Translations (
   en VARCHAR(255) PRIMARY KEY,
   ru VARCHAR(255),
-  nl VARCHAR(255)
+  nl VARCHAR(255),
+  es VARCHAR(255)
 ) ');
 
-
+        try { $db->exec('CREATE INDEX ru ON Translations (ru)'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.ru index: ' . $e->getMessage() . '</comment>'); }
+        try { $db->exec('CREATE INDEX nl ON Translations (nl)'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.nl index: ' . $e->getMessage() . '</comment>'); }
+        try { $db->exec('ALTER TABLE Translations ADD COLUMN es VARCHAR'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error adding Translations.es column: ' . $e->getMessage() . '</comment>'); }
+        try { $db->exec('CREATE INDEX es ON Translations (es)'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.es index: ' . $e->getMessage() . '</comment>'); }
 
         $db->exec('CREATE TABLE IF NOT EXISTS Search_Terms (
   term VARCHAR(100),
