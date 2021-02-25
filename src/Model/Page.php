@@ -13,6 +13,7 @@ use MODXDocs\Helpers\TocRenderer;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Process\Process;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
 use Webuni\CommonMark\TableExtension\TableExtension;
@@ -229,5 +230,56 @@ class Page {
     public function getRelativeFilePath(): string
     {
         return $this->relativeFilePath;
+    }
+
+    public function getHistory()
+    {
+        $cmd = new Process([
+            'git',
+            '--no-pager',
+            'log',
+            '--pretty=format:"%H | %ct | %aN | %aE |  %s"',
+            '--',
+            substr($this->relativeFilePath, strpos($this->relativeFilePath, '/') + 1)
+        ]);
+        $cmd->setWorkingDirectory(getenv('DOCS_DIRECTORY') . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
+
+        if ($cmd->run() !== 0) {
+            return [];
+        }
+
+        $history = $cmd->getOutput();
+        $history = explode("\n", $history);
+
+        $contributors = [];
+        $lastChange = null;
+        $lastChangeMessage = null;
+        foreach ($history as $line) {
+            [$hash, $timestamp, $name, $email, $message] = array_map('trim', explode('|', trim($line)));
+            if (!array_key_exists($email, $contributors)) {
+                $contributors[$email] = [
+                    'name' => $name,
+                    'gravatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=60&d=retro',
+                    'count' => 0,
+                ];
+            }
+            $contributors[$email]['count']++;
+
+            if (!$lastChange) {
+                $lastChange = (int)$timestamp;
+                $lastChangeMessage = $message;
+            }
+        }
+
+        // Sort based on contribution count
+        uasort($contributors, function ($a, $b) {
+            return $a['count'] > $b['count'];
+        });
+
+        return [
+            'last_change' => $lastChange,
+            'last_change_message' => $lastChangeMessage,
+            'contributors' => $contributors
+        ];
     }
 }

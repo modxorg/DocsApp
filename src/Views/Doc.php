@@ -85,6 +85,8 @@ class Doc extends Base
             'nav' => $tree->renderTree($this->view),
             'translations' => $this->getTranslations($pageRequest),
 
+            'history' => $page->getHistory(),
+
             'suggested_languages' => $this->getSuggestedLanguages($request, $pageRequest),
         ]);
     }
