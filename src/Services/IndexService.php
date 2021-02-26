@@ -148,7 +148,7 @@ class IndexService
             $deleteHistory->execute();
 
             // Get the commits and store them into the table
-            $insertHistory = $this->db->prepare('INSERT INTO Page_History (url, git_hash, ts, name, email, message) VALUES (:url, :git_hash, :ts, :name, :email, :message)');
+            $insertHistory = $this->db->prepare('INSERT INTO Page_History (url, git_hash, ts, name, email, message, added, removed) VALUES (:url, :git_hash, :ts, :name, :email, :message, :added, :removed)');
             $commits = $page->getFileCommits();
             $this->db->beginTransaction();
             foreach ($commits as $commit) {
@@ -158,6 +158,8 @@ class IndexService
                 $insertHistory->bindValue(':name', $commit['name']);
                 $insertHistory->bindValue(':email', $commit['email']);
                 $insertHistory->bindValue(':message', $commit['message']);
+                $insertHistory->bindValue(':added', (int)$commit['added']);
+                $insertHistory->bindValue(':removed', (int)$commit['removed']);
                 $insertHistory->execute();
             }
             $this->db->commit();

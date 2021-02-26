@@ -150,7 +150,9 @@ class Init extends Command {
   ts INTEGER(15),
   name VARCHAR(190),
   email VARCHAR(190),
-  message VARCHAR(500)
+  message VARCHAR(500),
+  added INTEGER(15),
+  removed INTEGER(15)
 )');
         try {
             $db->exec('CREATE INDEX url ON Page_History (url)');
@@ -160,6 +162,11 @@ class Init extends Command {
         catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for Page_History table: ' . $e->getMessage() . '</comment>');
         }
+
+        try { $db->exec('ALTER TABLE Page_History ADD COLUMN added INTEGER'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error adding Page_History.added column: ' . $e->getMessage() . '</comment>'); }
+        try { $db->exec('ALTER TABLE Page_History ADD COLUMN removed INTEGER'); }
+        catch (\PDOException $e) { $output->writeln('<comment>Error adding Page_History.removed column: ' . $e->getMessage() . '</comment>'); }
 
         return 0;
     }

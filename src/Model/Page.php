@@ -288,7 +288,8 @@ class Page {
             'git',
             '--no-pager',
             'log',
-            '--pretty=format:"%H | %ct | %aN | %aE |  %s"',
+            '--numstat',
+            '--pretty=format:"> %h | %ct | %aN | %aE |  %s"',
             '--',
             substr($this->relativeFilePath, strpos($this->relativeFilePath, '/') + 1)
         ]);
@@ -301,17 +302,46 @@ class Page {
         $history = $cmd->getOutput();
         $history = explode("\n", $history);
         $history = array_map('trim', $history);
+        $history = array_filter($history);
 
         $commits = [];
+        $currentCommit = null;
         foreach ($history as $line) {
-            [$hash, $timestamp, $name, $email, $message] = array_map('trim', explode('|', trim($line)));
-            $commits[] = [
-                'hash' => $hash,
-                'timestamp' => $timestamp,
-                'name' => $name,
-                'email' => $email,
-                'message' => $message,
-            ];
+            $line = trim($line, '"');
+            if (strpos($line, '>') === 0) {
+                // If we've had a previous commit we were filling, we just got a new one, so set it to the array
+                if (is_array($currentCommit)) {
+                    $commits[] = $currentCommit;
+                }
+
+                // Remove the prefixed >
+                $line = substr($line, 2);
+
+                // Parse into an array structure we can more easily expand in the future than the raw git log output
+                [$hash, $timestamp, $name, $email, $message] = array_map('trim', explode('|', trim($line)));
+
+                // Keep in a temporary array, so we can fill it with added/removed stats from the next line
+                $currentCommit = [
+                    'hash' => $hash,
+                    'timestamp' => $timestamp,
+                    'name' => $name,
+                    'email' => $email,
+                    'message' => $message,
+                    'added' => 0,
+                    'removed' => 0,
+                ];
+            }
+            // This must be a line with added/removed counts, so append that information
+            elseif (is_array($currentCommit)) {
+                $line = explode("\t", $line);
+                $currentCommit['added'] = (int)$line[0];
+                $currentCommit['removed'] = (int)$line[1];
+            }
+        }
+
+        // Make sure to also save the last commit
+        if ($currentCommit) {
+            $commits[] = $currentCommit;
         }
 
         return $commits;
