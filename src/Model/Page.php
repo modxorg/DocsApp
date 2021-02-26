@@ -13,6 +13,7 @@ use MODXDocs\Helpers\TocRenderer;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
+use PDO;
 use Symfony\Component\Process\Process;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
@@ -58,8 +59,12 @@ class Page {
      * @var string
      */
     private $relativeFilePath;
+    /**
+     * @var PDO
+     */
+    private $db;
 
-    public function __construct(DocumentService $documentService, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
+    public function __construct(DocumentService $documentService, PDO $db, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {
         $this->version = $version;
         $this->meta = $meta;
@@ -68,6 +73,7 @@ class Page {
         $this->path = $requestPath;
         $this->currentUrl = '/' . $version . '/' . $language . '/' . $requestPath;
         $this->documentService = $documentService;
+        $this->db = $db;
 
         $docRoot = getenv('DOCS_DIRECTORY');
         if (strpos($filePath, $docRoot) === 0) {
@@ -234,6 +240,50 @@ class Page {
 
     public function getHistory()
     {
+        try {
+            $statement = $this->db->prepare('SELECT git_hash, ts, name, email, message FROM Page_History WHERE url = :url ORDER BY ts DESC');
+            $statement->bindValue(':url', $this->relativeFilePath);
+            if (!$statement->execute()) {
+                return [];
+            }
+            $commits = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return [];
+        }
+
+        $contributors = [];
+        $lastChange = null;
+        $lastChangeMessage = null;
+        foreach ($commits as $commit) {
+            if (!array_key_exists($commit['email'], $contributors)) {
+                $contributors[$commit['email']] = [
+                    'name' => $commit['name'],
+                    'gravatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($commit['email']))) . '?s=60&d=retro',
+                    'count' => 0,
+                ];
+            }
+            $contributors[$commit['email']]['count']++;
+
+            if (!$lastChange) {
+                $lastChange = (int)$commit['ts'];
+                $lastChangeMessage = $commit['message'];
+            }
+        }
+
+        // Sort based on contribution count, contributor with most commits last because that's shown "in front".
+        uasort($contributors, function ($a, $b) {
+            return $a['count'] >= $b['count'] ? 1 : -1;
+        });
+
+        return [
+            'last_change' => $lastChange,
+            'last_change_message' => $lastChangeMessage,
+            'contributors' => $contributors
+        ];
+    }
+
+    public function getFileCommits()
+    {
         $cmd = new Process([
             'git',
             '--no-pager',
@@ -250,36 +300,20 @@ class Page {
 
         $history = $cmd->getOutput();
         $history = explode("\n", $history);
+        $history = array_map('trim', $history);
 
-        $contributors = [];
-        $lastChange = null;
-        $lastChangeMessage = null;
+        $commits = [];
         foreach ($history as $line) {
             [$hash, $timestamp, $name, $email, $message] = array_map('trim', explode('|', trim($line)));
-            if (!array_key_exists($email, $contributors)) {
-                $contributors[$email] = [
-                    'name' => $name,
-                    'gravatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=60&d=retro',
-                    'count' => 0,
-                ];
-            }
-            $contributors[$email]['count']++;
-
-            if (!$lastChange) {
-                $lastChange = (int)$timestamp;
-                $lastChangeMessage = $message;
-            }
+            $commits[] = [
+                'hash' => $hash,
+                'timestamp' => $timestamp,
+                'name' => $name,
+                'email' => $email,
+                'message' => $message,
+            ];
         }
 
-        // Sort based on contribution count
-        uasort($contributors, function ($a, $b) {
-            return $a['count'] > $b['count'];
-        });
-
-        return [
-            'last_change' => $lastChange,
-            'last_change_message' => $lastChangeMessage,
-            'contributors' => $contributors
-        ];
+        return $commits;
     }
 }

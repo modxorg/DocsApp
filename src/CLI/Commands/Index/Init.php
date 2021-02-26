@@ -144,6 +144,23 @@ class Init extends Command {
             $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
         }
 
+        $db->exec('CREATE TABLE IF NOT EXISTS Page_History (
+  url VARCHAR(100),
+  git_hash VARCHAR(190),
+  ts INTEGER(15),
+  name VARCHAR(190),
+  email VARCHAR(190),
+  message VARCHAR(500)
+)');
+        try {
+            $db->exec('CREATE INDEX url ON Page_History (url)');
+            $db->exec('CREATE INDEX ts ON Page_History (ts)');
+            $db->exec('CREATE INDEX email ON Page_History (email)');
+        }
+        catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating index for Page_History table: ' . $e->getMessage() . '</comment>');
+        }
+
         return 0;
     }
 }
