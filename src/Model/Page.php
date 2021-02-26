@@ -258,7 +258,7 @@ class Page {
             if (!array_key_exists($commit['email'], $contributors)) {
                 $contributors[$commit['email']] = [
                     'name' => $commit['name'],
-                    'gravatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($commit['email']))) . '?s=60&d=retro',
+                    'gravatar' => $this->_getAvatarFor($commit['email']),
                     'count' => 0,
                 ];
             }
@@ -315,5 +315,28 @@ class Page {
         }
 
         return $commits;
+    }
+
+    private function _getAvatarFor($email): string
+    {
+        $hash = md5(strtolower(trim($email)));
+
+        $cache = CacheService::getInstance();
+        $key = 'avatars/' . $hash;
+        $gravatarUrl = 'https://www.gravatar.com/avatar/' . $hash . '?s=60&d=retro';
+        $avatar = $cache->get($key, $hash);
+        if (empty($avatar) && $cache->isEnabled()) {
+            $download = file_get_contents($gravatarUrl);
+            if (!empty($download)) {
+                $avatar = base64_encode($download);
+                $cache->set($key, $avatar, strtotime('+1 month'));
+            }
+        }
+
+        if (!empty($avatar)) {
+            return "data:image/jpg;base64,{$avatar}";
+        }
+
+        return $gravatarUrl;
     }
 }
