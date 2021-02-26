@@ -2,7 +2,7 @@
 <html lang="{{ language }}" class="no-js">
     <head>
         <meta charset="utf-8">
-        <title>{% block title %}Home{% endblock %} | MODX Docs</title>
+        <title>{% block title %}{{ lang.home }}{% endblock %} | {{ lang.title }}</title>
         <meta name="description" content="{{ meta.description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="canonical" href="{{ canonical_url }}">
@@ -15,13 +15,13 @@
 
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta property="og:type" content="website">
-        <meta property="og:site_name" content="MODX Documentation">
+        <meta property="og:site_name" content="{{ lang.title }}">
         <meta property="og:title" content="{{ block('title') }}">
         <meta property="og:description" content="{{ meta.description }}">
         <meta property="og:url" content="{{ canonical_url }}">
         <meta property="og:locale" content="{{ locale }}">
         <meta name="twitter:card" content="summary">
-        <meta name="twitter:title" content="{{ block('title') }} | MODX">
+        <meta name="twitter:title" content="{{ block('title') }} | {{ lang.title }}">
         <meta name="twitter:description" content="{{ meta.description }}">
         <meta name="twitter:url" content="{{ canonical_url }}">
         <meta name="twitter:domain" content="{{ canonical_base }}">
@@ -69,7 +69,7 @@
                 <div class="l-header__search" id="searchform">
                     <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
                         <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
-                        <input class="c-searchform__input" id="search" type="search" name="q" placeholder="Search documentation" autocomplete="off" required>
+                        <input class="c-searchform__input" id="search" type="search" name="q" placeholder="{{ lang.search }}" autocomplete="off" required>
                         <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
                             {{ icon('search', 'Search', 'c-searchform__icon') }}
                         </button>
@@ -163,13 +163,13 @@
                         <div class="c-footer__cell">
                             <ul class="c-footer__nav">
                                 <li class="c-footer__navitem">
-                                    <a class="c-footer__navlink" href="https://modx.org/" rel="noopener noreferrer" target="_blank">MODX.org</a>
+                                    <a class="c-footer__navlink" href="https://modx.com/" rel="noopener noreferrer" target="_blank">MODX.com</a>
                                 </li>
                                 <li class="c-footer__navitem">
-                                    <a class="c-footer__navlink" href="https://community.modx.com/" rel="noopener noreferrer" target="_blank">Community Forums</a>
+                                    <a class="c-footer__navlink" href="https://community.modx.com/" rel="noopener noreferrer" target="_blank">{{ lang.community_forum }}</a>
                                 </li>
                                 <li class="c-footer__navitem">
-                                    <a class="c-footer__navlink" href="https://modxcommunity.slack.com/" rel="noopener noreferrer" target="_blank">Slack</a>
+                                    <a class="c-footer__navlink" href="https://modxcommunity.slack.com/" rel="noopener noreferrer" target="_blank">{{ lang.slack }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -179,13 +179,13 @@
                                 {% if relative_file_path %}
                                     <li class="c-footer__navitem">
                                         <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" rel="noopener noreferrer" target="_blank">
-                                        {% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% elseif language == 'es' %}Mejorar esta página {% endif %}
+                                            {{ lang.improve_page }}
                                         </a>
                                     </li>
                                 {% endif %}
                                 <li class="c-footer__navitem">
                                     <a class="c-footer__navlink" href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" rel="noopener noreferrer" target="_blank">
-                                    {% if language == 'en' %} Report an issue with this page {% elseif language == 'ru' %} Сообщить о проблеме на этой странице {% elseif language == 'nl' %} Meld een probleem met deze pagina {% elseif language == 'es' %} Informar un problema con esta página {% endif %}
+                                        {{ lang.report_issue_long }}
                                     </a>
                                 </li>
                             </ul>
@@ -194,13 +194,7 @@
 
                     <p class="c-footer__copyright">
                         <small>
-                            {% if language == 'ru' %}
-                                <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Разработано, построено</a> и <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">написано</a> со всей любовью в мире от сообщества MODX</a>.
-                            {% elseif language == 'nl' %}
-                                <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Ontworpen, gebouwd</a> en <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">geschreven</a> met alle liefde in de wereld door de MODX Community</a>.
-                            {% else %}
-                                <a href="https://github.com/modxorg/DocsApp/graphs/contributors" rel="noopener noreferrer" target="_blank">Designed, built</a> and <a href="https://github.com/modxorg/Docs/graphs/contributors" rel="noopener noreferrer" target="_blank">written</a> with all the love in the world by the MODX Community</a>.
-                            {% endif %}
+                            {{ lang.credit|raw }}
                         </small>
                     </p>
                 </div>

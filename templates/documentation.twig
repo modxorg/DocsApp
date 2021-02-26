@@ -30,39 +30,21 @@
 
             <h1 class="u-no-margin--top">{{ meta.title }}</h1>
 
-            {% if history %}
-                <div class="c-history">
+            <div class="c-history">
+                {% if history.contributors %}
                     <div class="c-contributors">
                         {% for contributor in history.contributors %}
                             <img class="c-contributor" src="{{ contributor.gravatar }}" alt="{{ contributor.name }}" title="{{ contributor.name }} has updated this page {{ contributor.count }} time{% if contributor.count != 1 %}s{% endif %}">
                         {% endfor %}
                     </div>
-                    <p class="c-last-edit">
-                        Last updated {{ history.last_change|date('M jS, Y') }}
-                        |
-                        <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">
-                            {% if language == 'en' %} Page history {% elseif language == 'ru' %} История страницы {% elseif language == 'nl' %} Pagina geschiedenis {% elseif language == 'es' %}Historial de la página{% endif %}</a>
-                        |
-                        <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% elseif language == 'es' %}Mejorar esta página{% endif %}</a>
-                        |
-                        <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{% if language == 'en' %} Report an issue {% elseif language == 'ru' %} Сообщить о проблеме {% elseif language == 'nl' %} Rapporteer een probleem {% elseif language == 'es' %}Reportar un problema{% endif %}</a>
-                    </p>
-                </div>
-            {% else %}
-                {# Still show meta if page history isn't available #}
-                <p class="o-docmeta">
-                    <small>
-                        {
-                        <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">
-                            {% if language == 'en' %} Page history {% elseif language == 'ru' %} История страницы {% elseif language == 'nl' %} Pagina geschiedenis {% elseif language == 'es' %}Historial de la página{% endif %}</a>
-                        |
-                        <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{% if language == 'en' %} Improve this page {% elseif language == 'ru' %} Улучшить эту страницу {% elseif language == 'nl' %} Verbeter deze pagina {% elseif language == 'es' %}Mejorar esta página{% endif %}</a>
-                        |
-                        <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{% if language == 'en' %} Report an issue {% elseif language == 'ru' %} Сообщить о проблеме {% elseif language == 'nl' %} Rapporteer een probleem {% elseif language == 'es' %}Reportar un problema{% endif %}</a>
-                        }
-                    </small>
+                {% endif %}
+                <p class="c-last-edit">
+                    {{ lang.last_updated }} {% if history.last_change %}{{ history.last_change|date('M jS, Y') }}{% else %}not available{% endif %}
+                    | <a href="https://github.com/modxorg/Docs/commits/{{ relative_file_path }}" target="_blank" rel="noopener">{{ lang.page_history }}</a>
+                    | <a href="https://github.com/modxorg/Docs/edit/{{ relative_file_path }}" target="_blank" rel="noopener">{{ lang.improve_page }}</a>
+                    | <a href="https://github.com/modxorg/Docs/issues/new?title=Issue+on+{{ path|url_encode }}&template=incorrect.md" target="_blank" rel="noopener">{{ lang.report_issue }}</a>
                 </p>
-            {% endif %}
+            </div>
 
             {% if 'en' in suggested_languages %}
             <div class="c-callout c-callout--info">
@@ -87,15 +69,7 @@
 
             {% if meta.suggest_delete %}
                 <div class="c-callout c-callout--warning">
-                    {% if language == 'en' %}
-                        This page is marked as a candidate to be deleted:
-                    {% elseif language == 'ru' %}
-                        Эта страница помечена как кандидат на удаление:
-                    {% elseif language == 'nl' %}
-                        Deze pagina is gemarkeerd als een te verwijderen kandidaat:
-                    {% elseif language == 'es' %}
-                        Esta página está marcada como candidato a ser eliminado:
-                    {% endif %}
+                    {{ lang.suggest_delete }}
                     {{ meta.suggest_delete }}
                 </div>
             {% endif %}
@@ -108,7 +82,7 @@
                     <nav class="c-toc" aria-labelledby="toc-title">
                         <div class="c-toc__wrapper">
                             <span class="c-toc__title" id="toc-title">
-                            {% if language == 'en' %} In this document: {% elseif language == 'ru' %} В этом документе: {% elseif language == 'nl' %} In dit document: {% elseif language == 'es' %}En este documento:{% endif %}
+                                {{ lang.in_this_document }}
                             </span>
                             {{ toc|raw }}
                         </div>
@@ -120,8 +94,9 @@
                 {% if meta.note %}
                     <div class="c-callout">
                         <strong class="c-callout__title">
-                        {% if language == 'en' %} Note: {% elseif language == 'ru' %} Заметка: {% elseif language == 'nl' %} Notitie: {% elseif language == 'nl' %} Nota: {% endif %}
-                        </strong> {{ meta.note }}
+                            {{ lang.note }}
+                        </strong>
+                        {{ meta.note }}
                     </div>
                 {% endif %}
 
