@@ -35,21 +35,26 @@ class TranslationService
         if (!in_array($language, ['nl', 'ru', 'en', 'es'])) {
             $language = 'en';
         }
-        $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';
-        $stmt = $this->db->prepare($q);
-        $stmt->bindValue(':uri', $request->getActualContextUrl() . $request->getPath());
+        try {
+            $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';
+            $stmt = $this->db->prepare($q);
+            $stmt->bindValue(':uri', $request->getActualContextUrl() . $request->getPath());
 
-        if ($stmt->execute() && $row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $stmt->closeCursor();
-            foreach ($row as $lang => $uri) {
-                if (empty($uri)) {
-                    unset($row[$lang]);
+            if ($stmt->execute() && $row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $stmt->closeCursor();
+                foreach ($row as $lang => $uri) {
+                    if (empty($uri)) {
+                        unset($row[$lang]);
+                    }
                 }
-            }
-            return $row;
-        }
 
-        $stmt->closeCursor();
+                return $row;
+            }
+
+            $stmt->closeCursor();
+        } catch (\Exception $e) {
+            return [];
+        }
         return [];
     }
 }
