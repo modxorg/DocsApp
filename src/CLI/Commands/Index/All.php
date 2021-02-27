@@ -70,7 +70,7 @@ class All extends Command
         // Wipe the current index
 
         $versions = array_keys(VersionsService::getAvailableVersions(false));
-        $languages = ['en', 'ru', 'nl'];
+        $languages = ['en', 'ru', 'nl', 'es'];
 
         $count = 0;
         foreach ($versions as $version) {

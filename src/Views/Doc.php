@@ -166,7 +166,7 @@ class Doc extends Base
 
         $currentLanguage = $pageRequest->getLanguage();
         $suggestions = [];
-        $documentationLanguages = ['en', 'ru', 'nl'];
+        $documentationLanguages = ['en', 'ru', 'nl', 'es'];
         // look through sorted list and use first one that matches a supported language
         foreach ($requestedLanguages as $requestLanguage => $priority) {
             foreach ($documentationLanguages as $docLanguage) {
