@@ -77,6 +77,10 @@ p {
     max-width: $paragraph-max-width;
 }
 
+li {
+    max-width: $paragraph-max-width;
+}
+
 code, kbd, samp, pre {
     background-color: map-get($colors, 'inline-code');
     padding: 0.1rem 0.25rem;
