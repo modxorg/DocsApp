@@ -58,14 +58,16 @@ class All extends Command
         if (!$search) {
             $output->writeln('<comment>- Will not index search terms.</comment>');
         }
+        else {
+            $db->exec('DELETE FROM Search_Terms');
+            $db->exec('DELETE FROM Search_Pages');
+            $db->exec('DELETE FROM Search_Terms_Occurrences');
+        }
         if (!$history) {
             $output->writeln('<comment>- Will not index history/contributors.</comment>');
         }
 
         // Wipe the current index
-        $db->exec('DELETE FROM Search_Terms');
-        $db->exec('DELETE FROM Search_Pages');
-        $db->exec('DELETE FROM Search_Terms_Occurrences');
 
         $versions = array_keys(VersionsService::getAvailableVersions(false));
         $languages = ['en', 'ru', 'nl'];
