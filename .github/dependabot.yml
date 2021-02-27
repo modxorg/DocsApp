@@ -11,3 +11,10 @@ updates:
       interval: "weekly"
       day: "tuesday"
     versioning-strategy: increase-if-necessary
+  - package-ecosystem: "npm"
+    directory: "/public/template/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    versioning-strategy: increase-if-necessary
+    
