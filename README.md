@@ -1,13 +1,15 @@
-# MODX DocsApp
+# DocsApp for MODX
 
-The DocsApp is a slim application that serves up the [MODX documentation](https://github.com/modxorg/Docs) from markdown format into a fully functional site.
+The DocsApp is a Slim application that serves up the [MODX documentation](https://github.com/modxorg/Docs) from markdown format into a fully functional site.
 
-It's in development, help is welcome.
+Version-specific copies [of the markdown documentation](https://github.com/modxorg/Docs) go into the `/docs` directory. Then point a webserver at the `/public` directory to browse the documentation.
 
-Version-specific copies of the documentation should go into the `/docs` directory. Then point a webserver at the `/public` directory to browse the documentation.
+| Environment | Branch | Latest deployment status |
+| ----------- | ------ | ----------------- |
+| Mirror ([docs.modx.org](https://docs.modx.org/)) | master | ![Deployment status from DeployBot](https://modmore.deploybot.com/badge/77558059913940/129478.svg) |
+| Production ([docs.modx.com](https://docs.modx.com/)) | master | ![Deployment status from DeployBot](https://modmore.deploybot.com/badge/77558059913940/169054.svg) |
 
-
-## Setting up
+## Initial installation
 
 1. Run a [composer install](https://getcomposer.org) in the root: `composer install`
 2. Copy the default settings: `cp .env-dev .env`
@@ -20,7 +22,9 @@ Version-specific copies of the documentation should go into the `/docs` director
 
 The app uses a command line utility to help with initialising and updating documentation. The configuration for the latest (production) version of that, is in `/sources.dist.json`.
 
-To run the app with a different set documentation source, you can create a `/sources.json` file. For example, create it like this to have a local source for `2.x` and a separate `upstream` containing the 2.x from the official repository:
+To run the app with a different set documentation source, you can create a `/sources.json` file.
+
+For example, create it like this to have a local source for `2.x` and a separate `upstream` containing the 2.x from the official repository:
 
 ```json
 {
@@ -50,11 +54,11 @@ Cloning git@github.com:modxorg/Docs.git on branch 2.x into docs directory upstre
 Cloning into 'upstream'...
 ```
 
-If you see an error "Doc sources definition is missing or invalid JSON", make sure that your JSON is valid. Especially commas at the end of the last entries can be troublesome.
+If you see an error "Doc sources definition is missing or invalid JSON", make sure that your JSON is valid. Especially commas at the end of the last entries can be troublesome. You can validate the JSON structure with [ajv-cli](https://www.npmjs.com/package/ajv-cli) by running: `ajv -s sources.schema.json -d sources.json -d sources.dist.json`
 
 The "upstream" version has been cloned, and you can keep that up-to-date easily now with `php docs.php sources:update`, but you still need to set up the local version of 2.x. You can add the files directly in a `/docs/2.x/` directory, or you can symlink them in from elsewhere.
 
-For this, you need to clone the modxorg/Docs repository, or better yet a fork of your own that you have commit access to. Where the directory is doesn't matter for the application, but let's say we want it in a `/markdown/` directory.
+For this, you need to clone the modxorg/Docs repository, or better yet a fork of your own that you have commit access to. Where the directory is doesn't matter for the application - you could clone directly into /docs/, or you can clone it into a separate directory and set up a symlink.
 
 Clone it like this:
 
@@ -114,11 +118,11 @@ git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
 ### Searching / Indexing
 
-To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:all` to populate the index. This may take a while as that will scan all files in the documentation to index possible search terms, as well as historic contributors (if the source is a git repo) for each file.
+To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:all` to populate the index. This may take a while (for 2.x + 3.x official documentation, 20-40 minutes depending on computer speed) as that will scan all files in the documentation to index possible search terms, as well as historic contributors (if the source is a git repo) for each file.
 
 For the language switch to work, you also need to index the translations with `php docs.php index:translations`.
 
-**These index actions are done automatically for changed files only (much faster!) as part of `php docs.php sources:update`.** Typically you'd only need to run them the first time setting up mirror.
+**These index actions are done automatically for changed files only (much faster!) as part of `php docs.php sources:update`.** Typically you'd only need to run the full indexing the first time setting up a mirror or clone.
 
 ## Building assets
 
@@ -127,6 +131,8 @@ From the `public/template/` directory, first load the dependencies with `npm ins
 Then use `npm run build:css` to build the styles or `npm run watch:css` to watch for changes to the sass files in `public/template/src/` and automatically build them.
 
 Similarly, for the javascript and SVG sprites, you can use `npm run build:js` and `npm run build:svg`.
+
+When preparing a patch for production, use `npm run release` which will build styles and scripts in production mode, slimming down the file sizes further.
 
 ## Running in a Docker Container
 
