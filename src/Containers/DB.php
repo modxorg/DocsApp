@@ -12,6 +12,7 @@ class DB
             $dir = getenv('BASE_DIRECTORY') . 'db/db.sqlite';
             $db = new \PDO('sqlite:' . $dir);
             $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $db->setAttribute(\PDO::ATTR_TIMEOUT, 10000);
             return $db;
         };
     }
