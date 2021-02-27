@@ -1,0 +1,19 @@
+name: Validate
+
+on: [push, pull_request]
+
+jobs:
+  verify-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate language file
+        uses: OrRosenblatt/validate-json-action@0.1.0
+        with:
+          schema: ./lang.schema.json
+          json: ./lang.json
+      - name: Validate sources file
+        uses: OrRosenblatt/validate-json-action@0.1.0
+        with:
+          schema: ./sources.schema.json
+          json: ./sources.json

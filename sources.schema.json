@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://github.com/modxorg/DocsApp/blob/master/sources.schema.json",
+    "title": "Sources File",
+    "description": "Description of version branches.",
+    "type": "object",
+    "properties": {
+    },
+    "patternProperties": {
+        "^(\\d.x)$": { "$ref": "#/definitions/source"}
+    },
+    "additionalProperties": false,
+
+    "definitions": {
+        "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type"],
+            "properties": {
+                "type": {
+                    "enum": ["git", "local"]
+                },
+                "url": {
+                    "type": "string"
+                },
+                "branch": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
