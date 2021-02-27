@@ -1,0 +1,19 @@
+name: Validate
+
+on: [push, pull_request]
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate language file
+        uses: docker://orrosenblatt/validate-json-action:latest
+        env:
+          INPUT_SCHEMA: ./lang.schema.json
+          INPUT_JSONS: ./lang.json
+      - name: Validate sources file
+        uses: docker://orrosenblatt/validate-json-action:latest
+        env:
+          INPUT_SCHEMA: ./sources.schema.json
+          INPUT_JSONS: ./sources.dist.json

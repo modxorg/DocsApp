@@ -21,7 +21,8 @@ class Services
 
         $container[DocumentService::class] = function (Container $container) {
             return new DocumentService(
-                $container->get(FilePathService::class)
+                $container->get(FilePathService::class),
+                $container->get('db')
             );
         };
 

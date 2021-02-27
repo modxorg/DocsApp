@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://github.com/modxorg/DocsApp/blob/master/lang.schema.json",
+    "title": "Language File",
+    "description": "Basic language file used to present the site in different languages.",
+    "type": "object",
+    "required": ["en"],
+    "properties": {
+    },
+    "patternProperties": {
+        "^([a-z]{2})$": { "$ref": "#/definitions/language"}
+    },
+    "additionalProperties": false,
+
+    "definitions": {
+        "language": {
+            "type": "object",
+            "additionalProperties": true
+        }
+    }
+}

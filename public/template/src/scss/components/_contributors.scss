@@ -1,0 +1,27 @@
+.c-history {
+    display: flex;
+    align-items: center;
+    margin: -.9375rem 0 1.875rem
+}
+.c-contributors {
+    display: flex;
+}
+.c-contributor {
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #fff;
+    margin-left: -10px;
+
+    &:first-child {
+        margin-left: 0;
+    }
+}
+.c-last-edit {
+    color: #555;
+    font-size: 0.9em;
+    padding-left: 0.5em;
+    margin-bottom: 0;
+    font-weight: 500;
+    flex: 1; // fixes mobile rendering
+}

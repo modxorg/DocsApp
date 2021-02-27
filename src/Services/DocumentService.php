@@ -5,15 +5,21 @@ namespace MODXDocs\Services;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Model\Page;
 use MODXDocs\Model\PageRequest;
+use PDO;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 class DocumentService
 {
+    /**
+     * @var PDO
+     */
+    protected $db;
     private $filePathService;
 
-    public function __construct(FilePathService $filePathService)
+    public function __construct(FilePathService $filePathService, PDO $db)
     {
         $this->filePathService = $filePathService;
+        $this->db = $db;
     }
 
     /**
@@ -34,6 +40,7 @@ class DocumentService
 
         return new Page(
             $this,
+            $this->db,
             $request->getVersion(),
             $request->getLanguage(),
             $request->getPath(),

@@ -114,9 +114,11 @@ git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
 ### Searching / Indexing
 
-To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:search` to populate the index. This may take a while as that will scan all files in the documentation.
+To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:all` to populate the index. This may take a while as that will scan all files in the documentation to index possible search terms, as well as historic contributors (if the source is a git repo) for each file.
 
-For the language switch to work, you also need to index the translations with `php docs.php index:translations`. This is also called automatically after updating sources with `php docs.php sources:update`.
+For the language switch to work, you also need to index the translations with `php docs.php index:translations`.
+
+**These index actions are done automatically for changed files only (much faster!) as part of `php docs.php sources:update`.** Typically you'd only need to run them the first time setting up mirror.
 
 ## Building assets
 
@@ -128,4 +130,4 @@ Similarly, for the javascript and SVG sprites, you can use `npm run build:js` an
 
 ## Running in a Docker Container
 
-Run `make` and `make install` or use the provided Dockerfile/docker-compose.yml. (#3)
+Run `make` and `make install` or use the provided Dockerfile/docker-compose.yml. (see #3)

@@ -5,8 +5,9 @@ namespace MODXDocs\CLI;
 
 use MODXDocs\CLI\Commands\CacheNavigation;
 use MODXDocs\CLI\Commands\CacheRefresh;
+use MODXDocs\CLI\Commands\Index\File;
 use MODXDocs\CLI\Commands\Index\Init;
-use MODXDocs\CLI\Commands\Index\Search;
+use MODXDocs\CLI\Commands\Index\All;
 use MODXDocs\CLI\Commands\Index\Translations;
 use MODXDocs\CLI\Commands\ScrapeImages;
 use MODXDocs\CLI\Commands\SourcesInit;
@@ -49,8 +50,9 @@ class Application extends \Symfony\Component\Console\Application {
         $cmds[] = new CacheRefresh();
         $cmds[] = new CacheNavigation();
         $cmds[] = new Init();
+        $cmds[] = new File();
         $cmds[] = new Translations();
-        $cmds[] = new Search();
+        $cmds[] = new All();
         $cmds[] = new ScrapeImages();
         return $cmds;
     }

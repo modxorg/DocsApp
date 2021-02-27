@@ -83,4 +83,9 @@ class CacheService
 
         return true;
     }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
 }

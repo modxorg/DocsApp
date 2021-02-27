@@ -43,6 +43,7 @@ abstract class Base
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
             'is_dev' => (bool) getenv('DEV'),
             'analytics_id' => (string) getenv('ANALYTICS_ID'),
+            'lang' => $this->getLang($pageRequest->getLanguage()),
         ];
 
         $data = \array_merge(
@@ -83,5 +84,20 @@ abstract class Base
         }
 
         return $revision;
+    }
+
+    protected function getLang(string $language): array
+    {
+        $lang = json_decode(file_get_contents($_ENV['BASE_DIRECTORY'] . 'lang.json'), true);
+        if (!is_array($lang)) {
+            return [];
+        }
+        if (array_key_exists($language, $lang)) {
+            $lang = array_merge($lang['en'], $lang[$language]);
+        }
+        else {
+            $lang = $lang['en'];
+        }
+        return $lang;
     }
 }

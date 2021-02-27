@@ -13,6 +13,8 @@ use MODXDocs\Helpers\TocRenderer;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
+use PDO;
+use Symfony\Component\Process\Process;
 use TOC\MarkupFixer;
 use TOC\TocGenerator;
 use Webuni\CommonMark\TableExtension\TableExtension;
@@ -57,8 +59,12 @@ class Page {
      * @var string
      */
     private $relativeFilePath;
+    /**
+     * @var PDO
+     */
+    private $db;
 
-    public function __construct(DocumentService $documentService, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
+    public function __construct(DocumentService $documentService, PDO $db, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {
         $this->version = $version;
         $this->meta = $meta;
@@ -67,6 +73,7 @@ class Page {
         $this->path = $requestPath;
         $this->currentUrl = '/' . $version . '/' . $language . '/' . $requestPath;
         $this->documentService = $documentService;
+        $this->db = $db;
 
         $docRoot = getenv('DOCS_DIRECTORY');
         if (strpos($filePath, $docRoot) === 0) {
@@ -229,5 +236,137 @@ class Page {
     public function getRelativeFilePath(): string
     {
         return $this->relativeFilePath;
+    }
+
+    public function getHistory()
+    {
+        try {
+            $statement = $this->db->prepare('SELECT git_hash, ts, name, email, message FROM Page_History WHERE url = :url ORDER BY ts DESC');
+            $statement->bindValue(':url', $this->relativeFilePath);
+            if (!$statement->execute()) {
+                return [];
+            }
+            $commits = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return [];
+        }
+
+        $contributors = [];
+        $lastChange = null;
+        $lastChangeMessage = null;
+        foreach ($commits as $commit) {
+            if (!array_key_exists($commit['email'], $contributors)) {
+                $contributors[$commit['email']] = [
+                    'name' => $commit['name'],
+                    'gravatar' => $this->_getAvatarFor($commit['email']),
+                    'count' => 0,
+                ];
+            }
+            $contributors[$commit['email']]['count']++;
+
+            if (!$lastChange) {
+                $lastChange = (int)$commit['ts'];
+                $lastChangeMessage = $commit['message'];
+            }
+        }
+
+        // Sort based on contribution count, contributor with most commits last because that's shown "in front".
+        uasort($contributors, function ($a, $b) {
+            return $a['count'] >= $b['count'] ? 1 : -1;
+        });
+
+        return [
+            'last_change' => $lastChange,
+            'last_change_message' => $lastChangeMessage,
+            'contributors' => $contributors
+        ];
+    }
+
+    public function getFileCommits()
+    {
+        $cmd = new Process([
+            'git',
+            '--no-pager',
+            'log',
+            '--numstat',
+            '--pretty=format:"> %h | %ct | %aN | %aE |  %s"',
+            '--',
+            substr($this->relativeFilePath, strpos($this->relativeFilePath, '/') + 1)
+        ]);
+        $cmd->setWorkingDirectory(getenv('DOCS_DIRECTORY') . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
+
+        if ($cmd->run() !== 0) {
+            return [];
+        }
+
+        $history = $cmd->getOutput();
+        $history = explode("\n", $history);
+        $history = array_map('trim', $history);
+        $history = array_filter($history);
+
+        $commits = [];
+        $currentCommit = null;
+        foreach ($history as $line) {
+            $line = trim($line, '"');
+            if (strpos($line, '>') === 0) {
+                // If we've had a previous commit we were filling, we just got a new one, so set it to the array
+                if (is_array($currentCommit)) {
+                    $commits[] = $currentCommit;
+                }
+
+                // Remove the prefixed >
+                $line = substr($line, 2);
+
+                // Parse into an array structure we can more easily expand in the future than the raw git log output
+                [$hash, $timestamp, $name, $email, $message] = array_map('trim', explode('|', trim($line)));
+
+                // Keep in a temporary array, so we can fill it with added/removed stats from the next line
+                $currentCommit = [
+                    'hash' => $hash,
+                    'timestamp' => $timestamp,
+                    'name' => $name,
+                    'email' => $email,
+                    'message' => $message,
+                    'added' => 0,
+                    'removed' => 0,
+                ];
+            }
+            // This must be a line with added/removed counts, so append that information
+            elseif (is_array($currentCommit)) {
+                $line = explode("\t", $line);
+                $currentCommit['added'] = (int)$line[0];
+                $currentCommit['removed'] = (int)$line[1];
+            }
+        }
+
+        // Make sure to also save the last commit
+        if ($currentCommit) {
+            $commits[] = $currentCommit;
+        }
+
+        return $commits;
+    }
+
+    private function _getAvatarFor($email): string
+    {
+        $hash = md5(strtolower(trim($email)));
+
+        $cache = CacheService::getInstance();
+        $key = 'avatars/' . $hash;
+        $gravatarUrl = 'https://www.gravatar.com/avatar/' . $hash . '?s=60&d=retro';
+        $avatar = $cache->get($key, $hash);
+        if (empty($avatar) && $cache->isEnabled()) {
+            $download = file_get_contents($gravatarUrl);
+            if (!empty($download)) {
+                $avatar = base64_encode($download);
+                $cache->set($key, $avatar, strtotime('+1 month'));
+            }
+        }
+
+        if (!empty($avatar)) {
+            return "data:image/jpg;base64,{$avatar}";
+        }
+
+        return $gravatarUrl;
     }
 }

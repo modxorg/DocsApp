@@ -61,7 +61,7 @@ class Doc extends Base
         }
 
         $crumbs[] = [
-            'title' => 'Home', // @todo i18n
+            'title' => $this->getLang($pageRequest->getLanguage())['home'],
             'href' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
         ];
 
@@ -84,6 +84,8 @@ class Doc extends Base
 //            'versions' => $this->versionsService->getVersions($pageRequest),
             'nav' => $tree->renderTree($this->view),
             'translations' => $this->getTranslations($pageRequest),
+
+            'history' => $page->getHistory(),
 
             'suggested_languages' => $this->getSuggestedLanguages($request, $pageRequest),
         ]);
