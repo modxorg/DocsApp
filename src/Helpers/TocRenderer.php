@@ -18,7 +18,7 @@ class TocRenderer extends ListRenderer
         parent::__construct($matcher, $defaultOptions, null);
     }
 
-    protected function renderLink(ItemInterface $item, array $options = array())
+    protected function renderLink(ItemInterface $item, array $options = []): string
     {
         $newUri = $this->prefix . $item->getUri();
         $item->setUri($newUri);

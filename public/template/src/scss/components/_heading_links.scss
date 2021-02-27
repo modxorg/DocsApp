@@ -1,0 +1,31 @@
+
+.heading-link {
+    display: inline-block;
+    margin-left: 0.67em;
+    transition: opacity 0.25s ease-in-out;
+    opacity: 0;
+    font-size: 0.8em;
+    bottom: 0.2em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    &:hover .heading-link {
+        opacity: 1;
+    }
+}
+
+@include breakpoint(medium up) {
+    h1, h2, h3, h4, h5, h6 {
+        position: relative;
+        margin-left: -3rem;
+        padding-left: 3rem;
+
+        &:target .heading-link{
+            opacity: 1;
+        }
+    }
+    .heading-link {
+        left: 0;
+        position: absolute;
+    }
+}
