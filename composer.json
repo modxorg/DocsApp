@@ -17,7 +17,7 @@
         "ext-pdo": "*",
         "ext-sqlite3": "*",
         "ext-fileinfo": "*",
-        "slim/slim": "^3.1",
+        "slim/slim": "^4.7",
         "slim/php-view": "^2.0",
         "slim/twig-view": "^2.3",
         "spatie/yaml-front-matter": "^2.0",
