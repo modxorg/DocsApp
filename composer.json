@@ -23,7 +23,7 @@
         "spatie/yaml-front-matter": "^2.0",
         "league/commonmark": "^1.5",
         "caseyamcl/toc": "^3.0",
-        "vlucas/phpdotenv": "^3.3",
+        "vlucas/phpdotenv": "^4.2",
         "symfony/console": "^5.2",
         "symfony/process": "^5.2",
         "voku/stop-words": "^2.0"
