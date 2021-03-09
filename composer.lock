@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24c80b7e7401b1b45a2657cb1df16743",
+    "content-hash": "42ebceab9aaba78a0eed373c79db9f8c",
     "packages": [
         {
             "name": "caseyamcl/toc",
@@ -1471,7 +1471,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.2.3",
+            "version": "v5.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
