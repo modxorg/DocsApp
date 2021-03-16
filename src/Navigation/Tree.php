@@ -129,7 +129,10 @@ class Tree {
             }
 
             if (!$so1 && !$so2) {
-                return strnatcmp($item['title'], $item2['title']);
+                return strnatcmp(
+                    mb_strtolower($item['title']),
+                    mb_strtolower($item2['title'])
+                );
             }
 
             return $so1 - $so2;
@@ -221,5 +224,5 @@ class Tree {
         }
         return $return;
     }
-    
+
 }
