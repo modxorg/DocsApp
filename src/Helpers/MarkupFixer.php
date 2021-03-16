@@ -74,6 +74,7 @@ class MarkupFixer extends \TOC\MarkupFixer
             $link = $domDocument->createElement('a');
             $link->setAttribute('href', '#' . $node->getAttribute('id'));
             $link->setAttribute('class', 'heading-link');
+            $link->setAttribute('data-nosnippet', 'true');
             $link->textContent = '¶';
             $node->appendChild($link);
         }
