@@ -5,6 +5,4 @@ if [ -f /www/.update-sources ]; then
     echo "Updating sources"
     cd /www/
     php docs.php sources:update
-else
-    echo "nothing to do"
 fi
