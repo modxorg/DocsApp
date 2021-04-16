@@ -22,6 +22,8 @@ class Nav {
         if (langSwitch) {
             self.handleToggle(langSwitch, 'switchsettings');
         }
+
+        let activeItem = document.querySelector()
     }
 
     collapseNavigation() {
@@ -67,7 +69,7 @@ class Nav {
             }
             activepageItem.scrollIntoView();
         }
-        
+
         // expand first item if no active item exists (e.i. root page)
         if (document.querySelector('.c-nav__item--active') === null) {
             let firstItem = document.querySelector('.c-nav__item:first-of-type');
