@@ -58,6 +58,11 @@ a {
     &:hover {
         color: lightendarken(map-get($colors, 'link-color'), 15%);
     }
+
+    // Links should look like links
+    .l-main__content &, .c-callout & {
+        text-decoration: underline;
+    }
 }
 
 img {

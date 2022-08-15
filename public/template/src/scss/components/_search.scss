@@ -197,6 +197,7 @@ $errorColor: map_get($colors, alert);
     color: map-get($colors, sapphire);
 }
 .l-main-search__link {
+    text-decoration: none !important;
     &:hover, &:focus {
         .l-main-search__title {
             color: lightendarken(map-get($colors, 'link-color'), 15%);
