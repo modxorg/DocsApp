@@ -102,7 +102,7 @@
                             {% apply spaceless %}
                             {% for member in opencollective_members %}
                                 <li class="c-oc__member">
-                                    <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.style.display = 'none';" class="c-oc__member_image" loading="lazy" title="{{ member.name }} contributed {{ (member.totalAmountDonated)|number_format }} to MODX">
+                                    <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.style.display = 'none';" class="c-oc__member_image" loading="lazy" title="{{ member.name }} has contributed ${{ (member.totalAmountDonated)|number_format }} to MODX">
                                 </li>
                             {% endfor %}
                             {% endapply %}
