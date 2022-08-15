@@ -88,9 +88,35 @@
                         </div>
                     </nav>
 
-                    <div class="l-main__oc">
+                    <a class="l-main__oc" href="https://opencollective.com/modx" target="_blank" rel="noopener">
+                        {{ icon('opencollective', 'Open COllective', 'c-oc__logo') }}
+                        <p class="c-oc__text">Support the team building MODX with a monthly donation.</p>
 
-                    </div>
+
+                        <p class="c-oc__text">The budget raised through OpenCollective is transparent, including payouts, and any contributor can apply to be paid for their work on MODX.</p>
+
+                        <p class="c-oc__text">Let's pay the security team and core developers!</p>
+                        <p class="c-oc__subtitle">Backers</p>
+
+                        <ul class="c-oc__members">
+                            {% apply spaceless %}
+                            {% for member in opencollective_members %}
+                                <li class="c-oc__member">
+                                    <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.style.display = 'none';" class="c-oc__member_image" loading="lazy" title="{{ member.name }} contributed {{ (member.totalAmountDonated)|number_format }} to MODX">
+                                </li>
+                            {% endfor %}
+                            {% endapply %}
+
+{#                            <li class="c-oc__member c-oc__total">#}
+{#                                <span>${{ (opencollective.yearlyIncome / 12 / 100)|number_format }}/mo</span>#}
+{#                            </li>#}
+
+                        </ul>
+                        <p class="c-oc__subtitle">Budget</p>
+                        <p class="c-oc__text">${{ (opencollective.yearlyIncome / 12 / 100)|number_format }} per month</p>
+                    </a>
+
+                    <a href="/current/en/contribute/funding" class="c-oc__more" title="Learn more about funding MODX">Learn more</a>
                 </div>
             {% endif %}
 

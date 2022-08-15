@@ -1,0 +1,72 @@
+.l-main__oc {
+    display: block;
+    margin-top: 5em;
+
+    background: map-get($colors, 'sidebar-bg');
+    color: map-get($colors, 'sidebar-text');
+    padding: 1em;
+    border-radius: 1em;
+    margin-left: rem(-25);
+}
+
+.c-oc__logo {
+    max-width: 100%;
+    max-height: 60px;
+}
+
+.c-oc__text {
+    font-size: rem(13);
+    font-weight: 500;
+}
+
+.c-oc__subtitle {
+    font-size: rem(13);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.c-oc__members {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 25px;
+    padding-right: 25px;
+    margin-left: -28px;
+    margin-right: -35px;
+}
+.c-oc__member {
+    display: inline-block;
+    margin-right: -20px;
+    margin-bottom: -15px;
+}
+
+.c-oc__member_image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 5px solid map-get($colors, 'sidebar-bg');
+    background: #00B5DE;
+}
+
+.c-oc__total {
+
+    span {
+        height: 60px;
+        background: #00B5DE;
+        border-radius: 30px;
+        border: 5px solid map-get($colors, 'sidebar-bg');
+        color: #fff;
+        padding: 0.7em 1em;
+        font-weight: 600;
+        display: block;
+    }
+}
+
+.c-oc__more {
+    text-align: center;
+    font-size: rem(13);
+    font-weight: 500;
+    text-decoration: underline;
+    margin-top: 1em;
+    display: block;
+    margin-left: -1em;
+}

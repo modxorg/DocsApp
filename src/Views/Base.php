@@ -3,6 +3,7 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -44,6 +45,8 @@ abstract class Base
             'is_dev' => (bool) getenv('DEV'),
             'analytics_id' => (string) getenv('ANALYTICS_ID'),
             'lang' => $this->getLang($pageRequest->getLanguage()),
+            'opencollective' => $this->getOpenCollectiveInfo(),
+            'opencollective_members' => $this->getOpenCollectiveMembers(),
         ];
 
         $data = \array_merge(
@@ -99,5 +102,48 @@ abstract class Base
             $lang = $lang['en'];
         }
         return $lang;
+    }
+
+    private function getOpenCollectiveInfo(): array
+    {
+        $cache = CacheService::getInstance();
+        $cacheKey = 'opencollective';
+        $info = $cache->get($cacheKey);
+        if (!is_array($info)) {
+            $data = @file_get_contents('https://opencollective.com/modx.json');
+            $data = json_decode($data, true);
+            if (!empty($data['slug']) && $data['slug'] === 'modx') {
+                $data['fetched'] = time();
+                $cache->set($cacheKey, $data, strtotime('+2 hours'));
+                $info = $data;
+            }
+        }
+
+        return $info ?: [];
+    }
+
+    private function getOpenCollectiveMembers(): array
+    {
+        $cache = CacheService::getInstance();
+        $cacheKey = 'opencollective_members';
+        $info = $cache->get($cacheKey);
+        if (!is_array($info)) {
+            $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=25&isActive=1');
+            $data = json_decode($data, true);
+            if (is_array($data) && count($data) > 0) {
+
+                foreach ($data as $i => $member) {
+                    // filter out non-backers (OC itself, admin)
+                    if ($member['role'] !== 'BACKER') {
+                        unset($data[$i]);
+                    }
+                }
+
+                $cache->set($cacheKey, $data, strtotime('+2 hours'));
+                $info = $data;
+            }
+        }
+
+        return $info ?: [];
     }
 }
