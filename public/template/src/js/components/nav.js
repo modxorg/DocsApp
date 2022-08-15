@@ -22,8 +22,6 @@ class Nav {
         if (langSwitch) {
             self.handleToggle(langSwitch, 'switchsettings');
         }
-
-        let activeItem = document.querySelector()
     }
 
     collapseNavigation() {
