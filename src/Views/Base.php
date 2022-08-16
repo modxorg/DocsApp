@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 
 abstract class Base
 {
+    private static $rev = '';
     /** @var ContainerInterface */
     protected $container;
 
@@ -77,14 +78,19 @@ abstract class Base
         );
     }
 
-    protected static function getRevision() : string
+    public static function getRevision() : string
     {
+        if (!empty(self::$rev)) {
+            return self::$rev;
+        }
         $revision = 'dev';
 
         $projectDir = getenv('BASE_DIRECTORY');
         if (file_exists($projectDir . '.revision')) {
             $revision = trim((string)file_get_contents($projectDir . '.revision'));
         }
+
+        self::$rev = $revision;
 
         return $revision;
     }

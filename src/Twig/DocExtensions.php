@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Twig;
 
+use MODXDocs\Views\Base;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Slim\Http\Request;
@@ -36,6 +37,9 @@ class DocExtensions extends AbstractExtension
     }
 
     public static function getInlineSvg($name, $title = '', $classes = '', $role = 'presentation', $attributes = '') {
-        return '<svg role="'.$role.'" class="c-icon c-icon--'.$name.' '.$classes.'" title="'.$title.'" '.$attributes.'><title>'.$title.'</title><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/template/dist/sprite.svg#'.$name.'" href="/template/dist/sprite.svg#'.$name.'"></use></svg>';
+        $rev = Base::getRevision();
+        $url = '/template/dist/sprite.svg?v=' . $rev . '#' . $name;
+
+        return '<svg role="'.$role.'" class="c-icon c-icon--'.$name.' '.$classes.'" title="'.$title.'" '.$attributes.'><title>'.$title.'</title><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="' . $url . '" href="' . $url . '"></use></svg>';
     }
 }
