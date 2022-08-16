@@ -6,9 +6,13 @@
     color: map-get($colors, 'sidebar-text');
     padding: 1em;
     border-radius: 1em;
-    margin-left: rem(-25);
     border: 1px solid transparent;
     transition: background-color .5s ease-in-out;
+
+
+    @include breakpoint(large) {
+        margin-left: rem(-25);
+    }
 
     .c-oc__member_image {
         transition: border .5s ease-in-out;
