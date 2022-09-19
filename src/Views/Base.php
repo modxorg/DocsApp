@@ -145,6 +145,11 @@ abstract class Base
                     }
                 }
 
+                // Sort by total amount donated
+                uasort($data, static function ($a, $b) {
+                    return $a['totalAmountDonated'] < $b['totalAmountDonated'] ? 1 : -1;
+                });
+
                 $cache->set($cacheKey, $data, strtotime('+2 hours'));
                 $info = $data;
             }
