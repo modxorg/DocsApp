@@ -134,24 +134,31 @@ abstract class Base
         $cacheKey = 'opencollective_members';
         $info = $cache->get($cacheKey);
         if (!is_array($info)) {
-            $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=25&isActive=1');
+            $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=50&isActive=1');
             $data = json_decode($data, true);
             if (is_array($data) && count($data) > 0) {
 
+                $merged = [];
                 foreach ($data as $i => $member) {
                     // filter out non-backers (OC itself, admin)
                     if ($member['role'] !== 'BACKER') {
-                        unset($data[$i]);
+                        continue;
+                    }
+
+                    // Sometimes, users appear multiple times because of having a subscription but also
+                    // standalone donations. Merging those profiles here makes sure they appear just once.
+                    if (!isset($merged[$member['profile']])) {
+                        $merged[$member['profile']] = $member;
                     }
                 }
 
                 // Sort by total amount donated
-                uasort($data, static function ($a, $b) {
+                uasort($merged, static function ($a, $b) {
                     return $a['totalAmountDonated'] < $b['totalAmountDonated'] ? 1 : -1;
                 });
 
-                $cache->set($cacheKey, $data, strtotime('+2 hours'));
-                $info = $data;
+                $cache->set($cacheKey, $merged, strtotime('+2 hours'));
+                $info = $merged;
             }
         }
 
