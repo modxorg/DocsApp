@@ -61,7 +61,7 @@ class Tree {
             }
 
 
-            $filePath = $file->getPathname();
+            $filePath = str_replace('\\','/',$file->getPathname());
             $relativeFilePath = str_replace($root, '', $filePath);
             $relativeUrl = strpos($relativeFilePath, '.md') !== false ? substr($relativeFilePath, 0, strpos($relativeFilePath, '.md')) : $relativeFilePath;
             $relativeUrl = strpos($relativeUrl, $directoryPrefix) === 0 ? substr($relativeUrl, strlen($directoryPrefix)) : $relativeUrl;
