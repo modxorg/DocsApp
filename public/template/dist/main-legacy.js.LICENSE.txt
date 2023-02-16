@@ -1,0 +1,10 @@
+/*! svg4everybody v2.1.9 | github.com/jonathantneal/svg4everybody */
+
+/**
+ * Prism: Lightweight, robust, elegant syntax highlighting
+ *
+ * @license MIT <https://opensource.org/licenses/MIT>
+ * @author Lea Verou <https://lea.verou.me>
+ * @namespace
+ * @public
+ */

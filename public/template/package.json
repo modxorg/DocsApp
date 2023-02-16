@@ -69,7 +69,7 @@
         "modern-normalize": "^1.0.0",
         "prism-github": "^1.1.0",
         "prismjs": "^1.23.0",
-        "svg-sprite": "^1.5.0",
+        "svg-sprite": "^2.0.2",
         "svg4everybody": "^2.1.9"
     },
     "resolutions": {
