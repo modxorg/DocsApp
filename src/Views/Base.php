@@ -113,7 +113,7 @@ abstract class Base
     private function getOpenCollectiveInfo(): array
     {
         $cache = CacheService::getInstance();
-        $cacheKey = 'opencollective';
+        $cacheKey = 'opencollective_fc';
         $info = $cache->get($cacheKey);
         if (!is_array($info)) {
             $data = @file_get_contents('https://opencollective.com/modx.json');
@@ -131,7 +131,7 @@ abstract class Base
     private function getOpenCollectiveMembers(): array
     {
         $cache = CacheService::getInstance();
-        $cacheKey = 'opencollective_members';
+        $cacheKey = 'opencollective_members_fc';
         $info = $cache->get($cacheKey);
         if (!is_array($info)) {
             $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=50&isActive=1');
