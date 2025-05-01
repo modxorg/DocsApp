@@ -6,9 +6,9 @@ use MODXDocs\Containers\DB;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 class NotFoundRequests extends Base
 {
@@ -18,7 +18,7 @@ class NotFoundRequests extends Base
     private $cache;
     /** @var DB */
     private $db;
-    /** @var Router */
+    /** @var RouteParserInterface */
     private $router;
 
     public function __construct(ContainerInterface $container)
@@ -30,17 +30,17 @@ class NotFoundRequests extends Base
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function get(Request $request, Response $response)
+    public function get(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Page Not Found Errors', // @todo i18n
-            'href' => $this->router->pathFor('stats/page-not-found')
+            'href' => $this->router->urlFor('stats/page-not-found')
         ];
 
         $phs = [
@@ -64,7 +64,7 @@ class NotFoundRequests extends Base
         return $this->render($request, $response, 'stats/not-found-requests.twig', $phs);
     }
 
-    private function getTopRequests()
+    private function getTopRequests(): array
     {
         $results = $this->cache->get('stats/notfoundrequests/top');
         if (is_array($results)) {
@@ -83,7 +83,7 @@ class NotFoundRequests extends Base
         return $results;
     }
 
-    private function getRecentRequests()
+    private function getRecentRequests(): array
     {
         $results = $this->cache->get('stats/notfoundrequests/recent');
         if (is_array($results)) {

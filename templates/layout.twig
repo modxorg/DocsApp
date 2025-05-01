@@ -79,7 +79,7 @@
                     {{ icon('search', 'Search', 'o-search__icon', null, 'aria-hidden="true"') }}
                 </a>
                 <div class="l-header__search" id="searchform">
-                    <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
+                    <form method="get" action="{{ url_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
                         <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
                         <input class="c-searchform__input" id="search" type="search" name="q" placeholder="{{ lang.search }}" autocomplete="off" required>
                         <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
@@ -120,7 +120,7 @@
                             {% set showPageNote = false %}
                             <ul class="c-optionswitch__list" aria-label="Languages">
                                 {% for langKey, langInfo in _languages %}
-                                    {% set link = translations[langKey] ?? path_for('documentation', { version: version, language: langKey, path: 'index'}) %}
+                                    {% set link = translations[langKey] ?? url_for('documentation', { version: version, language: langKey, path: 'index'}) %}
                                     <li class="c-optionswitch__item {% if langKey == language %}c-optionswitch__item--active{% endif %}">
                                         <a class="c-optionswitch__link" hreflang="{{ langKey }}" rel="alternate" href="{{ link }}">
                                             <span class="" lang="{{ langKey }}" aria-describedby="lang-{{ langKey }}-en">{{ langInfo.local }}</span>

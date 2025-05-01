@@ -25,7 +25,7 @@
                     <div class="l-search__pagination">
                         <ul class="l-search__pagination-holder">
                             <li class="l-search-page l-search-page--active">
-                                <a href="{{ path_for('search', {version: version, language: language}, {q: search_query}) }}" class="l-search-page__link l-search-page__link--active">
+                                <a href="{{ url_for('search', {version: version, language: language}, {q: search_query}) }}" class="l-search-page__link l-search-page__link--active">
                                     More results for "{{ search_query }}"
                                 </a>
                             </li>

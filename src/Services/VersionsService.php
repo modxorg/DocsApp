@@ -3,7 +3,7 @@
 namespace MODXDocs\Services;
 
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
+use Slim\Interfaces\RouteParserInterface;
 
 class VersionsService
 {
@@ -13,17 +13,20 @@ class VersionsService
     private const DEFAULT_PATH = 'index';
 
     private $router;
+    private $versionsFile;
 
-    public function __construct(Router $router)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
+        $base = $_ENV['BASE_DIRECTORY'];
+        $this->versionsFile = $base . 'sources.json';
     }
 
     public static function getAvailableVersions($includeCurrent = true): array
     {
         $versions = [];
 
-        $base = getenv('BASE_DIRECTORY');
+        $base = $_ENV['BASE_DIRECTORY'];
         $config = null;
         $files = ['sources.dist.json', 'sources.json'];
         foreach ($files as $file) {
@@ -52,86 +55,51 @@ class VersionsService
 
     public function getVersions(PageRequest $request)
     {
-        $dir = new \DirectoryIterator(getenv('DOCS_DIRECTORY'));
+        $versions = self::getAvailableVersions();
+        $currentVersion = self::getCurrentVersion();
+        $currentVersionBranch = self::getCurrentVersionBranch();
 
-        $versions = [];
-
-        foreach ($dir as $fileInfo) {
-            if (!$fileInfo->isDir() || $fileInfo->isDot()) {
-                continue;
-            }
-
-            $file = $fileInfo->getPathname()
-                . '/'
-                . $request->getLanguage()
-                . '/'
-                . $request->getPath();
-
-            if (file_exists($file . '.md') || file_exists($file . '/index.md')) {
-                $versions[] = $this->createVersion($request, $fileInfo);
-            }
+        $result = [];
+        foreach ($versions as $versionKey => $details) {
+            $result[] = [
+                'key' => $versionKey,
+                'name' => $details['name'] ?? $versionKey,
+                'branch' => $details['branch'] ?? $versionKey,
+                'url' => $this->router->urlFor('documentation', [
+                    'version' => $versionKey,
+                    'language' => $request->getLanguage(),
+                    'path' => VersionsService::getDefaultPath()
+                ]),
+                'is_current' => $versionKey === $currentVersion,
+                'is_current_branch' => $versionKey === $currentVersionBranch,
+            ];
         }
 
-        return $versions;
-    }
-
-    private function createVersion(PageRequest $request, \DirectoryIterator $fileInfo)
-    {
-        $versionKey = static::getVersionUrl($fileInfo->getFilename());
-        return [
-            'title' => static::getVersionTitle($fileInfo->getFilename()),
-            'active' => $versionKey === $request->getVersion(),
-            'key' => $versionKey,
-            'uri' => $this->router->pathFor('documentation', [
-                'version' => $versionKey,
-                'language' => $request->getLanguage(),
-                'path' => $request->getPath(),
-            ])
-        ];
-    }
-
-    private static function getVersionUrl($version)
-    {
-        // If we found another version e.g. 2.x, and 2.x is the `current` branch, use `current`
-        // instead of 2.x in the URL
-        if (static::getCurrentVersionBranch() === $version) {
-            return static::getCurrentVersion();
-        }
-
-        return $version;
-    }
-
-    private static function getVersionTitle($fileVersion)
-    {
-        if (static::getCurrentVersionBranch() === $fileVersion) {
-            return $fileVersion . ' (current)';
-        }
-
-        return $fileVersion;
+        return $result;
     }
 
     public static function getCurrentVersion(): string
     {
-        return static::CURRENT_VERSION;
+        return self::CURRENT_VERSION;
     }
 
     public static function getCurrentVersionBranch(): string
     {
-        return static::CURRENT_VERSION_BRANCH;
+        return self::CURRENT_VERSION_BRANCH;
     }
 
     public static function getDefaultLanguage(): string
     {
-        return static::DEFAULT_LANGUAGE;
+        return self::DEFAULT_LANGUAGE;
     }
 
     public static function getDefaultPath(): string
     {
-        return static::DEFAULT_PATH;
+        return self::DEFAULT_PATH;
     }
 
-    public static function getDocsRoot(): string
+    public function getDocsRoot()
     {
-        return getenv('DOCS_DIRECTORY');
+        return $_ENV['DOCS_DIRECTORY'];
     }
 }

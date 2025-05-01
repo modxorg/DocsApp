@@ -5,15 +5,15 @@ namespace MODXDocs\Twig;
 use MODXDocs\Views\Base;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Slim\Http\Request;
-use Slim\Interfaces\RouterInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Interfaces\RouteParserInterface;
 
 class DocExtensions extends AbstractExtension
 {
     private $router;
     private $request;
 
-    public function __construct(RouterInterface $router, Request $request)
+    public function __construct(RouteParserInterface $router, Request $request)
     {
         $this->router = $router;
         $this->request = $request;
@@ -29,11 +29,17 @@ class DocExtensions extends AbstractExtension
 
     public function getBaseHref()
     {
-        $scheme = getenv('SSL') === '1' ? 'https' : 'http';
+        $scheme = $_ENV['SSL'] === '1' ? 'https' : 'http';
         $uri = $this->request->getUri();
         $port = \in_array($uri->getPort(), [80, 443, null], true) ? '' : (':' . $uri->getPort());
 
         return $scheme . '://' . $uri->getHost() . $port . '/';
+    }
+
+    public function getBaseUrl()
+    {
+        $scheme = $_ENV['SSL'] === '1' ? 'https' : 'http';
+        return $scheme . '://' . $this->request->getUri()->getHost();
     }
 
     public static function getInlineSvg($name, $title = '', $classes = '', $role = 'presentation', $attributes = '') {

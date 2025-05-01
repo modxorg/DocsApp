@@ -33,7 +33,7 @@ class Tree {
             return new self($version, $language, $items);
         }
 
-        $root = getenv('DOCS_DIRECTORY');
+        $root = $_ENV['DOCS_DIRECTORY'];
         $items = self::_getItems($root, $version, $language);
 
         $cache->set($cacheKey, $items);

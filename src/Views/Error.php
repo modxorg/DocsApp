@@ -4,11 +4,8 @@ namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-
-use MODXDocs\Exceptions\RedirectNotFoundException;
-use MODXDocs\Helpers\Redirector;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 class Error extends Base
 {
@@ -27,7 +24,7 @@ class Error extends Base
 
         $data = [
             'revision' => static::getRevision(),
-            'is_dev' => (bool) getenv('DEV'),
+            'is_dev' => (bool) $_ENV['DEV'],
             'exception_type' => get_class($this->throwable),
             'exception' => $this->throwable,
             'current_uri' => $request->getUri()->getPath(),

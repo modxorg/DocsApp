@@ -19,6 +19,8 @@ class SearchResults {
 
     private $resultDetails = [];
     private $results = [];
+    private $exactTerms = [];
+    private $fuzzyTerms = [];
 
     public function __construct(DocumentService $documentService, SearchQuery $query)
     {

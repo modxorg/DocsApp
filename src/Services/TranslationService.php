@@ -2,19 +2,26 @@
 
 namespace MODXDocs\Services;
 
+use PDO;
+use Slim\Interfaces\RouteParserInterface;
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
 
 class TranslationService
 {
     /**
-     * @var \PDO
+     * @var PDO
      */
     private $db;
 
-    public function __construct(\PDO $db, Router $router)
+    /**
+     * @var RouteParserInterface
+     */
+    private $router;
+
+    public function __construct(PDO $db, RouteParserInterface $router)
     {
         $this->db = $db;
+        $this->router = $router;
     }
 
     public function getAvailableTranslations(PageRequest $request): array

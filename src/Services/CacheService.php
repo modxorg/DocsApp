@@ -9,8 +9,8 @@ class CacheService
 
     public function __construct()
     {
-        $this->cacheRoot = rtrim(getenv('CACHE_DIRECTORY'), '/') . '/';
-        $this->enabled = (bool)getenv('CACHE_ENABLED');
+        $this->cacheRoot = rtrim($_ENV['CACHE_DIRECTORY'], '/') . '/';
+        $this->enabled = (bool)$_ENV['CACHE_ENABLED'];
     }
 
     public static function getInstance(): CacheService

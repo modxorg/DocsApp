@@ -23,7 +23,7 @@
         </ul>
 
         <p class="l-live-search__search">
-            <a href="{{ path_for('search', {language: language, version: version}, {q: search_query}) }}">
+            <a href="{{ url_for('search', {language: language, version: version}, {q: search_query}) }}">
                 All {{ result_count }} results &amp; details &raquo;
             </a>
         </p>
@@ -31,7 +31,7 @@
         <p class="l-search__no_results l-search__no_results--live">
             No results found for your search. :(
 
-            <a href="{{ path_for('search', {language: language, version: version}, {q: search_query}) }}">
+            <a href="{{ url_for('search', {language: language, version: version}, {q: search_query}) }}">
                 View search details &raquo;
             </a>
         </p>

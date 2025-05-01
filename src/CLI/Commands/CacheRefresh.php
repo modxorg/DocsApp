@@ -13,7 +13,7 @@ class CacheRefresh extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $root = rtrim(getenv('CACHE_DIRECTORY'), '/') . '/';
+        $root = rtrim($_ENV['CACHE_DIRECTORY'], '/') . '/';
 
         $output->writeln('<info>Emptying caches...</info>');
 

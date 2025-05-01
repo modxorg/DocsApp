@@ -32,13 +32,13 @@ class FilePathService
         return null;
     }
 
-    public function getAbsoluteRootPath() : string
+    public function getDocsRoot()
     {
-        return getenv('DOCS_DIRECTORY');
+        return $_ENV['DOCS_DIRECTORY'];
     }
 
     public function getAbsoluteContextPath(PageRequest $request) : string
     {
-        return $this->getAbsoluteRootPath() . $request->getActualContextUrl();
+        return $this->getDocsRoot() . $request->getActualContextUrl();
     }
 }

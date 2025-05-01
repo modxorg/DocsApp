@@ -13,7 +13,7 @@ class SettingsParser
     {
         $baseDir = dirname(dirname(__DIR__)) . '/';
         $dotFile = static::getDotFile($baseDir);
-        $dotEnv = Dotenv::create($baseDir, $dotFile);
+        $dotEnv = Dotenv::createImmutable($baseDir, $dotFile);
         $dotEnv->load();
     }
 
@@ -21,7 +21,7 @@ class SettingsParser
     {
         return [
             'settings' => [
-                'displayErrorDetails' => getenv('DEV') === '1',
+                'displayErrorDetails' => $_ENV['DEV'] === '1',
                 'addContentLengthHeader' => false,
             ]
         ];

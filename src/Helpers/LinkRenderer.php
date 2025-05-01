@@ -58,7 +58,7 @@ class LinkRenderer implements NodeRendererInterface, ConfigurationAwareInterface
             $attributes['rel'] = 'noreferrer noopener';
         } else {
             // Check if the link points to somewhere valid
-            $docs = getenv('DOCS_DIRECTORY');
+            $docs = $_ENV['DOCS_DIRECTORY'];
             $href = static::replaceCurrentUrl($href);
             if (!file_exists($docs . $href . '.md') && !file_exists($docs . $href . '/index.md')) {
                 try {

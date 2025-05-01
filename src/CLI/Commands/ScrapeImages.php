@@ -119,10 +119,6 @@ class ScrapeImages extends Command {
             if ($changed) {
                 file_put_contents($itemFile, $contents);
             }
-
-
-
-
         }
 
         return 0;

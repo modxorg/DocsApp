@@ -3,13 +3,12 @@
 namespace MODXDocs\Views\Stats;
 
 use MODXDocs\Containers\DB;
-use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 class Searches extends Base
 {
@@ -19,7 +18,7 @@ class Searches extends Base
     private $cache;
     /** @var DB */
     private $db;
-    /** @var Router */
+    /** @var RouteParserInterface */
     private $router;
 
     public function __construct(ContainerInterface $container)
@@ -31,17 +30,17 @@ class Searches extends Base
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function get(Request $request, Response $response)
+    public function get(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Search Statistics', // @todo i18n
-            'href' => $this->router->pathFor('stats/searches')
+            'href' => $this->router->urlFor('stats/searches')
         ];
 
         $startTime = microtime(true);
@@ -68,7 +67,7 @@ class Searches extends Base
         return $this->render($request, $response, 'stats/searches.twig', $phs);
     }
 
-    private function getTopSearches()
+    private function getTopSearches(): array
     {
         $results = $this->cache->get('stats/searches/top');
         if (is_array($results)) {
@@ -87,7 +86,7 @@ class Searches extends Base
         return $results;
     }
 
-    private function getSearchesWithoutResults()
+    private function getSearchesWithoutResults(): array
     {
         $results = $this->cache->get('stats/searches/without_results');
         if (is_array($results)) {
@@ -106,7 +105,7 @@ class Searches extends Base
         return $results;
     }
 
-    private function getRecentSearches()
+    private function getRecentSearches(): array
     {
         $results = $this->cache->get('stats/searches/recent');
         if (is_array($results)) {

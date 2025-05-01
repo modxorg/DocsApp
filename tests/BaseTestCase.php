@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\Environment;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+use Slim\Psr7\Environment;
 
 /**
  * This is an example class that shows how you could set up a method that

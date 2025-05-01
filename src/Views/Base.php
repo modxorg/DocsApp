@@ -5,8 +5,8 @@ namespace MODXDocs\Views;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
 
@@ -28,13 +28,13 @@ abstract class Base
         $this->versionsService = $this->container->get(VersionsService::class);
     }
 
-    protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
+    protected function render(Request $request, Response $response, $template, array $data = []): Response
     {
         $pageRequest = PageRequest::fromRequest($request);
 
         $initialData = [
             'revision' => static::getRevision(),
-            'canonical_base' => getenv('CANONICAL_BASE_URL'),
+            'canonical_base' => $_ENV['CANONICAL_BASE_URL'],
             'current_uri' => $request->getUri()->getPath(),
             'version' => $pageRequest->getVersion(),
             'version_branch' => $pageRequest->getVersionBranch(),
@@ -43,8 +43,8 @@ abstract class Base
             'locale' => $pageRequest->getLocale(),
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
-            'is_dev' => (bool) getenv('DEV'),
-            'analytics_id' => (string) getenv('ANALYTICS_ID'),
+            'is_dev' => (bool) $_ENV['DEV'],
+            'analytics_id' => (string) $_ENV['ANALYTICS_ID'],
             'lang' => $this->getLang($pageRequest->getLanguage()),
             'opencollective' => $this->getOpenCollectiveInfo(),
             'opencollective_members' => $this->getOpenCollectiveMembers(),
@@ -66,7 +66,7 @@ abstract class Base
         );
     }
 
-    protected function render404(Request $request, Response $response, array $data = []): \Psr\Http\Message\ResponseInterface
+    protected function render404(Request $request, Response $response, array $data = []): Response
     {
         return $this->render(
             $request,
@@ -80,88 +80,57 @@ abstract class Base
 
     public static function getRevision() : string
     {
-        if (!empty(self::$rev)) {
-            return self::$rev;
+        if (empty(static::$rev)) {
+            static::$rev = $_ENV['REVISION'] ?? date('YmdHis');
         }
-        $revision = 'dev';
-
-        $projectDir = getenv('BASE_DIRECTORY');
-        if (file_exists($projectDir . '.revision')) {
-            $revision = trim((string)file_get_contents($projectDir . '.revision'));
-        }
-
-        self::$rev = $revision;
-
-        return $revision;
+        return static::$rev;
     }
 
-    protected function getLang(string $language): array
+    protected function getLang($language)
     {
-        $lang = json_decode(file_get_contents($_ENV['BASE_DIRECTORY'] . 'lang.json'), true);
-        if (!is_array($lang)) {
+        $langFile = __DIR__ . '/../../lang.json';
+        if (!file_exists($langFile)) {
             return [];
         }
-        if (array_key_exists($language, $lang)) {
-            $lang = array_merge($lang['en'], $lang[$language]);
+
+        $langData = json_decode(file_get_contents($langFile), true);
+        if (!$langData) {
+            return [];
         }
-        else {
-            $lang = $lang['en'];
-        }
-        return $lang;
+
+        return $langData[$language] ?? $langData['en'] ?? [];
     }
 
-    private function getOpenCollectiveInfo(): array
+    protected function getOpenCollectiveInfo()
     {
         $cache = CacheService::getInstance();
-        $cacheKey = 'opencollective_fc';
-        $info = $cache->get($cacheKey);
-        if (!is_array($info)) {
-            $data = @file_get_contents('https://opencollective.com/modx.json');
-            $data = json_decode($data, true);
-            if (!empty($data['slug']) && $data['slug'] === 'modx') {
-                $data['fetched'] = time();
-                $cache->set($cacheKey, $data, strtotime('+2 hours'));
-                $info = $data;
-            }
+        $key = 'opencollective_info';
+        $info = $cache->get($key);
+
+        if ($info === null) {
+            $info = json_decode(file_get_contents('https://opencollective.com/modx/members/all.json'), true);
+            $cache->set($key, $info, 3600);
         }
 
-        return $info ?: [];
+        return $info;
     }
 
-    private function getOpenCollectiveMembers(): array
+    protected function getOpenCollectiveMembers()
     {
         $cache = CacheService::getInstance();
-        $cacheKey = 'opencollective_members_fc';
-        $info = $cache->get($cacheKey);
-        if (!is_array($info)) {
-            $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=50&isActive=1');
-            $data = json_decode($data, true);
-            if (is_array($data) && count($data) > 0) {
+        $key = 'opencollective_members';
+        $members = $cache->get($key);
 
-                $merged = [];
-                foreach ($data as $i => $member) {
-                    // filter out non-backers (OC itself, admin)
-                    if ($member['role'] !== 'BACKER') {
-                        continue;
-                    }
-
-                    // Sometimes, users appear multiple times because of having a subscription but also
-                    // standalone donations. Merging those profiles here makes sure they appear just once.
-                    if (!isset($merged[$member['profile']])) {
-                        $merged[$member['profile']] = $member;
-                    }
-                }
-
-                // Sort by total amount donated
-                uasort($merged, static function ($a, $b) {
-                    return $a['totalAmountDonated'] < $b['totalAmountDonated'] ? 1 : -1;
-                });
-
-                $cache->set($cacheKey, $merged, strtotime('+2 hours'));
-                $info = $merged;
-            }
+        if ($members === null) {
+            $members = json_decode(file_get_contents('https://opencollective.com/modx/members.json'), true);
+            $cache->set($key, $members, 3600);
         }
 
-        return $info ?: [];
+        return $members;
+    }
+
+    public static function setRevision($rev = null)
+    {
+        static::$rev = $_ENV['REVISION'] ?? date('YmdHis');
     }
 }

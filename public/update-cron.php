@@ -7,7 +7,7 @@ use MODXDocs\Helpers\SettingsParser;
 $settingsParser = new SettingsParser();
 
 // Validate the request as coming from GitHub
-$secret = getenv('UPDATE_SECRET');
+$secret = $_ENV['UPDATE_SECRET'];
 $body = (string)file_get_contents('php://input');
 $signature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? (string)$_SERVER['HTTP_X_HUB_SIGNATURE'] : false;
 $sha1 = hash_hmac('sha1', $body, $secret);

@@ -77,7 +77,7 @@ class Page {
         $this->documentService = $documentService;
         $this->db = $db;
 
-        $docRoot = getenv('DOCS_DIRECTORY');
+        $docRoot = $_ENV['DOCS_DIRECTORY'];
         if (strpos($filePath, $docRoot) === 0) {
             $filePath = ltrim(substr($filePath, strlen($docRoot)), '/');
         }
@@ -150,7 +150,7 @@ class Page {
     public function getCanonicalUrl(): string
     {
         $version = $this->version === VersionsService::getCurrentVersionBranch() ? VersionsService::getCurrentVersion() : $this->version;
-        return getenv('CANONICAL_BASE_URL') . $version . '/' . $this->language . '/' . $this->path;
+        return $_ENV['CANONICAL_BASE_URL'] . $version . '/' . $this->language . '/' . $this->path;
     }
 
     /**
@@ -306,7 +306,7 @@ class Page {
             '--',
             substr($this->relativeFilePath, strpos($this->relativeFilePath, '/') + 1)
         ]);
-        $cmd->setWorkingDirectory(getenv('DOCS_DIRECTORY') . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
+        $cmd->setWorkingDirectory($_ENV['DOCS_DIRECTORY'] . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
 
         if ($cmd->run() !== 0) {
             return [];
@@ -381,5 +381,19 @@ class Page {
         }
 
         return $gravatarUrl;
+    }
+
+    public function getContent()
+    {
+        $docRoot = $_ENV['DOCS_DIRECTORY'];
+        $file = $docRoot . $this->relativeFilePath;
+        return file_get_contents($file);
+    }
+
+    public function updateFromGit()
+    {
+        $cmd = new \Symfony\Component\Process\Process(['git', 'pull']);
+        $cmd->setWorkingDirectory($_ENV['DOCS_DIRECTORY'] . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
+        $cmd->run();
     }
 }

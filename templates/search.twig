@@ -34,7 +34,7 @@
                         {% if versions %}
                             Search in other versions:
                             {% for version in versions %}
-                                <a href="{{ path_for('search', {language: language, version: version.key}, {q: search_query}) }}">{{ version.title }}</a>
+                                <a href="{{ url_for('search', {language: language, version: version.key}, {q: search_query}) }}">{{ version.title }}</a>
                             {% endfor %}
                             &mdash;
                         {% endif %}

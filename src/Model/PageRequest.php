@@ -1,10 +1,9 @@
 <?php
 
-
 namespace MODXDocs\Model;
 
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PageRequest {
     private $version;

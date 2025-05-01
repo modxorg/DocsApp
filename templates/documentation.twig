@@ -48,22 +48,22 @@
 
             {% if 'en' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Hello! <a href="{{ path_for('documentation', {version: version, language: 'en', path: 'index'}) }}">The MODX documentation is also available in English</a>.
+                Hello! <a href="{{ url_for('documentation', {version: version, language: 'en', path: 'index'}) }}">The MODX documentation is also available in English</a>.
             </div>
             {% endif %}
             {% if 'nl' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Hoi! <a href="{{ path_for('documentation', {version: version, language: 'nl', path: 'index'}) }}">De MODX documentatie is ook (deels) in het Nederlandstalig beschikbaar</a>.
+                Hoi! <a href="{{ url_for('documentation', {version: version, language: 'nl', path: 'index'}) }}">De MODX documentatie is ook (deels) in het Nederlandstalig beschikbaar</a>.
             </div>
             {% endif %}
             {% if 'ru' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Здравствуй! <a href="{{ path_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
+                Здравствуй! <a href="{{ url_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
             </div>
             {% endif %}
             {% if 'es' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                ¡Hola! <a href="{{ path_for('documentation', {version: version, language: 'es', path: 'index'}) }}">La documentación MODX también está (parcialmente) disponible en español.</a>
+                ¡Hola! <a href="{{ url_for('documentation', {version: version, language: 'es', path: 'index'}) }}">La documentación MODX también está (parcialmente) disponible en español.</a>
             </div>
             {% endif %}
 

@@ -7,12 +7,12 @@ use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\TranslationService;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Stream;
+use Slim\Psr7\Stream;
+use Slim\Exception\HttpNotFoundException;
 
 class Doc extends Base
 {
@@ -20,7 +20,6 @@ class Doc extends Base
     private $translationService;
     /** @var DocumentService */
     private $documentService;
-    /** @var VersionsService */
 
     public function __construct(ContainerInterface $container)
     {
@@ -33,7 +32,7 @@ class Doc extends Base
      * @param Request $request
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Slim\Exception\NotFoundException
+     * @throws HttpNotFoundException
      */
     public function get(Request $request, Response $response)
     {
@@ -47,7 +46,7 @@ class Doc extends Base
             if (file_exists($filePath)) {
                 return $this->renderFile($request, $response, $filePath);
             }
-            throw new \Slim\Exception\NotFoundException($request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $crumbs = [];
@@ -107,7 +106,7 @@ class Doc extends Base
      * @param Response $response
      * @param $filePath
      * @return Response
-     * @throws \Slim\Exception\NotFoundException
+     * @throws HttpNotFoundException
      */
     protected function renderFile(Request $request, Response $response, $filePath): Response
     {
@@ -119,7 +118,7 @@ class Doc extends Base
         if (strpos($mime, 'image/') === 0) {
             $etag = 'm-' . filemtime($filePath);
             $provided = $request->getHeaderLine('If-None-Match');
-            $age = getenv('DEV') ? 10 : 86400;
+            $age = $_ENV['DEV'] ? 10 : 86400;
             if ($etag === $provided) {
                 return $response->withStatus(304)
                     ->withHeader('Cache-Control', 'max-age=' . $age)
@@ -132,7 +131,7 @@ class Doc extends Base
                 ->withHeader('ETag', $etag);
         }
 
-        throw new \Slim\Exception\NotFoundException($request, $response);
+        throw new HttpNotFoundException($request);
     }
 
     private function getSuggestedLanguages(Request $request, PageRequest $pageRequest)
