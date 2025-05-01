@@ -43,6 +43,9 @@ class Page
     private string $relativeFilePath;
     private PDO $db;
     private ?string $renderedBody = null;
+    private ?string $socialImageUrl = null;
+    private bool $regenerateSocialImage = true; // Toggle for testing
+    private const SOCIAL_IMAGE_HASH_ALGO = 'crc32b'; // Short non-crypto hash, sufficient for ~5000 items
 
     public function __construct(DocumentService $documentService, PDO $db, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {
@@ -381,5 +384,130 @@ class Page
         }
 
         return $gravatarUrl;
+    }
+
+    public function getSocialImageUrl(): string
+    {
+        if ($this->socialImageUrl === null) {
+            $this->generateSocialImage();
+        }
+        return $this->socialImageUrl;
+    }
+
+    private function generateSocialImage(): void
+    {
+        $imageDir = $_ENV['BASE_DIRECTORY'] . 'public/images/social/';
+        if (!is_dir($imageDir)) {
+            mkdir($imageDir, 0755, true);
+        }
+
+        $breadcrumbText = $this->getBreadcrumbText();
+        // Create a hash of the content that would go on the image - using CRC32 as we only need to avoid
+        // conflicts in ~5000 items and don't need cryptographic security
+        $contentHash = hash('crc32b', $this->getPageTitle() . $breadcrumbText);
+        $imagePath = $imageDir . $contentHash . '.png';
+
+        // If image exists and we're not forcing regeneration, return the URL
+        if (file_exists($imagePath) && !$this->regenerateSocialImage) {
+            $this->socialImageUrl = '/images/social/' . $contentHash . '.png';
+            return;
+        }
+
+        // Create the image
+        $image = imagecreatetruecolor(1200, 630);
+
+        // Load background image
+        $backgroundPath = $_ENV['BASE_DIRECTORY'] . 'public/images/social/.background.png';
+        if (file_exists($backgroundPath)) {
+            $background = imagecreatefrompng($backgroundPath);
+            imagecopy($image, $background, 0, 0, 0, 0, 1200, 630);
+            imagedestroy($background);
+        } else {
+            // Fallback light blue background to indicate missing background file
+            $lightBlue = imagecolorallocate($image, 240, 248, 255);
+            imagefill($image, 0, 0, $lightBlue);
+        }
+
+        // Set up colors
+        $textColor = imagecolorallocate($image, 16, 44, 83); // rgb(16, 44, 83)
+        $grayColor = imagecolorallocate($image, 128, 128, 128);
+
+        // Load fonts
+        $regularFont = $_ENV['BASE_DIRECTORY'] . 'public/fonts/Inter_24pt-Regular.ttf';
+        $boldFont = $_ENV['BASE_DIRECTORY'] . 'public/fonts/Inter_24pt-Bold.ttf';
+
+
+        // Draw breadcrumbs
+        $maxBreadcrumbWidth = 1000;
+        $breadcrumbSize = 22;
+
+        // Check if breadcrumb text is too long
+        $bbox = imagettfbbox($breadcrumbSize, 0, $regularFont, $breadcrumbText);
+        $textWidth = $bbox[2] - $bbox[0];
+
+        if ($textWidth > $maxBreadcrumbWidth) {
+            // Truncate text and add ellipsis
+            $ellipsis = '...';
+            $ellipsisWidth = imagettfbbox($breadcrumbSize, 0, $regularFont,
+                    $ellipsis)[2] - imagettfbbox($breadcrumbSize, 0, $regularFont, $ellipsis)[0];
+
+            while ($textWidth > $maxBreadcrumbWidth - $ellipsisWidth) {
+                $breadcrumbText = substr($breadcrumbText, 0, -1);
+                $bbox = imagettfbbox($breadcrumbSize, 0, $regularFont, $breadcrumbText);
+                $textWidth = $bbox[2] - $bbox[0];
+            }
+            $breadcrumbText .= $ellipsis;
+        }
+
+        imagettftext($image, $breadcrumbSize, 0, 50, 90, $grayColor, $regularFont, $breadcrumbText);
+
+        // Draw page title
+        $title = $this->getPageTitle();
+        $maxTitleWidth = 1100; // 1200 - 50px margin on each side
+        $maxTitleHeight = 450; // Leave some space at bottom
+
+        // Word wrap the title
+        $wrappedTitle = wordwrap($title, 30, "\n", true);
+        $lines = explode("\n", $wrappedTitle);
+
+        $y = 234;
+        $fontSize = 56;
+        $lineHeight = ceil($fontSize * 1.35);
+
+        foreach ($lines as $line) {
+            if ($y > $maxTitleHeight) {
+                break;
+            }
+
+            $bbox = imagettfbbox($fontSize, 0, $boldFont, $line);
+            $lineWidth = $bbox[2] - $bbox[0];
+
+            // If line is too long, truncate it
+            if ($lineWidth > $maxTitleWidth) {
+                $line = substr($line, 0, -1) . '...';
+            }
+
+            imagettftext($image, $fontSize, 0, 50, $y, $textColor, $boldFont, $line);
+            $y += $lineHeight;
+        }
+
+        // Save the image
+        imagepng($image, $imagePath);
+        imagedestroy($image);
+
+        $this->socialImageUrl = '/images/social/' . $contentHash . '.png';
+    }
+
+    private function getBreadcrumbText(): string
+    {
+        $breadcrumbs = [];
+        $currentPage = $this;
+
+        while ($currentPage) {
+            array_unshift($breadcrumbs, $currentPage->getTitle());
+            $currentPage = $currentPage->getParentPage();
+        }
+
+        return implode(' / ', $breadcrumbs);
     }
 }

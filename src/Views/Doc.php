@@ -73,6 +73,7 @@ class Doc extends Base
             'page_title' => $page->getPageTitle(),
             'crumbs' => $crumbs,
             'canonical_url' => $page->getCanonicalUrl(),
+            'social_image' => $page->getSocialImageUrl(),
 
             'meta' => $page->getMeta(),
             'parsed' => $page->getRenderedBody(),

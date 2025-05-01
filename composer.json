@@ -32,7 +32,8 @@
         "symfony/process": "^5.2",
         "voku/stop-words": "^2.0",
         "embed/embed": "^4.4",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-gd": "*"
     },
     "require-dev": {
         "ext-intl": "*",
