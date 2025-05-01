@@ -7,10 +7,15 @@ use Knp\Menu\Matcher\Matcher;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\Embed\Bridge\OscaroteroEmbedAdapter;
+use League\CommonMark\Extension\Embed\Embed;
+use League\CommonMark\Extension\Embed\EmbedExtension;
+use League\CommonMark\Extension\Embed\EmbedRenderer;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Renderer\HtmlDecorator;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\MarkupFixer;
@@ -22,6 +27,10 @@ use MODXDocs\Services\VersionsService;
 use PDO;
 use Symfony\Component\Process\Process;
 use TOC\TocGenerator;
+use League\CommonMark\Extension\Autolink\AutolinkExtension;
+use League\CommonMark\Extension\Footnote\FootnoteExtension;
+use League\CommonMark\Extension\SmartPunct\SmartPunctExtension;
+use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 
 class Page {
 
@@ -99,10 +108,29 @@ class Page {
             'html_input' => 'allow',
             'max_nesting_level' => 10,
             'allow_unsafe_links' => false,
-
+            'autolink' => [
+                'allowed_protocols' => ['https', 'http', 'mailto'],
+                'default_protocol' => 'https',
+            ],
+            'footnote' => [
+                'backref_class' => 'footnote-backref',
+                'backref_symbol' => '↩',
+            ],
+            'embed' => [
+                'adapter' => new OscaroteroEmbedAdapter(), // See the "Adapter" documentation below
+                'allowed_domains' => ['youtube.com', 'github.com'],
+                'fallback' => 'link',
+            ],
         ]);
+
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new TableExtension());
+        $environment->addExtension(new AutolinkExtension());
+        $environment->addExtension(new FootnoteExtension());
+        $environment->addExtension(new SmartPunctExtension());
+        $environment->addExtension(new StrikethroughExtension());
+        $environment->addExtension(new EmbedExtension());
+
         $environment->addRenderer(
             Link::class,
             new LinkRenderer(
@@ -116,6 +144,7 @@ class Page {
                 $this->relativeFilePath
             )
         );
+        $environment->addRenderer(Embed::class, new HtmlDecorator(new EmbedRenderer(), 'div', ['class' => 'video-embed']));
 
         $converter = new MarkdownConverter($environment);
 

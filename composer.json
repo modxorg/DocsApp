@@ -30,7 +30,8 @@
         "vlucas/phpdotenv": "^5.6",
         "symfony/console": "^5.2",
         "symfony/process": "^5.2",
-        "voku/stop-words": "^2.0"
+        "voku/stop-words": "^2.0",
+        "embed/embed": "^4.4"
     },
     "require-dev": {
         "ext-intl": "*"
