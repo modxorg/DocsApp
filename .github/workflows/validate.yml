@@ -6,14 +6,14 @@ jobs:
   validate-json:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Validate language file
-        uses: docker://orrosenblatt/validate-json-action:latest
+        uses: docker://orrosenblatt/validate-json-action:v1.0.0
         env:
           INPUT_SCHEMA: ./lang.schema.json
           INPUT_JSONS: ./lang.json
       - name: Validate sources file
-        uses: docker://orrosenblatt/validate-json-action:latest
+        uses: docker://orrosenblatt/validate-json-action:v1.0.0
         env:
           INPUT_SCHEMA: ./sources.schema.json
           INPUT_JSONS: ./sources.dist.json
