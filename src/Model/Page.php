@@ -403,7 +403,7 @@ class Page
         $breadcrumbText = $this->getBreadcrumbText();
         // Create a hash of the content that would go on the image - using CRC32 as we only need to avoid
         // conflicts in ~5000 items and don't need cryptographic security
-        $contentHash = hash('crc32b', $this->getPageTitle() . $breadcrumbText);
+        $contentHash = hash('crc32b', $this->getTitle() . $breadcrumbText);
         $imagePath = $imageDir . $contentHash . '.png';
 
         // If image exists and we're not forcing regeneration, return the URL
