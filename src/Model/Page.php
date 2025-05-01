@@ -447,8 +447,12 @@ class Page
         if ($textWidth > $maxBreadcrumbWidth) {
             // Truncate text and add ellipsis
             $ellipsis = '...';
-            $ellipsisWidth = imagettfbbox($breadcrumbSize, 0, $regularFont,
-                    $ellipsis)[2] - imagettfbbox($breadcrumbSize, 0, $regularFont, $ellipsis)[0];
+            $ellipsisWidth = imagettfbbox(
+                $breadcrumbSize,
+                0,
+                $regularFont,
+                $ellipsis
+            )[2] - imagettfbbox($breadcrumbSize, 0, $regularFont, $ellipsis)[0];
 
             while ($textWidth > $maxBreadcrumbWidth - $ellipsisWidth) {
                 $breadcrumbText = substr($breadcrumbText, 0, -1);
