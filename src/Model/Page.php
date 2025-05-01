@@ -465,7 +465,7 @@ class Page
         imagettftext($image, $breadcrumbSize, 0, 50, 90, $grayColor, $regularFont, $breadcrumbText);
 
         // Draw page title
-        $title = $this->getPageTitle();
+        $title = $this->getTitle();
         $maxTitleWidth = 1100; // 1200 - 50px margin on each side
         $maxTitleHeight = 450; // Leave some space at bottom
 
