@@ -4,9 +4,13 @@
 namespace MODXDocs\Model;
 
 use Knp\Menu\Matcher\Matcher;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Exception\CommonMarkException;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\Table\TableExtension;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
+use League\CommonMark\MarkdownConverter;
 use MODXDocs\Exceptions\NotFoundException;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\MarkupFixer;
@@ -18,8 +22,6 @@ use MODXDocs\Services\VersionsService;
 use PDO;
 use Symfony\Component\Process\Process;
 use TOC\TocGenerator;
-use League\CommonMark\Inline\Element\Image;
-use League\CommonMark\Inline\Element\Link;
 
 class Page {
 
@@ -92,26 +94,37 @@ class Page {
             return;
         }
 
-        // Grab the markdown
-        $environment = Environment::createCommonMarkEnvironment();
+        // Parse the markdown
+        $environment = new Environment([
+            'html_input' => 'allow',
+            'max_nesting_level' => 10,
+            'allow_unsafe_links' => false,
+
+        ]);
+        $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new TableExtension());
-        $environment->addInlineRenderer(Link::class,
+        $environment->addRenderer(
+            Link::class,
             new LinkRenderer(
                 '/' . $this->version . '/' . $this->language . '/',
                 $this->currentUrl
             )
         );
-        $environment->addInlineRenderer(Image::class,
+        $environment->addRenderer(
+            Image::class,
             new RelativeImageRenderer(
                 $this->relativeFilePath
             )
         );
 
-        $markdown = new CommonMarkConverter([
-            'html_input' => 'allow',
-        ], $environment);
+        $converter = new MarkdownConverter($environment);
 
-        $content = $markdown->convertToHtml($this->body);
+        try {
+            $content = $converter->convert($this->body)->getContent();
+        } catch (CommonMarkException $e) {
+            $content = '<p class="error">There was an error parsing this document. Below is the source markdown.</p>';
+            $content .= '<pre><code>' . $this->body . '</code></pre>';
+        }
 
         $fixer = new MarkupFixer();
         $this->renderedBody = $fixer->fix($content);

@@ -2,19 +2,22 @@
 
 namespace MODXDocs\Helpers;
 
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Services\VersionsService;
 
-class LinkRenderer implements InlineRendererInterface
+class LinkRenderer implements NodeRendererInterface, ConfigurationAwareInterface
 {
     protected $baseUri;
     protected $currentDoc;
+    protected $config;
 
     public function __construct($baseUri, $currentDoc)
     {
@@ -22,16 +25,20 @@ class LinkRenderer implements InlineRendererInterface
         $this->currentDoc = $currentDoc;
     }
 
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        if (!($inline instanceof Link)) {
-            throw new \InvalidArgumentException('Incompatible inline type: ' . \get_class($inline));
+        $this->config = $configuration;
+    }
+
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
+    {
+        if (!($node instanceof Link)) {
+            throw new \InvalidArgumentException('Incompatible node type: ' . \get_class($node));
         }
 
-        $href = $this->getHref($inline->getUrl());
-        $attributes = [
-            'href' => $href,
-        ];
+        $href = $this->getHref($node->getUrl());
+        $attributes = $node->data->get('attributes', []);
+        $attributes['href'] = $href;
 
         // Handle hashes in links
         $hash = '';
@@ -41,12 +48,11 @@ class LinkRenderer implements InlineRendererInterface
             $href = substr($href, 0, $hashPosition);
         }
 
-
-        if (isset($inline->attributes['title']) && $inline->attributes['title'] !== '') {
-            $attributes['title'] = $htmlRenderer->escape($inline->data['title'], true);
+        if (($title = $node->data->get('title', null)) !== null && $title !== '') {
+            $attributes['title'] = $title;
         }
 
-        if (static::isExternalUrl($inline->getUrl())) {
+        if (static::isExternalUrl($node->getUrl())) {
             $attributes['class'] = 'is-externallink';
             $attributes['target'] = '_blank';
             $attributes['rel'] = 'noreferrer noopener';
@@ -64,7 +70,7 @@ class LinkRenderer implements InlineRendererInterface
             }
         }
 
-        return new HtmlElement('a', $attributes, $htmlRenderer->renderInlines($inline->children()));
+        return new HtmlElement('a', $attributes, $childRenderer->renderNodes($node->children()));
     }
 
     private function getHref($url)

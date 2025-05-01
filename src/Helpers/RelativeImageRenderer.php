@@ -2,41 +2,45 @@
 
 namespace MODXDocs\Helpers;
 
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Element\Image;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
 use League\CommonMark\Util\RegexHelper;
-use League\CommonMark\Util\Xml;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 
-class RelativeImageRenderer implements InlineRendererInterface
+class RelativeImageRenderer implements NodeRendererInterface, ConfigurationAwareInterface
 {
     private $relativeFilePath;
+    private $config;
 
     public function __construct($relativeFilePath)
     {
         $this->relativeFilePath = $relativeFilePath;
     }
 
+    public function setConfiguration(ConfigurationInterface $configuration): void
+    {
+        $this->config = $configuration;
+    }
+
     /**
-     * @param Image                    $inline
-     * @param ElementRendererInterface $htmlRenderer
+     * @param Image $node
+     * @param ChildNodeRendererInterface $childRenderer
      *
      * @return HtmlElement
      */
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
-        if (!($inline instanceof Image)) {
-            throw new \InvalidArgumentException('Incompatible inline type: ' . get_class($inline));
+        if (!($node instanceof Image)) {
+            throw new \InvalidArgumentException('Incompatible node type: ' . get_class($node));
         }
 
-        $attrs = [];
-        foreach ($inline->getData('attributes', []) as $key => $value) {
-            $attrs[$key] = Xml::escape($value, true);
-        }
+        $attrs = $node->data->get('attributes', []);
 
-        $url = $inline->getUrl();
+        $url = $node->getUrl();
 
         $path = '/' . dirname($this->relativeFilePath) . '/';
         $imageIsRelative = strpos($url, '/') !== 0 && strpos($url, 'http') !== 0;
@@ -47,17 +51,16 @@ class RelativeImageRenderer implements InlineRendererInterface
         if (RegexHelper::isLinkPotentiallyUnsafe($url)) {
             $url = '';
         }
-        $attrs['src'] = Xml::escape($url, true);
+        $attrs['src'] = $url;
 
-        $alt = $htmlRenderer->renderInlines($inline->children());
+        $alt = $childRenderer->renderNodes($node->children());
         $alt = preg_replace('/\<[^>]*alt="([^"]*)"[^>]*\>/', '$1', $alt);
         $attrs['alt'] = preg_replace('/\<[^>]*\>/', '', $alt);
 
-        if (isset($inline->data['title'])) {
-            $attrs['title'] = Xml::escape($inline->data['title'], true);
+        if ($title = $node->data->get('title', null)) {
+            $attrs['title'] = $title;
         }
 
         return new HtmlElement('img', $attrs, '', true);
     }
-
 }
