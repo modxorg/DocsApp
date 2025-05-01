@@ -8,12 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate language file
-        uses: docker://orrosenblatt/validate-json-action:v1.0.0
+        uses: docker://orrosenblatt/validate-json-action:latest
         env:
           INPUT_SCHEMA: ./lang.schema.json
           INPUT_JSONS: ./lang.json
       - name: Validate sources file
-        uses: docker://orrosenblatt/validate-json-action:v1.0.0
+        uses: docker://orrosenblatt/validate-json-action:latest
         env:
           INPUT_SCHEMA: ./sources.schema.json
           INPUT_JSONS: ./sources.dist.json
