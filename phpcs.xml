@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="docs.modx.com ruleset">
+    <description>docs.modx.com ruleset</description>
+
+    <arg name="extensions" value="php" />
+    <arg name="colors" />
+    <arg value="ps" />
+
+    <config name="installed_paths" value="vendor/phpcompatibility/php-compatibility" />
+    <config name="testVersion" value="7.4-"/>
+
+    <file>src</file>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <!-- Our base rule: set to PSR12-->
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength.TooLong" />
+    </rule>
+
+    <!-- PHP compatibility checks -->
+    <rule ref="PHPCompatibility"/>
+
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>public/index.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+    </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+    </rule>
+
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+    </rule>
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+    </rule>
+</ruleset>

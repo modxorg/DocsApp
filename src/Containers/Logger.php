@@ -9,7 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class Logger
 {
-    public static function load(ContainerInterface $container)
+    public static function load(ContainerInterface $container): void
     {
         $container->set('logger', function (ContainerInterface $container) {
             $logger = new \Monolog\Logger('app');

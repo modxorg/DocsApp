@@ -8,10 +8,9 @@ use Knp\Menu\Renderer\ListRenderer;
 
 class TocRenderer extends ListRenderer
 {
+    private string $prefix;
 
-    private $prefix;
-
-    public function __construct(MatcherInterface $matcher, $prefix, array $defaultOptions = [])
+    public function __construct(MatcherInterface $matcher, string $prefix, array $defaultOptions = [])
     {
         $this->prefix = $prefix;
 

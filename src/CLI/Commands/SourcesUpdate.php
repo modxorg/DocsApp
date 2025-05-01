@@ -12,7 +12,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class SourcesUpdate extends Command {
+class SourcesUpdate extends Command
+{
     protected static $defaultName = 'sources:update';
 
     public function getDescription()
@@ -54,14 +55,13 @@ class SourcesUpdate extends Command {
             switch ($info['type']) {
                 case 'git':
                     $this->updateRepository($output, $key, $info['url'], $info['branch']);
-                break;
+                    break;
 
                 case 'local':
                     $root = VersionsService::getDocsRoot();
                     if (!file_exists($root . $key) || !is_dir($root . $key)) {
                         $output->writeln('<error>Local source "' . $key . '" does not seem to exist.</error>');
-                    }
-                    else {
+                    } else {
                         $output->writeln('Local sources require manual updates.');
                     }
                     break;
@@ -108,8 +108,7 @@ class SourcesUpdate extends Command {
         $reset->run(function ($type, $buffer) use ($output) {
             if ($type === 'err') {
                 $output->writeln("<error> {$buffer} </error>");
-            }
-            else {
+            } else {
                 $output->writeln($buffer);
             }
         });
@@ -144,8 +143,7 @@ class SourcesUpdate extends Command {
                 $this->updateIndexFor($output, '/' . $version . '/' . $changedFile);
             }
             $output->writeln('Done.');
-        }
-        else {
+        } else {
             $output->writeln('Done, no changed files.');
         }
 
@@ -158,7 +156,8 @@ class SourcesUpdate extends Command {
         });
     }
 
-    private function getCommitHash($path) {
+    private function getCommitHash($path)
+    {
         $process = new Process(['git', 'rev-parse', 'HEAD']);
         $process->setWorkingDirectory($path);
         $process->run();

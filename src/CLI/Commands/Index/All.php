@@ -57,8 +57,7 @@ class All extends Command
         $this->indexService->setIndexOptions($search, $history);
         if (!$search) {
             $output->writeln('<comment>- Will not index search terms.</comment>');
-        }
-        else {
+        } else {
             $db->exec('DELETE FROM Search_Terms');
             $db->exec('DELETE FROM Search_Pages');
             $db->exec('DELETE FROM Search_Terms_Occurrences');

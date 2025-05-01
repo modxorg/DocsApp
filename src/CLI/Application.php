@@ -2,7 +2,6 @@
 
 namespace MODXDocs\CLI;
 
-
 use MODXDocs\CLI\Commands\CacheNavigation;
 use MODXDocs\CLI\Commands\CacheRefresh;
 use MODXDocs\CLI\Commands\Index\File;
@@ -14,8 +13,8 @@ use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
 use MODXDocs\DocsApp;
 
-class Application extends \Symfony\Component\Console\Application {
-
+class Application extends \Symfony\Component\Console\Application
+{
     protected $app;
     protected $container;
 

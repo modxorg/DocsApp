@@ -2,9 +2,9 @@
 
 namespace MODXDocs\Views\Stats;
 
-use MODXDocs\Containers\DB;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
+use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,12 +12,8 @@ use Slim\Interfaces\RouteParserInterface;
 
 class NotFoundRequests extends Base
 {
-    /**
-     * @var CacheService
-     */
-    private $cache;
-    /** @var DB */
-    private $db;
+    private CacheService $cache;
+    private PDO $db;
     /** @var RouteParserInterface */
     private $router;
 
@@ -73,7 +69,7 @@ class NotFoundRequests extends Base
         $statement = $this->db->prepare('SELECT url, hit_count, last_seen FROM PageNotFound ORDER BY hit_count DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $requests = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $requests = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($requests as $req) {
                 $results[] = $req;
             }
@@ -92,7 +88,7 @@ class NotFoundRequests extends Base
         $statement = $this->db->prepare('SELECT url, hit_count, last_seen FROM PageNotFound ORDER BY last_seen DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $requests = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $requests = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($requests as $req) {
                 $results[] = $req;
             }

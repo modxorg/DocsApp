@@ -5,6 +5,7 @@ namespace MODXDocs\Views\Stats;
 use MODXDocs\Containers\DB;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
+use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,8 +17,7 @@ class Searches extends Base
      * @var CacheService
      */
     private $cache;
-    /** @var DB */
-    private $db;
+    private PDO $db;
     /** @var RouteParserInterface */
     private $router;
 
@@ -76,7 +76,7 @@ class Searches extends Base
         $statement = $this->db->prepare('SELECT search_query, result_count, search_count, first_seen, last_seen FROM Searches ORDER BY search_count DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $terms = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $terms = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($terms as $term) {
                 $results[] = $term;
             }
@@ -95,7 +95,7 @@ class Searches extends Base
         $statement = $this->db->prepare('SELECT search_query, result_count, search_count, first_seen, last_seen FROM Searches ORDER BY result_count ASC, search_count DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $terms = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $terms = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($terms as $term) {
                 $results[] = $term;
             }
@@ -114,7 +114,7 @@ class Searches extends Base
         $statement = $this->db->prepare('SELECT search_query, result_count, search_count, first_seen, last_seen FROM Searches ORDER BY last_seen DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $terms = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $terms = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($terms as $term) {
                 $results[] = $term;
             }

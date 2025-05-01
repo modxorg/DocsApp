@@ -9,7 +9,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Translations extends Command {
+class Translations extends Command
+{
     protected static $defaultName = 'index:translations';
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -61,8 +62,10 @@ class Translations extends Command {
             $languageItems = $languageNav->getAllItems();
 
             foreach ($languageItems as $item) {
-                $translationOf = array_key_exists('translation',
-                    $item) ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
+                $translationOf = array_key_exists(
+                    'translation',
+                    $item
+                ) ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
                 if (strpos($translationOf, '/' . $version . '/en/') !== 0) {
                     $translationOf = '/' . $version . '/en/' . trim($translationOf, '/');
                 }

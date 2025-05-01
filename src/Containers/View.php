@@ -7,14 +7,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Views\Twig;
 use Twig\Extension\DebugExtension;
-
 use MODXDocs\Twig\DocExtensions;
 
 class View
 {
-    const BASE_REQUEST_HANDLER = 'index.php';
+    private const BASE_REQUEST_HANDLER = 'index.php';
 
-    public static function load(ContainerInterface $container)
+    public static function load(ContainerInterface $container): void
     {
         $container->set('view', function (ContainerInterface $container) {
             $request = $container->get(ServerRequestInterface::class);
@@ -26,7 +25,7 @@ class View
             }
             // Remove quotes if present
             $templateDir = trim($templateDir, '"\'');
-            
+
             $view = Twig::create($templateDir, [
                 'cache' => $_ENV['DEV'] === '1' ? false : $_ENV['CACHE_DIRECTORY'] . '/twig',
                 'debug' => true,
@@ -35,7 +34,7 @@ class View
 
             // Add Slim specific extension
             $basePath = rtrim(str_ireplace(static::BASE_REQUEST_HANDLER, '', $request->getUri()->getPath()), '/');
-            $view->addExtension(new DocExtensions($router, $request));
+            $view->addExtension(new DocExtensions($request));
 
             return $view;
         });

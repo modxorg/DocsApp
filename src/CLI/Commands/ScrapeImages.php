@@ -15,7 +15,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class ScrapeImages extends Command {
+class ScrapeImages extends Command
+{
     protected static $defaultName = 'scrape';
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -41,7 +42,6 @@ class ScrapeImages extends Command {
         $tree = Tree::get('2.x', 'en');
         $images = [];
         foreach ($tree->getAllItems() as $item) {
-
             $itemFile = $root . $item['file'];
 
             $contents = file_get_contents($itemFile);
@@ -91,27 +91,31 @@ class ScrapeImages extends Command {
                     $targetUrl = str_replace([' ', '%20'], '-', $targetUrl);
                     if (strpos($itemFile, 'index.md') !== false) {
                         $targetPath = $root . dirname($item['file']) . '/' . $targetUrl;
-                    }
-                    else {
+                    } else {
                         $targetPath = $root . dirname($item['file']) . '/' . $targetUrl;
                     }
 
                     $output->writeln('- ' . $file['url'] . ' => ' . $targetPath . ' [' . $targetUrl . ']');
 
-                    if (!mkdir($concurrentDirectory = dirname($targetPath), 0777,
-                            true) && !is_dir($concurrentDirectory)) {
-                        throw new \RuntimeException(sprintf('Directory "%s" was not created',
-                            $concurrentDirectory));
+                    if (
+                        !mkdir(
+                            $concurrentDirectory = dirname($targetPath),
+                            0777,
+                            true
+                        ) && !is_dir($concurrentDirectory)
+                    ) {
+                        throw new \RuntimeException(sprintf(
+                            'Directory "%s" was not created',
+                            $concurrentDirectory
+                        ));
                     }
                     if (!copy($oldPath, $targetPath)) {
                         $output->writeln('<comment>- ERROR copying ' . $oldPath . ' => ' . $targetPath . '</comment>');
-                    }
-                    else {
+                    } else {
                         $contents = str_replace($file['raw_url'], $targetUrl, $contents);
                         $changed = true;
                     }
-                }
-                else {
+                } else {
                     $output->writeln('<comment>- $oldUrl ' . $oldUrl . ' not in /download/</comment>');
                 }
             }
@@ -125,7 +129,8 @@ class ScrapeImages extends Command {
     }
 
 
-    private function getCommitHash($path) {
+    private function getCommitHash($path)
+    {
         $process = new Process(['git', 'rev-parse', 'HEAD']);
         $process->setWorkingDirectory($path);
         $process->run();

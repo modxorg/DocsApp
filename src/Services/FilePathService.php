@@ -2,17 +2,16 @@
 
 namespace MODXDocs\Services;
 
-
 use MODXDocs\Model\PageRequest;
 
 class FilePathService
 {
-    public function isValidRequest(PageRequest $request) : bool
+    public function isValidRequest(PageRequest $request): bool
     {
         return $this->getFilePath($request) !== null;
     }
 
-    public function getFilePath(PageRequest $request) : ?string
+    public function getFilePath(PageRequest $request): ?string
     {
         $basePath = rtrim($this->getAbsoluteContextPath($request), '/');
 
@@ -37,7 +36,7 @@ class FilePathService
         return $_ENV['DOCS_DIRECTORY'];
     }
 
-    public function getAbsoluteContextPath(PageRequest $request) : string
+    public function getAbsoluteContextPath(PageRequest $request): string
     {
         return $this->getDocsRoot() . $request->getActualContextUrl();
     }

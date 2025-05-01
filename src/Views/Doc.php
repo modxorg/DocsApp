@@ -7,6 +7,7 @@ use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\TranslationService;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use MODXDocs\Services\DocumentService;
@@ -16,10 +17,8 @@ use Slim\Exception\HttpNotFoundException;
 
 class Doc extends Base
 {
-    /** @var TranslationService */
-    private $translationService;
-    /** @var DocumentService */
-    private $documentService;
+    private TranslationService $translationService;
+    private DocumentService $documentService;
 
     public function __construct(ContainerInterface $container)
     {
@@ -31,7 +30,7 @@ class Doc extends Base
     /**
      * @param Request $request
      * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      * @throws HttpNotFoundException
      */
     public function get(Request $request, Response $response)

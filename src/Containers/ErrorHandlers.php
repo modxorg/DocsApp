@@ -14,7 +14,7 @@ use Slim\Psr7\Response;
 
 class ErrorHandlers
 {
-    public static function load(ContainerInterface $container)
+    public static function load(ContainerInterface $container): void
     {
         $app = $container->get(App::class);
 
@@ -39,8 +39,8 @@ class ErrorHandlers
         $errorMiddleware->setErrorHandler(
             Throwable::class,
             function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails) use ($container): ResponseInterface {
-                $pageNotFound = new Error($container, $exception);
-                return $pageNotFound->get($request, new Response());
+                $error = new Error($container, $exception);
+                return $error->get($request, new Response());
             }
         );
     }

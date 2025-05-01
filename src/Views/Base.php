@@ -12,14 +12,10 @@ use Psr\Container\ContainerInterface;
 
 abstract class Base
 {
-    private static $rev = '';
-    /** @var ContainerInterface */
-    protected $container;
-
-    /** @var Twig */
-    protected $view;
-    /** @var VersionsService */
-    protected $versionsService;
+    private static string $rev = '';
+    protected ContainerInterface $container;
+    protected Twig $view;
+    protected VersionsService $versionsService;
 
     public function __construct(ContainerInterface $container)
     {
@@ -78,7 +74,7 @@ abstract class Base
         );
     }
 
-    public static function getRevision() : string
+    public static function getRevision(): string
     {
         if (empty(static::$rev)) {
             static::$rev = $_ENV['REVISION'] ?? date('YmdHis');

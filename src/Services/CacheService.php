@@ -4,8 +4,8 @@ namespace MODXDocs\Services;
 
 class CacheService
 {
-    private $cacheRoot;
-    private $enabled;
+    private string $cacheRoot;
+    private bool $enabled;
 
     public function __construct()
     {
@@ -46,7 +46,7 @@ class CacheService
         return false;
     }
 
-    public function set($key, $value, $expiration = null, $hash = null)
+    public function set($key, $value, $expiration = null, $hash = null): bool
     {
         if (!$this->enabled) {
             return false;
@@ -66,7 +66,7 @@ class CacheService
         return true;
     }
 
-    private function keyToFile($key)
+    private function keyToFile($key): string
     {
         return $this->cacheRoot . strtolower($key) . '.json';
     }

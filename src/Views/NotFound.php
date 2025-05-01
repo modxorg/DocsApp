@@ -17,12 +17,8 @@ use MODXDocs\Helpers\Redirector;
 class NotFound extends Base
 {
     private const MARKDOWN_SUFFIX = '.md';
-
-    /** @var SearchService */
-    private $searchService;
-
-    /** @var PDO */
-    private $db;
+    private SearchService $searchService;
+    private PDO $db;
 
     public function __construct(ContainerInterface $container)
     {
@@ -46,7 +42,6 @@ class NotFound extends Base
 
             return $response->withHeader('Location', $redirectUri)->withStatus(301);
         } catch (RedirectNotFoundException $e) {
-
             $this->logNotFoundRequest($currentUri);
 
             // Render the default tree on the 404 page
@@ -62,12 +57,12 @@ class NotFound extends Base
 
             // Run the search
             $pageRequest = new PageRequest(VersionsService::getCurrentVersion(), VersionsService::getDefaultLanguage(), '');
-            $sq = new SearchQuery($this->searchService, $query, $pageRequest, false);
+            $sq = new SearchQuery($this->searchService, $query, $pageRequest);
             $result = $this->searchService->execute($sq);
 
             // Maximum 5 results, with a score of at least 30 (75% confidence)
             $pageIDs = $result->getResults(0, 5);
-            $pageIDs = array_filter($pageIDs, static function($value) {
+            $pageIDs = array_filter($pageIDs, static function ($value) {
                 return $value >= 30;
             });
 
@@ -103,21 +98,14 @@ class NotFound extends Base
                 $update->bindValue('last_seen', time());
                 $update->bindValue('rowid', $log['rowid']);
                 $update->execute();
-            }
-            else {
+            } else {
                 $insert = $this->db->prepare('INSERT INTO PageNotFound (url, hit_count, last_seen) VALUES (:url, 1, :last_seen)');
                 $insert->bindValue('url', $requestUri);
                 $insert->bindValue('last_seen', time());
                 $insert->execute();
             }
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             // Silence logging errors.. not interesting
         }
-    }
-
-    private function searchForPage(string $currentUri)
-    {
-
     }
 }

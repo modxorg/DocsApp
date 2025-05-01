@@ -16,14 +16,14 @@ class SearchService
     /**
      * @var \PDO
      */
-    private $db;
+    private \PDO $db;
 
     private static $stopwords;
 
     /**
      * @var DocumentService
      */
-    private $documentService;
+    private DocumentService $documentService;
 
     public function __construct(\PDO $db, DocumentService $documentService)
     {
@@ -89,15 +89,15 @@ class SearchService
         return $return;
     }
 
-    public function execute(SearchQuery $query)
+    public function execute(SearchQuery $query): SearchResults
     {
-        $results = new SearchResults($this->documentService, $query);
+        $results = new SearchResults($query);
         $allTerms = $query->getSearchTermReferences();
         if (count($allTerms) === 0) {
             return $results;
         }
 
-        $placeholders = str_repeat ('?, ',  count ($allTerms) - 1) . '?';
+        $placeholders = str_repeat('?, ', count($allTerms) - 1) . '?';
         $selectOccurrencesStmt = $this->db->prepare('SELECT page, term, weight FROM Search_Terms_Occurrences WHERE term IN (' . $placeholders . ')');
 
         if ($selectOccurrencesStmt->execute(array_values($allTerms))) {
@@ -108,19 +108,19 @@ class SearchService
         }
 
         $results->process();
-        
+
         $this->logSearch($query, $results);
-        
+
         return $results;
     }
 
-    public function getPageMetas(array $pageIDs)
+    public function getPageMetas(array $pageIDs): array
     {
         if (count($pageIDs) === 0) {
             return [];
         }
 
-        $placeholders = str_repeat ('?, ',  count ($pageIDs) - 1) . '?';
+        $placeholders = str_repeat('?, ', count($pageIDs) - 1) . '?';
         $getPagesStmt = $this->db->prepare('SELECT rowid, url, title FROM Search_Pages WHERE rowid IN (' . $placeholders . ')');
         $getPagesStmt->execute($pageIDs);
 
@@ -147,9 +147,11 @@ class SearchService
     {
         $value = strtolower(trim($value));
         $map = preg_split('/[\s\-\\\:]+/', $value, -1, PREG_SPLIT_NO_EMPTY);
-        $map = array_map(static function($v) { return trim($v, '"\'$,.-():;&#_?/\\'); }, $map);
+        $map = array_map(static function ($v) {
+            return trim($v, '"\'$,.-():;&#_?/\\');
+        }, $map);
         $map = array_filter($map);
-        $map = array_filter($map, static function($v) {
+        $map = array_filter($map, static function ($v) {
             return mb_strlen($v) >= SearchService::MIN_TERM_LENGTH;
         });
         $map = array_count_values($map);
@@ -218,8 +220,7 @@ class SearchService
                 $meta = $document->getMeta();
                 if (array_key_exists('description', $meta) && !empty($meta['description'])) {
                     $sr['snippet'] = $meta['description'];
-                }
-                else {
+                } else {
                     $body = $document->getRenderedBody();
                     $body = strip_tags($body);
                     $sr['snippet'] = mb_substr($body, 0, 250) . (mb_strlen($body) > 255 ? '...' : '');
@@ -234,7 +235,7 @@ class SearchService
         return $return;
     }
 
-    private function logSearch(SearchQuery $query, SearchResults $results)
+    private function logSearch(SearchQuery $query, SearchResults $results): void
     {
         try {
             $fetch = $this->db->prepare('SELECT rowid,* FROM Searches WHERE search_query = :query LIMIT 1');
@@ -254,8 +255,7 @@ class SearchService
                 $insert->bindValue('last_seen', time());
                 $insert->execute();
             }
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             // Silence logging errors.. not critical enough to bother
         }
     }

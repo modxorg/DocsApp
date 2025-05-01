@@ -12,14 +12,11 @@ class VersionsService
     private const DEFAULT_LANGUAGE = 'en';
     private const DEFAULT_PATH = 'index';
 
-    private $router;
-    private $versionsFile;
+    private RouteParserInterface $router;
 
     public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
-        $base = $_ENV['BASE_DIRECTORY'];
-        $this->versionsFile = $base . 'sources.json';
     }
 
     public static function getAvailableVersions($includeCurrent = true): array
@@ -32,7 +29,11 @@ class VersionsService
         foreach ($files as $file) {
             $path = $base . $file;
             if (file_exists($path)) {
-                $config = json_decode(file_get_contents($path), true);
+                try {
+                    $config = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    $config = null;
+                }
             }
         }
 
@@ -44,16 +45,18 @@ class VersionsService
             $versions[$versionKey] = $details;
         }
 
-        if ($includeCurrent
+        if (
+            $includeCurrent
             && !array_key_exists(self::getCurrentVersion(), $versions)
-            && array_key_exists(self::getCurrentVersionBranch(), $versions)) {
+            && array_key_exists(self::getCurrentVersionBranch(), $versions)
+        ) {
             $versions[self::getCurrentVersion()] = $versions[self::getCurrentVersionBranch()];
         }
 
         return $versions;
     }
 
-    public function getVersions(PageRequest $request)
+    public function getVersions(PageRequest $request): array
     {
         $versions = self::getAvailableVersions();
         $currentVersion = self::getCurrentVersion();
@@ -98,7 +101,7 @@ class VersionsService
         return self::DEFAULT_PATH;
     }
 
-    public function getDocsRoot()
+    public static function getDocsRoot()
     {
         return $_ENV['DOCS_DIRECTORY'];
     }

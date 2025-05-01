@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MODXDocs\Model;
 
 use Knp\Menu\Matcher\Matcher;
@@ -32,48 +31,18 @@ use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\SmartPunct\SmartPunctExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 
-class Page {
-
-    /**
-     * @var array
-     */
-    private $meta;
-    /**
-     * @var string
-     */
-    private $version;
-    /**
-     * @var string
-     */
-    private $language;
-    /**
-     * @var string
-     */
-    private $path;
-    /**
-     * @var string
-     */
-    private $body;
-    /**
-     * @var string
-     */
-    private $renderedBody;
-    /**
-     * @var string
-     */
-    private $currentUrl;
-    /**
-     * @var DocumentService
-     */
-    private $documentService;
-    /**
-     * @var string
-     */
-    private $relativeFilePath;
-    /**
-     * @var PDO
-     */
-    private $db;
+class Page
+{
+    private array $meta;
+    private string $version;
+    private string $language;
+    private string $path;
+    private string $body;
+    private string $currentUrl;
+    private DocumentService $documentService;
+    private string $relativeFilePath;
+    private PDO $db;
+    private ?string $renderedBody = null;
 
     public function __construct(DocumentService $documentService, PDO $db, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {
@@ -222,18 +191,21 @@ class Page {
             return $this->meta['title'];
         }
         $paths = explode('/', $this->path);
-        $paths = array_filter($paths, function($v) { return strtolower($v) === 'index'; });
+        $paths = array_filter($paths, function ($v) {
+            return strtolower($v) === 'index';
+        });
         $path = end($paths);
         $path = str_replace('-', ' ', $path);
         $path = ucfirst($path);
         return $path;
     }
 
-    public function getTableOfContents($topLevel = 2, $depth = 6) : string
+    public function getTableOfContents($topLevel = 2, $depth = 6): string
     {
         $tocGenerator = new TocGenerator();
 
-        $renderer = new TocRenderer(new Matcher(),
+        $renderer = new TocRenderer(
+            new Matcher(),
             $this->currentUrl,
             [
                 'currentClass' => 'c-toc__item--active',
@@ -280,7 +252,7 @@ class Page {
         return $this->relativeFilePath;
     }
 
-    public function getHistory()
+    public function getHistory(): array
     {
         try {
             $statement = $this->db->prepare('SELECT git_hash, ts, name, email, message FROM Page_History WHERE url = :url ORDER BY ts DESC');
@@ -300,7 +272,7 @@ class Page {
             if (!array_key_exists($commit['email'], $contributors)) {
                 $contributors[$commit['email']] = [
                     'name' => $commit['name'],
-                    'gravatar' => $this->_getAvatarFor($commit['email']),
+                    'gravatar' => $this->getAvatarFor($commit['email']),
                     'count' => 0,
                 ];
             }
@@ -324,7 +296,7 @@ class Page {
         ];
     }
 
-    public function getFileCommits()
+    public function getFileCommits(): array
     {
         $cmd = new Process([
             'git',
@@ -372,9 +344,8 @@ class Page {
                     'added' => 0,
                     'removed' => 0,
                 ];
-            }
-            // This must be a line with added/removed counts, so append that information
-            elseif (is_array($currentCommit)) {
+            } elseif (is_array($currentCommit)) {
+                // This must be a line with added/removed counts, so append that information
                 $line = explode("\t", $line);
                 $currentCommit['added'] = (int)$line[0];
                 $currentCommit['removed'] = (int)$line[1];
@@ -389,7 +360,7 @@ class Page {
         return $commits;
     }
 
-    private function _getAvatarFor($email): string
+    private function getAvatarFor($email): string
     {
         $hash = md5(strtolower(trim($email)));
 
@@ -410,19 +381,5 @@ class Page {
         }
 
         return $gravatarUrl;
-    }
-
-    public function getContent()
-    {
-        $docRoot = $_ENV['DOCS_DIRECTORY'];
-        $file = $docRoot . $this->relativeFilePath;
-        return file_get_contents($file);
-    }
-
-    public function updateFromGit()
-    {
-        $cmd = new \Symfony\Component\Process\Process(['git', 'pull']);
-        $cmd->setWorkingDirectory($_ENV['DOCS_DIRECTORY'] . substr($this->relativeFilePath, 0, strpos($this->relativeFilePath, '/')));
-        $cmd->run();
     }
 }

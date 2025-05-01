@@ -7,7 +7,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Init extends Command {
+class Init extends Command
+{
     protected static $defaultName = 'index:init';
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -34,14 +35,26 @@ class Init extends Command {
   es VARCHAR(255)
 ) ');
 
-        try { $db->exec('CREATE INDEX ru ON Translations (ru)'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.ru index: ' . $e->getMessage() . '</comment>'); }
-        try { $db->exec('CREATE INDEX nl ON Translations (nl)'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.nl index: ' . $e->getMessage() . '</comment>'); }
-        try { $db->exec('ALTER TABLE Translations ADD COLUMN es VARCHAR'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error adding Translations.es column: ' . $e->getMessage() . '</comment>'); }
-        try { $db->exec('CREATE INDEX es ON Translations (es)'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error creating Translations.es index: ' . $e->getMessage() . '</comment>'); }
+        try {
+            $db->exec('CREATE INDEX ru ON Translations (ru)');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating Translations.ru index: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('CREATE INDEX nl ON Translations (nl)');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating Translations.nl index: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('ALTER TABLE Translations ADD COLUMN es VARCHAR');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error adding Translations.es column: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('CREATE INDEX es ON Translations (es)');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error creating Translations.es index: ' . $e->getMessage() . '</comment>');
+        }
 
         $db->exec('CREATE TABLE IF NOT EXISTS Search_Terms (
   term VARCHAR(100),
@@ -52,26 +65,22 @@ class Init extends Command {
 )');
         try {
             $db->exec('CREATE INDEX term ON Search_Terms (term)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms.phonetic_term index: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX phonetic_term ON Search_Terms (phonetic_term)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms.phonetic_term index: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX language ON Search_Terms (language)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms.language index: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX version ON Search_Terms (version)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms.version index: ' . $e->getMessage() . '</comment>');
         }
 
@@ -84,14 +93,12 @@ class Init extends Command {
 )');
         try {
             $db->exec('CREATE INDEX term ON Search_Terms_Occurrences (term)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms_Occurrences.term index: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX page ON Search_Terms_Occurrences (page)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating Search_Terms_Occurrences.page index: ' . $e->getMessage() . '</comment>');
         }
 
@@ -115,8 +122,7 @@ class Init extends Command {
             $db->exec('CREATE INDEX result_count ON Searches (result_count)');
             $db->exec('CREATE INDEX first_seen ON Searches (first_seen)');
             $db->exec('CREATE INDEX last_seen ON Searches (last_seen)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for Searches table: ' . $e->getMessage() . '</comment>');
         }
 
@@ -127,20 +133,17 @@ class Init extends Command {
 )');
         try {
             $db->exec('CREATE INDEX url ON PageNotFound (url)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX hit_count ON PageNotFound (hit_count)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
         }
         try {
             $db->exec('CREATE INDEX last_seen ON PageNotFound (last_seen)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for PageNotFound table: ' . $e->getMessage() . '</comment>');
         }
 
@@ -158,15 +161,20 @@ class Init extends Command {
             $db->exec('CREATE INDEX url ON Page_History (url)');
             $db->exec('CREATE INDEX ts ON Page_History (ts)');
             $db->exec('CREATE INDEX email ON Page_History (email)');
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $output->writeln('<comment>Error creating index for Page_History table: ' . $e->getMessage() . '</comment>');
         }
 
-        try { $db->exec('ALTER TABLE Page_History ADD COLUMN added INTEGER'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error adding Page_History.added column: ' . $e->getMessage() . '</comment>'); }
-        try { $db->exec('ALTER TABLE Page_History ADD COLUMN removed INTEGER'); }
-        catch (\PDOException $e) { $output->writeln('<comment>Error adding Page_History.removed column: ' . $e->getMessage() . '</comment>'); }
+        try {
+            $db->exec('ALTER TABLE Page_History ADD COLUMN added INTEGER');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error adding Page_History.added column: ' . $e->getMessage() . '</comment>');
+        }
+        try {
+            $db->exec('ALTER TABLE Page_History ADD COLUMN removed INTEGER');
+        } catch (\PDOException $e) {
+            $output->writeln('<comment>Error adding Page_History.removed column: ' . $e->getMessage() . '</comment>');
+        }
 
         return 0;
     }

@@ -6,9 +6,9 @@ use Psr\Container\ContainerInterface;
 
 class DB
 {
-    public static function load(ContainerInterface $container)
+    public static function load(ContainerInterface $container): void
     {
-        $container->set('db', function (ContainerInterface $container) {
+        $container->set('db', function () {
             $dir = $_ENV['BASE_DIRECTORY'] . 'db/db.sqlite';
             $db = new \PDO('sqlite:' . $dir);
             $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

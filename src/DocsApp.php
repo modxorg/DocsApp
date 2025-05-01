@@ -22,11 +22,8 @@ use MODXDocs\Middlewares\RequestMiddleware;
 
 class DocsApp
 {
-    /** @var App */
-    private $app;
-
-    /** @var Container */
-    private $container;
+    private App $app;
+    private Container $container;
 
     public function __construct(array $settings)
     {
@@ -85,7 +82,7 @@ class DocsApp
         $this->addRoutes();
     }
 
-    private function addRoutes()
+    private function addRoutes(): void
     {
         $app = $this->app;
         $container = $this->container;
@@ -124,12 +121,12 @@ class DocsApp
         })->setName('documentation');
     }
 
-    public function run()
+    public function run(): void
     {
         $this->app->run();
     }
 
-    public function getContainer()
+    public function getContainer(): Container
     {
         return $this->container;
     }

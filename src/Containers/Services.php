@@ -6,7 +6,6 @@ use MODXDocs\Services\IndexService;
 use MODXDocs\Services\SearchService;
 use MODXDocs\Services\TranslationService;
 use Psr\Container\ContainerInterface;
-
 use MODXDocs\Services\FilePathService;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
@@ -34,8 +33,7 @@ class Services
 
         $container->set(TranslationService::class, function (ContainerInterface $container) {
             return new TranslationService(
-                $container->get('db'),
-                $container->get('router')
+                $container->get('db')
             );
         });
 

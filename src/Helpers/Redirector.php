@@ -7,7 +7,7 @@ use MODXDocs\Services\VersionsService;
 
 class Redirector
 {
-    public static function findNewURI($uri)
+    public static function findNewURI($uri): string
     {
         $uri = static::cleanRequestUri($uri);
 

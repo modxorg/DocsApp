@@ -7,30 +7,21 @@ use League\CommonMark\Node\Node;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
 use League\CommonMark\Renderer\NodeRendererInterface;
 use League\CommonMark\Util\HtmlElement;
-use League\Config\ConfigurationAwareInterface;
-use League\Config\ConfigurationInterface;
-
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Services\VersionsService;
 
-class LinkRenderer implements NodeRendererInterface, ConfigurationAwareInterface
+class LinkRenderer implements NodeRendererInterface
 {
-    protected $baseUri;
-    protected $currentDoc;
-    protected $config;
+    protected string $baseUri;
+    protected string $currentDoc;
 
-    public function __construct($baseUri, $currentDoc)
+    public function __construct(string $baseUri, string $currentDoc)
     {
         $this->baseUri = $baseUri;
         $this->currentDoc = $currentDoc;
     }
 
-    public function setConfiguration(ConfigurationInterface $configuration): void
-    {
-        $this->config = $configuration;
-    }
-
-    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer): HtmlElement
     {
         if (!($node instanceof Link)) {
             throw new \InvalidArgumentException('Incompatible node type: ' . \get_class($node));
@@ -73,14 +64,14 @@ class LinkRenderer implements NodeRendererInterface, ConfigurationAwareInterface
         return new HtmlElement('a', $attributes, $childRenderer->renderNodes($node->children()));
     }
 
-    private function getHref($url)
+    private function getHref($url): string
     {
         if (static::isExternalUrl($url)) {
             return $url;
         }
 
         if (substr($url, -3) === '.md') {
-            $url = substr($url,0,-3);
+            $url = substr($url, 0, -3);
         }
 
         if (strpos($url, '#') === 0) {
@@ -98,7 +89,7 @@ class LinkRenderer implements NodeRendererInterface, ConfigurationAwareInterface
         return $this->baseUri . ltrim($url, '/');
     }
 
-    private static function replaceCurrentUrl($href)
+    private static function replaceCurrentUrl($href): string
     {
         $href = ltrim($href, '/');
         // If the URL starts with `current/`, then replace it with the actual branch name

@@ -6,12 +6,13 @@ use MODXDocs\Model\PageRequest;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Throwable;
 
 class Error extends Base
 {
-    private $throwable;
+    private Throwable $throwable;
 
-    public function __construct(ContainerInterface $container, \Throwable $e)
+    public function __construct(ContainerInterface $container, Throwable $e)
     {
         $this->throwable = $e;
         parent::__construct($container);

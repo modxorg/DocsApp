@@ -8,22 +8,14 @@ use League\CommonMark\Renderer\ChildNodeRendererInterface;
 use League\CommonMark\Renderer\NodeRendererInterface;
 use League\CommonMark\Util\HtmlElement;
 use League\CommonMark\Util\RegexHelper;
-use League\Config\ConfigurationAwareInterface;
-use League\Config\ConfigurationInterface;
 
-class RelativeImageRenderer implements NodeRendererInterface, ConfigurationAwareInterface
+class RelativeImageRenderer implements NodeRendererInterface
 {
-    private $relativeFilePath;
-    private $config;
+    private string $relativeFilePath;
 
-    public function __construct($relativeFilePath)
+    public function __construct(string $relativeFilePath)
     {
         $this->relativeFilePath = $relativeFilePath;
-    }
-
-    public function setConfiguration(ConfigurationInterface $configuration): void
-    {
-        $this->config = $configuration;
     }
 
     /**
@@ -32,7 +24,7 @@ class RelativeImageRenderer implements NodeRendererInterface, ConfigurationAware
      *
      * @return HtmlElement
      */
-    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer): HtmlElement
     {
         if (!($node instanceof Image)) {
             throw new \InvalidArgumentException('Incompatible node type: ' . get_class($node));

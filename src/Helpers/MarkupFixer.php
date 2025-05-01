@@ -16,15 +16,8 @@ use TOC\UniqueSlugify;
  */
 class MarkupFixer extends \TOC\MarkupFixer
 {
-    /**
-     * @var HTML5
-     */
-    private $htmlParser;
-
-    /**
-     * @var SlugifyInterface
-     */
-    private $sluggifier;
+    private HTML5 $htmlParser;
+    private SlugifyInterface $sluggifier;
 
     /**
      * Constructor
@@ -50,8 +43,8 @@ class MarkupFixer extends \TOC\MarkupFixer
      */
     public function fix(string $markup, int $topLevel = 1, int $depth = 6): string
     {
-        if (! $this->isFullHtmlDocument($markup)) {
-            $partialID = uniqid('toc_generator_');
+        if (!$this->isFullHtmlDocument($markup)) {
+            $partialID = uniqid('toc_generator_', true);
             $markup = sprintf("<body id='%s'>%s</body>", $partialID, $markup);
         }
 

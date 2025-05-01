@@ -9,7 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class CacheNavigation extends Command {
+class CacheNavigation extends Command
+{
     protected static $defaultName = 'cache:navigation';
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -20,7 +21,7 @@ class CacheNavigation extends Command {
         $languages = ['en', 'ru', 'nl', 'es'];
         foreach ($versions as $version) {
             foreach ($languages as $language) {
-                $output->writeln('- ' . $version. '/' . $language . '');
+                $output->writeln('- ' . $version . '/' . $language . '');
                 Tree::get($version, $language, true);
             }
         }

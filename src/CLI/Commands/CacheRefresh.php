@@ -8,7 +8,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class CacheRefresh extends Command {
+class CacheRefresh extends Command
+{
     protected static $defaultName = 'cache:refresh';
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -34,8 +35,7 @@ class CacheRefresh extends Command {
                 $rm->run(function ($type, $buffer) use ($output) {
                     $output->writeln('' . $buffer);
                 });
-            }
-            else {
+            } else {
                 $output->writeln('- Already empty: ' . $directory);
             }
         }

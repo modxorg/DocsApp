@@ -57,7 +57,7 @@ class Search extends Base
             ];
 
             $startTime = microtime(true);
-            $sq = new SearchQuery($this->searchService, $query, $pageRequest, $live);
+            $sq = new SearchQuery($this->searchService, $query, $pageRequest);
 
             $result = $this->searchService->execute($sq);
             $resultCount = $result->getCount();
@@ -75,8 +75,7 @@ class Search extends Base
                 if ($resultCount > 0) {
                     $title = $resultCount . ' results for "' . $query . '"';
                     $pagination = $this->getPagination($page, $pageRequest, $query, $totalPages);
-                }
-                else {
+                } else {
                     $title = 'No results for "' . $query . '"';
                 }
             }
@@ -89,8 +88,7 @@ class Search extends Base
                 'ignored_terms' => $sq->getIgnoredTerms(),
                 'pagination' => $pagination,
             ];
-        }
-        else {
+        } else {
             $resultCount = 0;
             $results = [];
         }
@@ -124,9 +122,11 @@ class Search extends Base
             $looped++;
             $pagination[] = [
                 'page' => $prev,
-                'href' => $this->router->urlFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $prev])
+                    ['q' => $query, 'page' => $prev]
+                )
             ];
             $prev--;
         }
@@ -134,9 +134,11 @@ class Search extends Base
         if ($page > 1) {
             $pagination[] = [
                 'page' => 'First',
-                'href' => $this->router->urlFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query])
+                    ['q' => $query]
+                )
             ];
         }
 
@@ -146,9 +148,11 @@ class Search extends Base
         $pagination[] = [
             'current' => true,
             'page' => $page,
-            'href' => $this->router->urlFor('search',
+            'href' => $this->router->urlFor(
+                'search',
                 ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                ['q' => $query, 'page' => $page])
+                ['q' => $query, 'page' => $page]
+            )
         ];
 
         $looped = 0;
@@ -157,20 +161,23 @@ class Search extends Base
             $looped++;
             $pagination[] = [
                 'page' => $next,
-                'href' => $this->router->urlFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $next])
+                    ['q' => $query, 'page' => $next]
+                )
             ];
             $next++;
         }
 
         if ($next < $totalPages) {
-
             $pagination[] = [
                 'page' => 'Last',
-                'href' => $this->router->urlFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $totalPages])
+                    ['q' => $query, 'page' => $totalPages]
+                )
             ];
         }
 

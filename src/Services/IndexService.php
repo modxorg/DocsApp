@@ -7,24 +7,9 @@ use MODXDocs\Model\PageRequest;
 
 class IndexService
 {
-    public const MIN_TERM_LENGTH = 2;
-
-    /**
-     * @var \PDO
-     */
-    private $db;
-
-    private static $stopwords;
-
-    /**
-     * @var DocumentService
-     */
-    private $documentService;
-
-    /**
-     * @var bool
-     */
-    protected $indexSearchTerms = true;
+    private \PDO $db;
+    private DocumentService $documentService;
+    protected bool $indexSearchTerms = true;
 
     /**
      * @var bool|mixed
@@ -168,7 +153,7 @@ class IndexService
         return true;
     }
 
-    private function indexWords(\PDO $db, array $words, $version, $language)
+    private function indexWords(\PDO $db, array $words, $version, $language): array
     {
         $map = [];
 
