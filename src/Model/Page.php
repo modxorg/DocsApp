@@ -44,8 +44,7 @@ class Page
     private PDO $db;
     private ?string $renderedBody = null;
     private ?string $socialImageUrl = null;
-    private bool $regenerateSocialImage = true; // Toggle for testing
-    private const SOCIAL_IMAGE_HASH_ALGO = 'crc32b'; // Short non-crypto hash, sufficient for ~5000 items
+    private bool $regenerateSocialImage = false; // Toggle for testing
 
     public function __construct(DocumentService $documentService, PDO $db, string $version, string $language, string $requestPath, string $filePath, array $meta, string $body)
     {

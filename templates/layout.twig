@@ -38,11 +38,11 @@
         <meta name="twitter:site" content="@modx">
 
         {% if social_image %}
-            <meta property="og:image" content="{{ canonical_base|trim('/', 'right') }}{{ social_image }}">
+            <meta property="og:image" content="{{ base_url()|trim('/', 'right') }}{{ social_image }}">
             <meta property="og:image:width" content="1200">
             <meta property="og:image:height" content="630">
             <meta name="twitter:card" content="summary_large_image">
-            <meta name="twitter:image" content="{{ canonical_base|trim('/', 'right') }}{{ social_image }}">
+            <meta name="twitter:image" content="{{ base_url()|trim('/', 'right') }}{{ social_image }}">
         {% endif %}
 
         <link rel="stylesheet" href="/template/dist/app.css?v={{ revision }}">

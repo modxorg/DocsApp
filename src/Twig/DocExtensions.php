@@ -20,6 +20,7 @@ class DocExtensions extends AbstractExtension
     {
         return [
             new TwigFunction('base_href', [$this, 'getBaseHref']),
+            new TwigFunction('base_url', [$this, 'getBaseUrl']),
             new TwigFunction('icon', [$this, 'getInlineSvg'], ['is_safe' => ['html']]),
         ];
     }
