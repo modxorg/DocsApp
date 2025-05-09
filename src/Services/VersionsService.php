@@ -58,27 +58,62 @@ class VersionsService
 
     public function getVersions(PageRequest $request): array
     {
-        $versions = self::getAvailableVersions();
-        $currentVersion = self::getCurrentVersion();
-        $currentVersionBranch = self::getCurrentVersionBranch();
+        $dir = new \DirectoryIterator($_ENV['DOCS_DIRECTORY']);
 
-        $result = [];
-        foreach ($versions as $versionKey => $details) {
-            $result[] = [
-                'key' => $versionKey,
-                'name' => $details['name'] ?? $versionKey,
-                'branch' => $details['branch'] ?? $versionKey,
-                'url' => $this->router->urlFor('documentation', [
-                    'version' => $versionKey,
-                    'language' => $request->getLanguage(),
-                    'path' => VersionsService::getDefaultPath()
-                ]),
-                'is_current' => $versionKey === $currentVersion,
-                'is_current_branch' => $versionKey === $currentVersionBranch,
-            ];
+        $versions = [];
+
+        foreach ($dir as $fileInfo) {
+            if (!$fileInfo->isDir() || $fileInfo->isDot()) {
+                continue;
+            }
+
+            $file = $fileInfo->getPathname()
+                . '/'
+                . $request->getLanguage()
+                . '/'
+                . $request->getPath();
+
+            if (file_exists($file . '.md') || file_exists($file . '/index.md')) {
+                $versions[] = $this->createVersion($request, $fileInfo);
+            }
         }
 
-        return $result;
+        return $versions;
+    }
+
+    private function createVersion(PageRequest $request, \DirectoryIterator $fileInfo)
+    {
+        $versionKey = static::getVersionUrl($fileInfo->getFilename());
+        return [
+            'title' => static::getVersionTitle($fileInfo->getFilename()),
+            'active' => $versionKey === $request->getVersion(),
+            'key' => $versionKey,
+            'uri' => $this->router->urlFor('documentation', [
+                'version' => $versionKey,
+                'language' => $request->getLanguage(),
+                'path' => $request->getPath(),
+            ])
+        ];
+    }
+
+    private static function getVersionUrl($version)
+    {
+        // If we found another version e.g. 2.x, and 2.x is the `current` branch, use `current`
+        // instead of 2.x in the URL
+        if (static::getCurrentVersionBranch() === $version) {
+            return static::getCurrentVersion();
+        }
+
+        return $version;
+    }
+
+    private static function getVersionTitle($fileVersion)
+    {
+        if (static::getCurrentVersionBranch() === $fileVersion) {
+            return $fileVersion . ' (current)';
+        }
+
+        return $fileVersion;
     }
 
     public static function getCurrentVersion(): string
@@ -101,7 +136,7 @@ class VersionsService
         return self::DEFAULT_PATH;
     }
 
-    public static function getDocsRoot()
+    public static function getDocsRoot(): string
     {
         return $_ENV['DOCS_DIRECTORY'];
     }

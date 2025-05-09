@@ -76,57 +76,86 @@ abstract class Base
 
     public static function getRevision(): string
     {
-        if (empty(static::$rev)) {
-            static::$rev = $_ENV['REVISION'] ?? date('YmdHis');
+        if (!empty(self::$rev)) {
+            return self::$rev;
         }
-        return static::$rev;
+        $revision = 'dev';
+
+        $projectDir = $_ENV['BASE_DIRECTORY'];
+        if (file_exists($projectDir . '.revision')) {
+            $revision = trim((string)file_get_contents($projectDir . '.revision'));
+        }
+
+        self::$rev = $revision;
+
+        return $revision;
     }
 
-    protected function getLang($language)
+    protected function getLang(string $language): array
     {
-        $langFile = __DIR__ . '/../../lang.json';
-        if (!file_exists($langFile)) {
+        $lang = json_decode(file_get_contents($_ENV['BASE_DIRECTORY'] . 'lang.json'), true);
+        if (!is_array($lang)) {
             return [];
         }
-
-        $langData = json_decode(file_get_contents($langFile), true);
-        if (!$langData) {
-            return [];
+        if (array_key_exists($language, $lang)) {
+            $lang = array_merge($lang['en'], $lang[$language]);
+        } else {
+            $lang = $lang['en'];
         }
-
-        return $langData[$language] ?? $langData['en'] ?? [];
+        return $lang;
     }
 
-    protected function getOpenCollectiveInfo()
+    private function getOpenCollectiveInfo(): array
     {
         $cache = CacheService::getInstance();
-        $key = 'opencollective_info';
-        $info = $cache->get($key);
-
-        if ($info === null) {
-            $info = json_decode(file_get_contents('https://opencollective.com/modx/members/all.json'), true);
-            $cache->set($key, $info, 3600);
+        $cacheKey = 'opencollective_fc';
+        $info = $cache->get($cacheKey);
+        if (!is_array($info)) {
+            $data = @file_get_contents('https://opencollective.com/modx.json');
+            $data = json_decode($data, true);
+            if (!empty($data['slug']) && $data['slug'] === 'modx') {
+                $data['fetched'] = time();
+                $cache->set($cacheKey, $data, strtotime('+2 hours'));
+                $info = $data;
+            }
         }
 
-        return $info;
+        return $info ?: [];
     }
 
-    protected function getOpenCollectiveMembers()
+    private function getOpenCollectiveMembers(): array
     {
         $cache = CacheService::getInstance();
-        $key = 'opencollective_members';
-        $members = $cache->get($key);
+        $cacheKey = 'opencollective_members_fc';
+        $info = $cache->get($cacheKey);
+        if (!is_array($info)) {
+            $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=50&isActive=1');
+            $data = json_decode($data, true);
+            if (is_array($data) && count($data) > 0) {
+                $merged = [];
+                foreach ($data as $i => $member) {
+                    // filter out non-backers (OC itself, admin)
+                    if ($member['role'] !== 'BACKER') {
+                        continue;
+                    }
 
-        if ($members === null) {
-            $members = json_decode(file_get_contents('https://opencollective.com/modx/members.json'), true);
-            $cache->set($key, $members, 3600);
+                    // Sometimes, users appear multiple times because of having a subscription but also
+                    // standalone donations. Merging those profiles here makes sure they appear just once.
+                    if (!isset($merged[$member['profile']])) {
+                        $merged[$member['profile']] = $member;
+                    }
+                }
+
+                // Sort by total amount donated
+                uasort($merged, static function ($a, $b) {
+                    return $a['totalAmountDonated'] < $b['totalAmountDonated'] ? 1 : -1;
+                });
+
+                $cache->set($cacheKey, $merged, strtotime('+2 hours'));
+                $info = $merged;
+            }
         }
 
-        return $members;
-    }
-
-    public static function setRevision($rev = null)
-    {
-        static::$rev = $_ENV['REVISION'] ?? date('YmdHis');
+        return $info ?: [];
     }
 }
