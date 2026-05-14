@@ -3,7 +3,7 @@
 namespace MODXDocs\Services;
 
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
+use Slim\Interfaces\RouteParserInterface;
 
 class TranslationService
 {
@@ -12,7 +12,7 @@ class TranslationService
      */
     private $db;
 
-    public function __construct(\PDO $db, Router $router)
+    public function __construct(\PDO $db, RouteParserInterface $router)
     {
         $this->db = $db;
     }

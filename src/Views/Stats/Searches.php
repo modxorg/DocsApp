@@ -7,9 +7,9 @@ use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Interfaces\RouteParserInterface;
 
 class Searches extends Base
 {
@@ -19,7 +19,7 @@ class Searches extends Base
     private $cache;
     /** @var DB */
     private $db;
-    /** @var Router */
+    /** @var RouteParserInterface */
     private $router;
 
     public function __construct(ContainerInterface $container)
@@ -41,7 +41,7 @@ class Searches extends Base
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Search Statistics', // @todo i18n
-            'href' => $this->router->pathFor('stats/searches')
+            'href' => $this->router->urlFor('stats/searches')
         ];
 
         $startTime = microtime(true);

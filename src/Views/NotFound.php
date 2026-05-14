@@ -9,8 +9,8 @@ use MODXDocs\Services\SearchService;
 use MODXDocs\Services\VersionsService;
 use PDO;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Helpers\Redirector;
@@ -39,13 +39,13 @@ class NotFound extends Base
         // Make sure links ending in .md get redirected
         if (substr($currentUri, -strlen(static::MARKDOWN_SUFFIX)) === static::MARKDOWN_SUFFIX) {
             $uri = substr($currentUri, 0, -strlen(static::MARKDOWN_SUFFIX));
-            return $response->withRedirect($uri, 301);
+            return $response->withHeader('Location', $uri)->withStatus(301);
         }
 
         try {
             $redirectUri = Redirector::findNewURI($currentUri);
 
-            return $response->withRedirect($redirectUri, 301);
+            return $response->withHeader('Location', $redirectUri)->withStatus(301);
         } catch (RedirectNotFoundException $e) {
 
             $this->logNotFoundRequest($currentUri);

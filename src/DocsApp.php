@@ -7,27 +7,37 @@ use MODXDocs\Views\Search;
 use MODXDocs\Views\Stats\NotFoundRequests;
 use MODXDocs\Views\Stats\Searches;
 use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Factory\AppFactory;
 
 use MODXDocs\Containers\View;
-use MODXDocs\Containers\ErrorHandlers;
 use MODXDocs\Containers\Logger;
 use MODXDocs\Containers\Services;
 use MODXDocs\Middlewares\RequestMiddleware;
 use MODXDocs\Views\Doc;
+use MODXDocs\Views\Error;
+use MODXDocs\Views\NotFound;
 
 class DocsApp
 {
     /** @var App */
     private $app;
+    /** @var Container */
+    private $container;
 
     public function __construct(array $settings)
     {
-        $this->app = new App($settings);
+        $this->container = new Container($settings);
+        $this->app = AppFactory::create(null, $this->container);
+        $this->container['router'] = function () {
+            return $this->app->getRouteCollector()->getRouteParser();
+        };
 
-        $this->routes();
         $this->dependencies();
+        $this->routes();
         $this->middlewares();
     }
 
@@ -43,6 +53,40 @@ class DocsApp
     private function middlewares()
     {
         $this->app->add(new RequestMiddleware());
+        $container = $this->container;
+        $responseFactory = $this->app->getResponseFactory();
+
+        $errorMiddleware = $this->app->addErrorMiddleware(
+            (bool)$this->container->get('settings')['displayErrorDetails'],
+            true,
+            true
+        );
+        $errorMiddleware->setDefaultErrorHandler(function (
+            ServerRequestInterface $request,
+            \Throwable $exception
+        ) use ($container, $responseFactory): ResponseInterface {
+            return (new Error($container, $exception))->get(
+                $request,
+                $responseFactory->createResponse()
+            );
+        });
+        $errorMiddleware->setErrorHandler(HttpNotFoundException::class, function (
+            ServerRequestInterface $request
+        ) use ($container, $responseFactory): ResponseInterface {
+            return (new NotFound($container))->get(
+                $request,
+                $responseFactory->createResponse()
+            );
+        });
+        $errorMiddleware->setErrorHandler(HttpMethodNotAllowedException::class, function (
+            ServerRequestInterface $request,
+            HttpMethodNotAllowedException $exception
+        ) use ($responseFactory): ResponseInterface {
+            $response = $responseFactory->createResponse(405);
+            $response->getBody()->write($exception->getMessage());
+
+            return $response;
+        });
     }
 
     private function dependencies()
@@ -50,7 +94,6 @@ class DocsApp
         $containers = [
             DB::class,
             View::class,
-            ErrorHandlers::class,
             Logger::class,
             Services::class
         ];
@@ -62,7 +105,7 @@ class DocsApp
 
     public function getContainer()
     {
-        return $this->app->getContainer();
+        return $this->container;
     }
 
     public function run()
@@ -70,9 +113,9 @@ class DocsApp
         $this->app->run();
     }
 
-    public function process(Request $request, Response $response)
+    public function process(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->app->process($request, $response);
+        return $this->app->handle($request);
     }
 
 }

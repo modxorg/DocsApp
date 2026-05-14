@@ -5,8 +5,9 @@ namespace MODXDocs\Views;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use MODXDocs\Twig\DocExtensions;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
 
@@ -30,6 +31,7 @@ abstract class Base
 
     protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
     {
+        DocExtensions::setRequest($request);
         $pageRequest = PageRequest::fromRequest($request);
 
         $initialData = [

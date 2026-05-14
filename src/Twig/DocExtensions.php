@@ -3,34 +3,50 @@
 namespace MODXDocs\Twig;
 
 use MODXDocs\Views\Base;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Slim\Http\Request;
-use Slim\Interfaces\RouterInterface;
 
 class DocExtensions extends AbstractExtension
 {
+    /** @var RouteParserInterface */
     private $router;
-    private $request;
+    /** @var ServerRequestInterface|null */
+    private static $request;
 
-    public function __construct(RouterInterface $router, Request $request)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
-        $this->request = $request;
+    }
+
+    public static function setRequest(ServerRequestInterface $request): void
+    {
+        static::$request = $request;
     }
 
     public function getFunctions()
     {
         return [
+            new TwigFunction('path_for', [$this, 'pathFor']),
             new TwigFunction('base_href', [$this, 'getBaseHref']),
             new TwigFunction('icon', [$this, 'getInlineSvg'], ['is_safe' => ['html']]),
         ];
     }
 
+    public function pathFor(string $routeName, array $data = [], array $queryParams = []): string
+    {
+        return $this->router->urlFor($routeName, $data, $queryParams);
+    }
+
     public function getBaseHref()
     {
         $scheme = getenv('SSL') === '1' ? 'https' : 'http';
-        $uri = $this->request->getUri();
+        if (!static::$request) {
+            return $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/';
+        }
+
+        $uri = static::$request->getUri();
         $port = \in_array($uri->getPort(), [80, 443, null], true) ? '' : (':' . $uri->getPort());
 
         return $scheme . '://' . $uri->getHost() . $port . '/';

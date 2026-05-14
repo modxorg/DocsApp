@@ -6,9 +6,9 @@ use MODXDocs\Containers\DB;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Interfaces\RouteParserInterface;
 
 class NotFoundRequests extends Base
 {
@@ -18,7 +18,7 @@ class NotFoundRequests extends Base
     private $cache;
     /** @var DB */
     private $db;
-    /** @var Router */
+    /** @var RouteParserInterface */
     private $router;
 
     public function __construct(ContainerInterface $container)
@@ -40,7 +40,7 @@ class NotFoundRequests extends Base
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Page Not Found Errors', // @todo i18n
-            'href' => $this->router->pathFor('stats/page-not-found')
+            'href' => $this->router->urlFor('stats/page-not-found')
         ];
 
         $phs = [

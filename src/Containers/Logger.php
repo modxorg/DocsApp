@@ -5,11 +5,11 @@ namespace MODXDocs\Containers;
 use Monolog\Logger as MonologLogger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Handler\StreamHandler;
-use Slim\Container;
+use Psr\Container\ContainerInterface;
 
 class Logger
 {
-    public static function load(Container $container)
+    public static function load(ContainerInterface $container)
     {
         $container['logger'] = function () {
 

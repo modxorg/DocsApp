@@ -2,12 +2,15 @@
 
 namespace MODXDocs\Middlewares;
 
-use Slim\Http\Response;
-use Slim\Http\Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Psr7\Response;
 
-class RequestMiddleware
+class RequestMiddleware implements MiddlewareInterface
 {
-    public function __invoke(Request $request, Response $response, $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $uri = $request->getUri();
         $path = $uri->getPath();
@@ -18,12 +21,14 @@ class RequestMiddleware
             $uri = $uri->withPath(substr($path, 0, -1));
 
             if ($request->getMethod() === 'GET') {
-                return $response->withRedirect((string)$uri, 301);
+                return (new Response())
+                    ->withHeader('Location', (string)$uri)
+                    ->withStatus(301);
             }
 
-            return $next($request->withUri($uri), $response);
+            return $handler->handle($request->withUri($uri));
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

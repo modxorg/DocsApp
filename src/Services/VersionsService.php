@@ -3,7 +3,7 @@
 namespace MODXDocs\Services;
 
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
+use Slim\Interfaces\RouteParserInterface;
 
 class VersionsService
 {
@@ -14,7 +14,7 @@ class VersionsService
 
     private $router;
 
-    public function __construct(Router $router)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
     }
@@ -82,7 +82,7 @@ class VersionsService
             'title' => static::getVersionTitle($fileInfo->getFilename()),
             'active' => $versionKey === $request->getVersion(),
             'key' => $versionKey,
-            'uri' => $this->router->pathFor('documentation', [
+            'uri' => $this->router->urlFor('documentation', [
                 'version' => $versionKey,
                 'language' => $request->getLanguage(),
                 'path' => $request->getPath(),

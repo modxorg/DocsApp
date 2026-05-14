@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\Environment;
+use Slim\Psr7\Factory\ServerRequestFactory;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -29,32 +27,20 @@ class BaseTestCase extends TestCase
      * @param string $requestMethod the request method (e.g. GET, POST, etc.)
      * @param string $requestUri the request URI
      * @param array|object|null $requestData the request data
-     * @return \Slim\Http\Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
     {
         global $app;
 
-        // Create a mock environment for testing with
-        $environment = Environment::mock(
-            [
-                'REQUEST_METHOD' => $requestMethod,
-                'REQUEST_URI' => $requestUri
-            ]
-        );
-
-        // Set up a request object based on the environment
-        $request = Request::createFromEnvironment($environment);
+        $request = (new ServerRequestFactory())->createServerRequest($requestMethod, $requestUri);
 
         // Add request data, if it exists
         if ($requestData !== null) {
             $request = $request->withParsedBody($requestData);
         }
 
-        // Set up a response object
-        $response = new Response();
-        // Process the application
-        $response = $app->process($request, $response);
+        $response = $app->process($request);
 
         // Return the response
         return $response;

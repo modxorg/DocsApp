@@ -3,9 +3,10 @@
 namespace MODXDocs\Views;
 
 use MODXDocs\Model\PageRequest;
+use MODXDocs\Twig\DocExtensions;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Helpers\Redirector;
@@ -22,6 +23,7 @@ class Error extends Base
 
     public function get(Request $request, Response $response)
     {
+        DocExtensions::setRequest($request);
 
         $pageRequest = PageRequest::fromRequest($request);
 

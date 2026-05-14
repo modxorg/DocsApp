@@ -4,7 +4,7 @@
 namespace MODXDocs\Model;
 
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class PageRequest {
     private $version;
@@ -20,7 +20,7 @@ class PageRequest {
         $this->versionBranch = $this->version === VersionsService::getCurrentVersion() ? VersionsService::getCurrentVersionBranch() : $this->version;
     }
 
-    public static function fromRequest(Request $request): self
+    public static function fromRequest(ServerRequestInterface $request): self
     {
         return new static(
             $request->getAttribute('version', VersionsService::getCurrentVersion()),

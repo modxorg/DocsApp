@@ -15,8 +15,8 @@ class HomepageTest extends BaseTestCase
         $response = $this->runApp('GET', '/');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Creative Freedom', (string)$response->getBody());
-        $this->assertNotContains('Hello', (string)$response->getBody());
+        $this->assertStringContainsString('Creative Freedom', (string)$response->getBody());
+        $this->assertStringNotContainsString('Hello', (string)$response->getBody());
     }
 
     /**
@@ -27,6 +27,6 @@ class HomepageTest extends BaseTestCase
         $response = $this->runApp('POST', '/', ['test']);
 
         $this->assertEquals(405, $response->getStatusCode());
-        $this->assertContains('Method not allowed', (string)$response->getBody());
+        $this->assertStringContainsString('Method not allowed', (string)$response->getBody());
     }
 }

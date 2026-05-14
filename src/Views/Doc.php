@@ -7,12 +7,13 @@ use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\TranslationService;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Stream;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Stream;
 
 class Doc extends Base
 {
@@ -33,7 +34,7 @@ class Doc extends Base
      * @param Request $request
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Slim\Exception\NotFoundException
+     * @throws HttpNotFoundException
      */
     public function get(Request $request, Response $response)
     {
@@ -47,7 +48,7 @@ class Doc extends Base
             if (file_exists($filePath)) {
                 return $this->renderFile($request, $response, $filePath);
             }
-            throw new \Slim\Exception\NotFoundException($request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $crumbs = [];
@@ -107,7 +108,7 @@ class Doc extends Base
      * @param Response $response
      * @param $filePath
      * @return Response
-     * @throws \Slim\Exception\NotFoundException
+     * @throws HttpNotFoundException
      */
     protected function renderFile(Request $request, Response $response, $filePath): Response
     {
@@ -132,7 +133,7 @@ class Doc extends Base
                 ->withHeader('ETag', $etag);
         }
 
-        throw new \Slim\Exception\NotFoundException($request, $response);
+        throw new HttpNotFoundException($request);
     }
 
     private function getSuggestedLanguages(Request $request, PageRequest $pageRequest)
