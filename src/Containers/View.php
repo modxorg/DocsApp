@@ -15,7 +15,7 @@ class View
 
     public static function load(ContainerInterface $container)
     {
-        $container['view'] = function (ContainerInterface $container) {
+        $container->set('view', function (ContainerInterface $container) {
             $request = $container->get('request');
             $router = $container->get('router');
 

@@ -11,7 +11,7 @@ class Logger
 {
     public static function load(Container $container)
     {
-        $container['logger'] = function () {
+        $container->set('logger', function () {
 
             $logger = new MonologLogger('modx-docs');
 

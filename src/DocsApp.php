@@ -7,8 +7,8 @@ use MODXDocs\Views\Search;
 use MODXDocs\Views\Stats\NotFoundRequests;
 use MODXDocs\Views\Stats\Searches;
 use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 use MODXDocs\Containers\View;
 use MODXDocs\Containers\ErrorHandlers;

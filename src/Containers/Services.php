@@ -15,37 +15,37 @@ class Services
 {
     public static function load(Container $container): void
     {
-        $container[FilePathService::class] = function () {
+        $container->set(FilePathService::class, function () {
             return new FilePathService();
         };
 
-        $container[DocumentService::class] = function (Container $container) {
+        $container->set(DocumentService::class, function (Container $container) {
             return new DocumentService(
                 $container->get(FilePathService::class),
                 $container->get('db')
             );
         };
 
-        $container[VersionsService::class] = function (Container $container) {
+        $container->set(VersionsService::class, function (Container $container) {
             return new VersionsService(
                 $container->get('router')
             );
         };
 
-        $container[TranslationService::class] = function (Container $container) {
+        $container->set(TranslationService::class, function (Container $container) {
             return new TranslationService(
                 $container->get('db'),
                 $container->get('router')
             );
         };
 
-        $container[SearchService::class] = function (Container $container) {
+        $container->set(SearchService::class, function (Container $container) {
             return new SearchService(
                 $container->get('db'),
                 $container->get(DocumentService::class)
             );
         };
-        $container[IndexService::class] = function (Container $container) {
+        $container->set(IndexService::class, function (Container $container) {
             return new IndexService(
                 $container->get('db'),
                 $container->get(DocumentService::class)

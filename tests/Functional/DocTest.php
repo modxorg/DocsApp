@@ -12,7 +12,7 @@ class DocTest extends BaseTestCase
         $response = $this->runApp('GET', '/2.x/en/getting-started');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Welcome to MODX Revolution', (string)$response->getBody());
-        $this->assertNotContains('WordPress', (string)$response->getBody());
+        $this->assertStringContainsString('Welcome to MODX Revolution', (string)$response->getBody());
+        $this->assertStringNotContainsString('WordPress', (string)$response->getBody());
     }
 }

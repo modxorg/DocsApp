@@ -9,8 +9,8 @@ use MODXDocs\Services\SearchService;
 use MODXDocs\Services\VersionsService;
 use PDO;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Helpers\Redirector;

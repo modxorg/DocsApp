@@ -5,8 +5,8 @@ namespace MODXDocs\Views;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
 

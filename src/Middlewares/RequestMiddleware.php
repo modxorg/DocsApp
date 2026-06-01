@@ -2,8 +2,8 @@
 
 namespace MODXDocs\Middlewares;
 
-use Slim\Http\Response;
-use Slim\Http\Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class RequestMiddleware
 {

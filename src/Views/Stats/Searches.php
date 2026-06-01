@@ -7,8 +7,8 @@ use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Router;
 
 class Searches extends Base

@@ -5,7 +5,7 @@ namespace MODXDocs\Twig;
 use MODXDocs\Views\Base;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Slim\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Interfaces\RouterInterface;
 
 class DocExtensions extends AbstractExtension

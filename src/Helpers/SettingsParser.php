@@ -13,8 +13,8 @@ class SettingsParser
     {
         $baseDir = dirname(dirname(__DIR__)) . '/';
         $dotFile = static::getDotFile($baseDir);
-        $dotEnv = Dotenv::create($baseDir, $dotFile);
-        $dotEnv->load();
+        $dotEnv = Dotenv::createUnsafeImmutable($baseDir, $dotFile);
+        $dotEnv->safeLoad();
     }
 
     public function getSlimConfig()
