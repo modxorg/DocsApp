@@ -17,13 +17,16 @@ class ErrorHandlers
 
                 return $pageNotFound->get($request, $response);
             };
-        };
-        $container['errorHandler'] = $container->set('phpErrorHandler', function ($container) {
+        });
+        
+        $errorHandlerFn = function ($container) {
             return function ($request, $response, $exception) use ($container) {
                 $pageNotFound = new Error($container, $exception);
 
                 return $pageNotFound->get($request, $response);
             };
         };
+        $container->set('errorHandler', $errorHandlerFn);
+        $container->set('phpErrorHandler', $errorHandlerFn);
     }
 }

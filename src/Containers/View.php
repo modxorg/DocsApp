@@ -13,9 +13,9 @@ class View
 {
     const BASE_REQUEST_HANDLER = 'index.php';
 
-    public static function load(ContainerInterface $container)
+    public static function load(\DI\Container $container)
     {
-        $container->set('view', function (ContainerInterface $container) {
+        $container->set('view', function (\Psr\Container\ContainerInterface $container) {
             $request = $container->get('request');
             $router = $container->get('router');
 
@@ -32,6 +32,6 @@ class View
             $view->addExtension(new DocExtensions($router, $request));
 
             return $view;
-        };
+        });
     }
 }
