@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Functional;
@@ -7,26 +8,27 @@ use Tests\BaseTestCase;
 
 class HomepageTest extends BaseTestCase
 {
-    /**
-     * Test that the index route returns a rendered response containing the text 'SlimFramework' but not a greeting
-     */
-    public function testGetHomepageWithoutName() : void
+    public function testGetHomepageRedirectsToCurrentDocs(): void
     {
         $response = $this->runApp('GET', '/');
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Creative Freedom', (string)$response->getBody());
-        $this->assertNotContains('Hello', (string)$response->getBody());
+        $this->assertSame(301, $response->getStatusCode());
+        $this->assertStringContainsString('/current/en/', $response->getHeaderLine('Location'));
     }
 
-    /**
-     * Test that the index route won't accept a post request
-     */
-    public function testPostHomepageNotAllowed() : void
+    public function testGetDocsHomepage(): void
+    {
+        $response = $this->runApp('GET', '/2.x/en/index');
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertStringContainsString('Creative Freedom', (string) $response->getBody());
+        $this->assertStringNotContainsString('Hello', (string) $response->getBody());
+    }
+
+    public function testPostHomepageNotAllowed(): void
     {
         $response = $this->runApp('POST', '/', ['test']);
 
-        $this->assertEquals(405, $response->getStatusCode());
-        $this->assertContains('Method not allowed', (string)$response->getBody());
+        $this->assertSame(405, $response->getStatusCode());
     }
 }

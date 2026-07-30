@@ -5,6 +5,7 @@
 .DS_Store
 cache/*
 !cache/.gitkeep
+.phpunit.cache/
 public/.htaccess
 node_modules/
 .env

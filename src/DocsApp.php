@@ -126,6 +126,11 @@ class DocsApp
         $this->app->run();
     }
 
+    public function getApp(): App
+    {
+        return $this->app;
+    }
+
     public function getContainer(): Container
     {
         return $this->container;

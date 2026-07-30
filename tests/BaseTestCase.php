@@ -1,62 +1,41 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-use Slim\Psr7\Environment;
+use MODXDocs\DocsApp;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\Factory\StreamFactory;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
-/**
- * This is an example class that shows how you could set up a method that
- * runs the application. Note that it doesn't cover all use-cases and is
- * tuned to the specifics of this skeleton app, so if your needs are
- * different, you'll need to change it.
- */
 class BaseTestCase extends TestCase
 {
-    /**
-     * Use middleware when running application?
-     *
-     * @var bool
-     */
-    protected $withMiddleware = true;
+    private static DocsApp $app;
 
-    /**
-     * Process the application given a request method and URI
-     *
-     * @param string $requestMethod the request method (e.g. GET, POST, etc.)
-     * @param string $requestUri the request URI
-     * @param array|object|null $requestData the request data
-     * @return \Slim\Http\Response
-     */
-    public function runApp($requestMethod, $requestUri, $requestData = null)
+    public static function setApp(DocsApp $app): void
     {
-        global $app;
+        self::$app = $app;
+    }
 
-        // Create a mock environment for testing with
-        $environment = Environment::mock(
-            [
-                'REQUEST_METHOD' => $requestMethod,
-                'REQUEST_URI' => $requestUri
-            ]
-        );
+    /**
+     * Process the application given a request method and URI.
+     *
+     * @param array|object|null $requestData
+     */
+    public function runApp(string $requestMethod, string $requestUri, $requestData = null): ResponseInterface
+    {
+        $request = (new ServerRequestFactory())->createServerRequest($requestMethod, $requestUri);
 
-        // Set up a request object based on the environment
-        $request = Request::createFromEnvironment($environment);
-
-        // Add request data, if it exists
         if ($requestData !== null) {
-            $request = $request->withParsedBody($requestData);
+            $stream = (new StreamFactory())->createStream(http_build_query((array) $requestData));
+            $request = $request
+                ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
+                ->withBody($stream)
+                ->withParsedBody($requestData);
         }
 
-        // Set up a response object
-        $response = new Response();
-        // Process the application
-        $response = $app->process($request, $response);
-
-        // Return the response
-        return $response;
+        return self::$app->getApp()->handle($request);
     }
 }
