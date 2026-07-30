@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 
 #[AsCommand(
     name: 'sources:update',
-    description: 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), and reindexes translations (`index:translations`). Meant to be run in response to git hooks.'
+    description: 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), reindexes translations (`index:translations`), and regenerates sitemaps (`sitemap:generate`). Meant to be run in response to git hooks.'
 )]
 class SourcesUpdate extends Command
 {
@@ -78,8 +78,17 @@ class SourcesUpdate extends Command
 
         // Index translations
         $command = $this->getApplication()->find('index:translations');
-        return $command->run(new ArrayInput([
+        $result = $command->run(new ArrayInput([
             'command' => 'index:translations',
+        ]), $output);
+        if ($result !== 0) {
+            return $result;
+        }
+
+        // Regenerate static sitemaps
+        $command = $this->getApplication()->find('sitemap:generate');
+        return $command->run(new ArrayInput([
+            'command' => 'sitemap:generate',
         ]), $output);
     }
 

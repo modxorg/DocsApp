@@ -9,6 +9,7 @@ use MODXDocs\CLI\Commands\Index\Init;
 use MODXDocs\CLI\Commands\Index\All;
 use MODXDocs\CLI\Commands\Index\Translations;
 use MODXDocs\CLI\Commands\ScrapeImages;
+use MODXDocs\CLI\Commands\SitemapGenerate;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
 use MODXDocs\DocsApp;
@@ -53,6 +54,7 @@ class Application extends \Symfony\Component\Console\Application
         $cmds[] = new Translations();
         $cmds[] = new All();
         $cmds[] = new ScrapeImages();
+        $cmds[] = new SitemapGenerate();
         return $cmds;
     }
 }
