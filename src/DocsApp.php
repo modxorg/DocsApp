@@ -110,18 +110,11 @@ class DocsApp
             return $page->get($request, $response);
         })->setName('search');
 
-        $app->get('/{version}/{language}/{path:.*}', function ($request, $response, $args) use ($container) {
-            $pageRequest = \MODXDocs\Model\PageRequest::fromRequest($request);
-            $documentService = $container->get(\MODXDocs\Services\DocumentService::class);
-            try {
-                $document = $documentService->load($pageRequest);
-            } catch (\MODXDocs\Exceptions\NotFoundException $e) {
-                $pageNotFound = new \MODXDocs\Views\NotFound($container);
-                return $pageNotFound->get($request, $response);
-            }
-
+        // Doc handles markdown pages and static assets (e.g. images) from the docs tree.
+        // Missing pages throw HttpNotFoundException, which ErrorHandlers maps to NotFound.
+        $app->get('/{version}/{language}/{path:.*}', function ($request, $response) use ($container) {
             $page = new \MODXDocs\Views\Doc($container);
-            return $page->get($request, $response, $document);
+            return $page->get($request, $response);
         })->setName('documentation');
     }
 
