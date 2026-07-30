@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /stats/searches
+Disallow: /stats/page-not-found
+Disallow: /current/en/search
+Disallow: /current/ru/search
+Disallow: /current/nl/search
+Disallow: /2.x/en/search
+Disallow: /2.x/ru/search
+Disallow: /2.x/nl/search
+Disallow: /3.x/en/search
+Disallow: /3.x/ru/search
+Disallow: /3.x/nl/search

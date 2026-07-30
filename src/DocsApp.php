@@ -18,6 +18,7 @@ use MODXDocs\Containers\Logger;
 use MODXDocs\Containers\Services;
 use MODXDocs\Containers\View;
 use MODXDocs\Containers\DB;
+use MODXDocs\Middlewares\NoiseRequestMiddleware;
 use MODXDocs\Middlewares\RequestMiddleware;
 
 class DocsApp
@@ -71,12 +72,15 @@ class DocsApp
         View::load($this->container);
         DB::load($this->container);
 
-        // Add middleware
+        // Add middleware (last added runs first)
         $this->app->add(new RequestMiddleware());
         $this->app->add(TwigMiddleware::createFromContainer($this->app));
 
         // Add error handling
         ErrorHandlers::load($this->container);
+
+        // Outermost: drop scanner noise before routing / fancy 404 / logging
+        $this->app->add(new NoiseRequestMiddleware());
 
         // Add routes
         $this->addRoutes();
