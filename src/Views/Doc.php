@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use MODXDocs\Services\DocumentService;
+use MODXDocs\Services\FilePathService;
 use MODXDocs\Services\VersionsService;
 use Slim\Psr7\Stream;
 use Slim\Exception\HttpNotFoundException;
@@ -19,12 +20,14 @@ class Doc extends Base
 {
     private TranslationService $translationService;
     private DocumentService $documentService;
+    private FilePathService $filePathService;
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->documentService = $this->container->get(DocumentService::class);
         $this->translationService = $this->container->get(TranslationService::class);
+        $this->filePathService = $this->container->get(FilePathService::class);
     }
 
     /**
@@ -41,8 +44,8 @@ class Doc extends Base
         try {
             $page = $this->documentService->load($pageRequest);
         } catch (NotFoundException $e) {
-            $filePath = VersionsService::getDocsRoot() . $pageRequest->getActualContextUrl() . $pageRequest->getPath();
-            if (file_exists($filePath)) {
+            $filePath = $this->filePathService->getStaticFilePath($pageRequest);
+            if ($filePath !== null) {
                 return $this->renderFile($request, $response, $filePath);
             }
             throw new HttpNotFoundException($request);
