@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Model;
 
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
@@ -218,16 +219,32 @@ class Page
         );
 
         try {
-            return $tocGenerator->getHtmlMenu(
+            $menu = $tocGenerator->getMenu(
                 $this->getRenderedBody(),
                 $topLevel,
-                $depth,
-                $renderer
+                $depth
             );
+
+            if ($this->countTocItems($menu) < 2) {
+                return '';
+            }
+
+            return $renderer->render($menu);
         } catch (\TypeError $e) {
             // https://github.com/caseyamcl/toc/issues/6
             return 'Error generating table of contents for page.';
         }
+    }
+
+    private function countTocItems(ItemInterface $item): int
+    {
+        $count = 0;
+        foreach ($item->getChildren() as $child) {
+            $count++;
+            $count += $this->countTocItems($child);
+        }
+
+        return $count;
     }
 
     public function getParentPage(): ?Page
