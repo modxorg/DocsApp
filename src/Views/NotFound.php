@@ -2,6 +2,7 @@
 
 namespace MODXDocs\Views;
 
+use MODXDocs\Helpers\DbValueGuard;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Model\SearchQuery;
 use MODXDocs\Navigation\Tree;
@@ -89,14 +90,18 @@ class NotFound extends Base
 
     private function logNotFoundRequest(string $requestUri): void
     {
+        if (!DbValueGuard::fits($requestUri, DbValueGuard::URL)) {
+            return;
+        }
+
         try {
-            $fetch = $this->db->prepare('SELECT rowid, url, hit_count FROM PageNotFound WHERE url = :url');
+            $fetch = $this->db->prepare('SELECT id, url, hit_count FROM PageNotFound WHERE url = :url');
             $fetch->bindValue(':url', $requestUri);
             if ($fetch->execute() && $log = $fetch->fetch(\PDO::FETCH_ASSOC)) {
-                $update = $this->db->prepare('UPDATE PageNotFound SET hit_count = :hit_count, last_seen = :last_seen WHERE ROWID = :rowid');
+                $update = $this->db->prepare('UPDATE PageNotFound SET hit_count = :hit_count, last_seen = :last_seen WHERE id = :id');
                 $update->bindValue('hit_count', (int)$log['hit_count'] + 1);
                 $update->bindValue('last_seen', time());
-                $update->bindValue('rowid', $log['rowid']);
+                $update->bindValue('id', $log['id']);
                 $update->execute();
             } else {
                 $insert = $this->db->prepare('INSERT INTO PageNotFound (url, hit_count, last_seen) VALUES (:url, 1, :last_seen)');

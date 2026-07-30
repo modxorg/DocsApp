@@ -15,7 +15,7 @@
         "php": ">=7.4.0",
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-sqlite3": "*",
+        "ext-pdo_mysql": "*",
         "ext-fileinfo": "*",
         "ext-mbstring": "*",
         "slim/slim": "^4.0",

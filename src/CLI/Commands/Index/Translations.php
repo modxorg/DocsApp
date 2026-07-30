@@ -3,6 +3,7 @@
 namespace MODXDocs\CLI\Commands\Index;
 
 use MODXDocs\CLI\Application;
+use MODXDocs\Helpers\DbValueGuard;
 use MODXDocs\Navigation\Tree;
 use MODXDocs\Services\VersionsService;
 use Symfony\Component\Console\Command\Command;
@@ -88,12 +89,15 @@ class Translations extends Command
         $insert = 'INSERT INTO Translations (en, ru, nl, es) VALUES (:en, :ru, :nl, :es)';
         $insertStmt = $db->prepare($insert);
         foreach ($mapEn as $source => $translations) {
-            $insertStmt->bindValue(':en', $source);
-            $insertStmt->bindValue(':ru', $translations['ru'] ?? '');
-            $insertStmt->bindValue(':nl', $translations['nl'] ?? '');
-            $insertStmt->bindValue(':es', $translations['es'] ?? '');
-
-            $insertStmt->execute();
+            try {
+                $insertStmt->bindValue(':en', DbValueGuard::truncate($source, DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':ru', DbValueGuard::truncate($translations['ru'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':nl', DbValueGuard::truncate($translations['nl'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':es', DbValueGuard::truncate($translations['es'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->execute();
+            } catch (\PDOException $e) {
+                $output->writeln('<comment>Failed to index translation for "' . $source . '": ' . $e->getMessage() . '</comment>');
+            }
         }
     }
 }

@@ -1,14 +1,40 @@
 version: '3'
 
 services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: modxdocs
+      MYSQL_USER: modxdocs
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    volumes:
+      - modxdocs_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   docs:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8000:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
     environment:
       - docker=1
       - COMPOSER_ALLOW_SUPERUSER=1
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=modxdocs
+      - DB_USER=modxdocs
+      - DB_PASSWORD=secret
     volumes:
       - .:/var/www/html
+
+volumes:
+  modxdocs_db:

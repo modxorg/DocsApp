@@ -3,6 +3,7 @@
 namespace MODXDocs\Services;
 
 use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Helpers\DbValueGuard;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Model\SearchQuery;
 use MODXDocs\Model\SearchResults;
@@ -33,15 +34,15 @@ class SearchService
 
     public function getExactTermReferences($version, $language, $term): array
     {
-        $statement = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE term = :term AND language = :language AND version = :version');
+        $statement = $this->db->prepare('SELECT id, term, phonetic_term FROM Search_Terms WHERE term = :term AND language = :language AND version = :version');
         $statement->bindValue(':language', $language);
         $statement->bindValue(':version', $version);
-        $statement->bindValue(':term', $term);
+        $statement->bindValue(':term', DbValueGuard::truncate($term, DbValueGuard::TERM));
 
         $return = [];
         if ($statement->execute() && $exactTerms = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
             foreach ($exactTerms as $exactTerm) {
-                $return[$exactTerm['rowid']] = $exactTerm['term'];
+                $return[$exactTerm['id']] = $exactTerm['term'];
             }
         }
         return $return;
@@ -49,10 +50,10 @@ class SearchService
 
     public function getStartsWithReferences($version, $language, $term): array
     {
-        $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE term LIKE :term AND language = :language AND version = :version');
+        $findTermsStmt = $this->db->prepare('SELECT id, term, phonetic_term FROM Search_Terms WHERE term LIKE :term AND language = :language AND version = :version');
         $findTermsStmt->bindValue(':language', $language);
         $findTermsStmt->bindValue(':version', $version);
-        $findTermsStmt->bindValue(':term', $term . '%');
+        $findTermsStmt->bindValue(':term', DbValueGuard::truncate($term, DbValueGuard::TERM) . '%');
 
         $return = [];
         if ($findTermsStmt->execute() && $startingTerms = $findTermsStmt->fetchAll(\PDO::FETCH_ASSOC)) {
@@ -62,7 +63,7 @@ class SearchService
             }
 
             foreach ($startingTerms as $startingTerm) {
-                $return[$startingTerm['rowid']] = $startingTerm['term'];
+                $return[$startingTerm['id']] = $startingTerm['term'];
             }
         }
         return $return;
@@ -70,7 +71,7 @@ class SearchService
 
     public function getFuzzyTermReferences($version, $language, $term): array
     {
-        $findTermsStmt = $this->db->prepare('SELECT rowid, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');
+        $findTermsStmt = $this->db->prepare('SELECT id, term, phonetic_term FROM Search_Terms WHERE phonetic_term = :phonetic AND language = :language AND version = :version');
         $findTermsStmt->bindValue(':language', $language);
         $findTermsStmt->bindValue(':version', $version);
         $findTermsStmt->bindValue(':phonetic', self::fuzzyTerm($term, $language));
@@ -83,7 +84,7 @@ class SearchService
             }
 
             foreach ($phoneticTerms as $phoneticTerm) {
-                $return[$phoneticTerm['rowid']] = $phoneticTerm['term'];
+                $return[$phoneticTerm['id']] = $phoneticTerm['term'];
             }
         }
         return $return;
@@ -121,15 +122,15 @@ class SearchService
         }
 
         $placeholders = str_repeat('?, ', count($pageIDs) - 1) . '?';
-        $getPagesStmt = $this->db->prepare('SELECT rowid, url, title FROM Search_Pages WHERE rowid IN (' . $placeholders . ')');
+        $getPagesStmt = $this->db->prepare('SELECT id, url, title FROM Search_Pages WHERE id IN (' . $placeholders . ')');
         $getPagesStmt->execute($pageIDs);
 
         $metas = [];
 
         while ($row = $getPagesStmt->fetch(\PDO::FETCH_ASSOC)) {
-            $id = $row['rowid'];
+            $id = $row['id'];
             $metas[$id] = [
-                'id' => $row['rowid'],
+                'id' => $row['id'],
                 'link' => $row['url'],
                 'title' => $row['title'],
             ];
@@ -152,7 +153,8 @@ class SearchService
         }, $map);
         $map = array_filter($map);
         $map = array_filter($map, static function ($v) {
-            return mb_strlen($v) >= SearchService::MIN_TERM_LENGTH;
+            return mb_strlen($v) >= SearchService::MIN_TERM_LENGTH
+                && mb_strlen($v) <= DbValueGuard::TERM;
         });
         $map = array_count_values($map);
         return $map;
@@ -238,18 +240,19 @@ class SearchService
     private function logSearch(SearchQuery $query, SearchResults $results): void
     {
         try {
-            $fetch = $this->db->prepare('SELECT rowid,* FROM Searches WHERE search_query = :query LIMIT 1');
-            $fetch->bindValue(':query', $query->getQueryString());
+            $fetch = $this->db->prepare('SELECT id, search_query, result_count, search_count, first_seen, last_seen FROM Searches WHERE search_query = :query LIMIT 1');
+            $searchQuery = DbValueGuard::truncate($query->getQueryString(), DbValueGuard::SEARCH_QUERY);
+            $fetch->bindValue(':query', $searchQuery);
             if ($fetch->execute() && $log = $fetch->fetch(\PDO::FETCH_ASSOC)) {
-                $update = $this->db->prepare('UPDATE Searches SET result_count = :result_count, search_count = :search_count, last_seen = :last_seen WHERE ROWID = :rowid');
+                $update = $this->db->prepare('UPDATE Searches SET result_count = :result_count, search_count = :search_count, last_seen = :last_seen WHERE id = :id');
                 $update->bindValue('result_count', $results->getCount());
                 $update->bindValue('search_count', (int)$log['search_count'] + 1);
                 $update->bindValue('last_seen', time());
-                $update->bindValue('rowid', $log['rowid']);
+                $update->bindValue('id', $log['id']);
                 $update->execute();
             } else {
                 $insert = $this->db->prepare('INSERT INTO Searches (search_query, result_count, search_count, first_seen, last_seen) VALUES (:search_query, :result_count, 1, :first_seen, :last_seen)');
-                $insert->bindValue('search_query', $query->getQueryString());
+                $insert->bindValue('search_query', $searchQuery);
                 $insert->bindValue('result_count', $results->getCount());
                 $insert->bindValue('first_seen', time());
                 $insert->bindValue('last_seen', time());

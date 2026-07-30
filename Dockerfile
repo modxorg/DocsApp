@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --force-yes git zlib1g-dev libicu-dev g
      libzip-dev \
      zip \
      && docker-php-ext-configure intl \
-     && docker-php-ext-install intl \
+     && docker-php-ext-install intl pdo_mysql \
      && docker-php-ext-configure zip --with-libzip \
      && docker-php-ext-install zip
 
