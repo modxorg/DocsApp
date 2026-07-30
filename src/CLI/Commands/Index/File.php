@@ -6,20 +6,18 @@ use MODXDocs\CLI\Application;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\IndexService;
 use MODXDocs\Services\SearchService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'index:file',
+    description: 'Updates indices (search, history) for a specific file. Run after `index:init`'
+)]
 class File extends Command
 {
-    protected static $defaultName = 'index:file';
-
-    public function getDescription()
-    {
-        return 'Updates indices (search, history) for a specific file. Run after `index:init`';
-    }
-
     /** @var DocumentService */
     protected $docService;
     /** @var SearchService */
@@ -27,7 +25,7 @@ class File extends Command
     /** @var IndexService */
     protected $indexService;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {

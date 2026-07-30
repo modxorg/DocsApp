@@ -41,7 +41,7 @@ class Application extends \Symfony\Component\Console\Application
         return $this->container;
     }
 
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         $cmds = parent::getDefaultCommands();
         $cmds[] = new SourcesInit();

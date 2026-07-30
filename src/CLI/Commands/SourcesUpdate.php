@@ -6,25 +6,23 @@ use MODXDocs\CLI\Application;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\IndexService;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(
+    name: 'sources:update',
+    description: 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), and reindexes translations (`index:translations`). Meant to be run in response to git hooks.'
+)]
 class SourcesUpdate extends Command
 {
-    protected static $defaultName = 'sources:update';
-
-    public function getDescription()
-    {
-        return 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), and reindexes translations (`index:translations`). Meant to be run in response to git hooks.';
-    }
-
     /** @var IndexService */
     private $indexService;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {

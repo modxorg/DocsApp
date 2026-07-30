@@ -1,5 +1,5 @@
 FROM node:16 AS node
-FROM php:7.4-rc-apache
+FROM php:8.3-apache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -25,14 +25,17 @@ RUN a2enmod rewrite \
     && a2dissite 000-default \
     && a2ensite docs
 
-# Install Git
-RUN apt-get update && apt-get install -y --force-yes git zlib1g-dev libicu-dev g++ \
+# Install Git and PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends git zlib1g-dev libicu-dev g++ \
      libzip-dev \
+     libpng-dev \
+     libjpeg62-turbo-dev \
+     libfreetype6-dev \
      zip \
      && docker-php-ext-configure intl \
-     && docker-php-ext-install intl pdo_mysql \
-     && docker-php-ext-configure zip --with-libzip \
-     && docker-php-ext-install zip
+     && docker-php-ext-configure gd --with-freetype --with-jpeg \
+     && docker-php-ext-install intl pdo_mysql zip gd \
+     && rm -rf /var/lib/apt/lists/*
 
 #Set final permissions
 RUN mkdir /var/www/.npm && chown -R www-data:www-data /var/www/.npm
@@ -47,4 +50,3 @@ USER www-data
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
-

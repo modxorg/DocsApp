@@ -9,17 +9,17 @@ use MODXDocs\Navigation\Tree;
 use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\VersionsService;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'scrape')]
 class ScrapeImages extends Command
 {
-    protected static $defaultName = 'scrape';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {

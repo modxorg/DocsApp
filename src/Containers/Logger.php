@@ -2,9 +2,9 @@
 
 namespace MODXDocs\Containers;
 
-use Monolog\Logger as MonologLogger;
-use Monolog\Processor\UidProcessor;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger as MonologLogger;
 use Psr\Container\ContainerInterface;
 
 class Logger
@@ -12,10 +12,10 @@ class Logger
     public static function load(ContainerInterface $container): void
     {
         $container->set('logger', function (ContainerInterface $container) {
-            $logger = new \Monolog\Logger('app');
-            $logger->pushHandler(new \Monolog\Handler\StreamHandler(
+            $logger = new MonologLogger('app');
+            $logger->pushHandler(new StreamHandler(
                 isset($_ENV['docker']) ? 'php://stdout' : $_ENV['BASE_DIRECTORY'] . '/logs/app.log',
-                \Monolog\Logger::DEBUG
+                Level::Debug
             ));
             return $logger;
         });

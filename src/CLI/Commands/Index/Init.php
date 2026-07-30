@@ -3,15 +3,15 @@
 namespace MODXDocs\CLI\Commands\Index;
 
 use MODXDocs\CLI\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'index:init')]
 class Init extends Command
 {
-    protected static $defaultName = 'index:init';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {

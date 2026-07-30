@@ -15,7 +15,7 @@ Version-specific copies [of the markdown documentation](https://github.com/modxo
 2. Copy the default settings: `cp .env-dev .env`
 3. Edit `.env` in your favorite file editor to fix the paths and configure your MySQL database.
 4. To run the latest version of the documentation (i.e. the version published on the modxorg/Docs repository), initialise the default documentation sources with `php docs.php sources:init`. To run a local clone of the documentation source, allowing you to immediately see your local changes inside the app, see custom sources below.
-5. Point a webserver, running at least PHP 7.1, to the `/public` directory.
+5. Point a webserver, running at least PHP 8.3, to the `/public` directory.
 6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required. For nginx, set up the equivalent rewrites in your configuration.
 
 ### Custom Sources

@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.3.0",
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
@@ -20,16 +20,16 @@
         "ext-mbstring": "*",
         "slim/slim": "^4.0",
         "slim/psr7": "^1.6",
-        "php-di/php-di": "^6.4",
-        "monolog/monolog": "^2.0",
+        "php-di/php-di": "^7.0",
+        "monolog/monolog": "^3.0",
         "slim/php-view": "^3.0",
         "slim/twig-view": "^3.0",
         "spatie/yaml-front-matter": "^2.0",
         "league/commonmark": "^2.6",
         "caseyamcl/toc": "^3.0",
         "vlucas/phpdotenv": "^5.6",
-        "symfony/console": "^5.2",
-        "symfony/process": "^5.2",
+        "symfony/console": "^7.0",
+        "symfony/process": "^7.0",
         "voku/stop-words": "^2.0",
         "embed/embed": "^4.4",
         "ext-dom": "*",
@@ -49,7 +49,7 @@
     "config": {
         "process-timeout" : 0,
         "platform": {
-            "php": "7.4.0"
+            "php": "8.3.0"
         }
     },
     "scripts": {

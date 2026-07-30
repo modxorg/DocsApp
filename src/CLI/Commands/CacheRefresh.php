@@ -2,17 +2,17 @@
 
 namespace MODXDocs\CLI\Commands;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'cache:refresh')]
 class CacheRefresh extends Command
 {
-    protected static $defaultName = 'cache:refresh';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $root = rtrim($_ENV['CACHE_DIRECTORY'], '/') . '/';
 
