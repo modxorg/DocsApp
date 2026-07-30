@@ -212,6 +212,26 @@ class Tree
     public function getAllItems(): array
     {
         $return = [];
+
+        // Top-level index.md is skipped while building the nav (it is the language home,
+        // not a nav item). Include it here so indexers and sitemap-style walks see it.
+        $realVersion = $this->version === VersionsService::getCurrentVersion()
+            ? VersionsService::getCurrentVersionBranch()
+            : $this->version;
+        $homeRelative = $realVersion . '/' . $this->language . '/index.md';
+        $homeAbsolute = rtrim($_ENV['DOCS_DIRECTORY'], '/') . '/' . $homeRelative;
+        if (is_file($homeAbsolute)) {
+            $return[] = [
+                'file' => $homeRelative,
+                'title' => 'index',
+                'uri' => '/' . $this->version . '/' . $this->language . '/index',
+                'classes' => 'c-nav__item',
+                'level' => 0,
+                'children' => [],
+            ];
+            self::augmentFromMatter($return[0], $homeAbsolute);
+        }
+
         foreach ($this->items as $item) {
             $return = array_merge($return, $this->getSelfAndNested($item));
         }

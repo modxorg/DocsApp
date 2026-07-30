@@ -92,7 +92,7 @@ class SitemapService
 
         $urls = [];
 
-        // Language home is skipped by Tree::getAllItems() (top-level index.md)
+        // Language home (also in Tree::getAllItems; kept explicit so lastmod uses the file mtime)
         $indexFile = $languageRoot . '/index.md';
         if (is_file($indexFile)) {
             $urls['/' . $urlVersion . '/' . $language . '/index'] = $this->lastmodFromFile($indexFile);
@@ -165,7 +165,7 @@ class SitemapService
             }
         }
 
-        // Language homes (not in Tree::getAllItems)
+        // Ensure language homes form a hreflang cluster even if a language tree is empty
         $indexCluster = [];
         foreach (self::LANGUAGES as $language) {
             $indexFile = $this->docsDir . '/' . $branch . '/' . $language . '/index.md';
