@@ -126,6 +126,21 @@ For the language switch to work, you also need to index the translations with `p
 
 When migrating from the previous SQLite setup, create a fresh MySQL database, run `index:init`, then rebuild the index with `index:all` and `index:translations`. Search analytics (`Searches`, `PageNotFound`) will start fresh.
 
+### Analytics cleanup
+
+Search queries and 404 hits are logged in the `Searches` and `PageNotFound` tables. To keep those tables from growing indefinitely, run `php docs.php stats:cleanup` on a schedule (for example daily via cron). By default this deletes records whose `last_seen` is older than 90 days; override with `--days`:
+
+```bash
+php docs.php stats:cleanup
+php docs.php stats:cleanup --days=30
+```
+
+Example crontab entry (daily at 03:00):
+
+```cron
+0 3 * * * cd /path/to/app && php docs.php stats:cleanup
+```
+
 ## Building assets
 
 From the `public/template/` directory, first load the dependencies with `npm install`.

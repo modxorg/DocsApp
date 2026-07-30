@@ -12,6 +12,7 @@ use MODXDocs\CLI\Commands\ScrapeImages;
 use MODXDocs\CLI\Commands\SitemapGenerate;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
+use MODXDocs\CLI\Commands\StatsCleanup;
 use MODXDocs\DocsApp;
 
 class Application extends \Symfony\Component\Console\Application
@@ -55,6 +56,7 @@ class Application extends \Symfony\Component\Console\Application
         $cmds[] = new All();
         $cmds[] = new ScrapeImages();
         $cmds[] = new SitemapGenerate();
+        $cmds[] = new StatsCleanup();
         return $cmds;
     }
 }
