@@ -7,5 +7,7 @@ document.documentElement.className = document.documentElement.className.replace(
 
 import Nav from './components/nav.js';
 import Search from './components/search.js';
-let nav = new Nav(),
-    search = new Search();
+import Theme from './components/theme.js';
+new Nav();
+new Search();
+new Theme();

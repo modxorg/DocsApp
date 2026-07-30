@@ -1,55 +1,144 @@
-$colors: (
-    cadetBlue: #a0aec0,
-    primary: #3b68af, // AA compatible
-    sapphire: #314a97,
-    perano: #b2c9f5,
-    light: #ededed,
-    gray:#4a5568, // AA compatible
-    slateGray: #475365, // AAA compatible
-    mirage: #1a202c,
-    alert: #d26d69,
-    success: #2d8b01,
-    warning: #EEBF41,
-    dark: #252930,
+// Light theme (default)
+$light-colors: (
+    'cadetBlue': #a0aec0,
+    'primary': #3b68af, // AA compatible
+    'sapphire': #314a97,
+    'perano': #b2c9f5,
+    'light': #ededed,
+    'gray': #4a5568, // AA compatible
+    'slateGray': #475365, // AAA compatible
+    'mirage': #1a202c,
+    'alert': #d26d69,
+    'success': #2d8b01,
+    'warning': #EEBF41,
+    'dark': #252930,
     'callout-info-border': #5b99ea,
     'callout-alert-border': #d26d69,
     'callout-success-border': #5cb377,
     'callout-warning-border': #EEBF41,
-    'callout-info-bg':#f9fbfe,
+    'callout-info-bg': #f9fbfe,
     'callout-alert-bg': #f5f5f5,
     'callout-success-bg': #e7f4eb,
     'callout-warning-bg': #fdf6e5,
+    'callout-warning-link': #d09c13,
+    'callout-alert-link': #d26d69,
+    'callout-success-link': #3e8554,
     'header-bg': #fff,
-    'header-text': #4a5568, //#4a4a4a,
+    'header-text': #4a5568,
+    'header-hover-bg': #f7fafc,
+    'header-active-bg': #edf2f7,
+    'header-text-muted': #718096,
     'sidebar-bg': #F5F7F9,
     'sidebar-text': #303942,
     'nav-active': #247978,
     'nav-active-bg': #b2f5ea,
+    'nav-active-border': #e2e8f0,
     'body-bg': #fff,
     'body-text': #4a5568,
+    'body-text-muted': #718096,
     'border': #E6ECF1,
+    'border-strong': #d3dce4,
     'link-broken': #d26d69,
     'link-color': #1c6fdc,
+    'link-hover': #1557b0,
     'inline-code': #ebf1ff,
+    'inline-code-text': #314a97,
     'optionswitch-bg': #edf2f7,
+    'search-input-bg': #edf2f7,
+    'search-input-focus-bg': #fff,
+    'search-icon': #717171,
+    'search-result-hover': #f0f6ff,
+    'live-search-bg': #fff,
+    'live-search-border': #3b68af,
+    'pagination-bg': #e2e8f0,
+    'video-embed-bg': #f5f5f5,
+    'code-block-bg': #2d2d2d,
+    'code-block-text': #ccc,
+    'theme-color': #102c53,
+    'scrollbar': rgba(85, 108, 136, 0.1),
+    'scrollbar-hover': rgba(85, 108, 136, 0.2),
 );
 
-/*
+// Dark theme
 $dark-colors: (
-    primary: #68a2ff, // AA compatible
-    light: #ededed,
-    gray: #757575, // AA compatible
-    alert: #c70000,
-    success: #2d8b01,
-    warning: #ffae00,
-    'header-bg': #052a67,
-    'header-text': #fff, //#4a4a4a,
-    'sidebar-bg': #141f31,
-    'body-bg': #111,
-    'body-text': #fff,
-    border: #E6ECF1,
+    'cadetBlue': #718096,
+    'primary': #68a2ff, // AA compatible
+    'sapphire': #a5b4fc,
+    'perano': #4c6cb3,
+    'light': #2d3748,
+    'gray': #a0aec0, // AA compatible on dark
+    'slateGray': #cbd5e1,
+    'mirage': #f1f5f9,
+    'alert': #fc8181,
+    'success': #68d391,
+    'warning': #f6e05e,
+    'dark': #f1f5f9,
+    'callout-info-border': #63b3ed,
+    'callout-alert-border': #fc8181,
+    'callout-success-border': #68d391,
+    'callout-warning-border': #f6e05e,
+    'callout-info-bg': #1a2332,
+    'callout-alert-bg': #2d1f1f,
+    'callout-success-bg': #1a2e22,
+    'callout-warning-bg': #2d2a1a,
+    'callout-warning-link': #f6e05e,
+    'callout-alert-link': #fc8181,
+    'callout-success-link': #68d391,
+    'header-bg': #0f172a,
+    'header-text': #e2e8f0,
+    'header-hover-bg': #1e293b,
+    'header-active-bg': #243447,
+    'header-text-muted': #94a3b8,
+    'sidebar-bg': #141b24,
+    'sidebar-text': #e2e8f0,
+    'nav-active': #5eead4,
+    'nav-active-bg': #134e4a,
+    'nav-active-border': #2d3748,
+    'body-bg': #0b1120,
+    'body-text': #cbd5e1,
+    'body-text-muted': #94a3b8,
+    'border': #2d3748,
+    'border-strong': #3d4a5c,
+    'link-broken': #fc8181,
+    'link-color': #68a2ff,
+    'link-hover': #93c5fd,
+    'inline-code': #1e293b,
+    'inline-code-text': #a5b4fc,
+    'optionswitch-bg': #1e293b,
+    'search-input-bg': #1e293b,
+    'search-input-focus-bg': #0f172a,
+    'search-icon': #94a3b8,
+    'search-result-hover': #1e293b,
+    'live-search-bg': #0f172a,
+    'live-search-border': #68a2ff,
+    'pagination-bg': #1e293b,
+    'video-embed-bg': #1e293b,
+    'code-block-bg': #1a1a1a,
+    'code-block-text': #ccc,
+    'theme-color': #0f172a,
+    'scrollbar': rgba(148, 163, 184, 0.15),
+    'scrollbar-hover': rgba(148, 163, 184, 0.3),
 );
-*/
+
+// Backwards-compatible alias used by any remaining map-get() calls
+$colors: $light-colors;
+
+@mixin theme-properties($palette) {
+    @each $key, $value in $palette {
+        --color-#{"" + $key}: #{$value};
+    }
+}
+
+:root,
+[data-theme="light"] {
+    color-scheme: light;
+    @include theme-properties($light-colors);
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+    @include theme-properties($dark-colors);
+}
 
 $breakpoints: (
     small: 0,

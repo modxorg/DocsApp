@@ -1,15 +1,55 @@
-// include prisimjs styles
+// Prism tomorrow (dark) — used for fenced code in both themes so blocks stay readable
 @import '../../../node_modules/prismjs/themes/prism-tomorrow';
 @import '../../../node_modules/prismjs/plugins/command-line/prism-command-line';
 @import '../../../node_modules/prismjs/plugins/line-highlight/prism-line-highlight';
 @import '../../../node_modules/prismjs/plugins/line-numbers/prism-line-numbers';
 @import '../../../node_modules/prismjs/plugins/toolbar/prism-toolbar';
 
-// override background color
-// :not(pre)>code[class*="language-"], pre[class*="language-"] {
-//     background: map-get($colors, 'sidebar-bg');
-// }
-
 .token.operator {
     background: none;
+}
+
+// Theme-aware code block surfaces
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: color(code-block-bg);
+    color: color(code-block-text);
+}
+
+// Light-mode Prism token overrides for slightly better contrast on themed surfaces
+[data-theme="light"] {
+    :not(pre) > code[class*="language-"],
+    pre[class*="language-"] {
+        background: #2d2d2d;
+        color: #ccc;
+    }
+}
+
+// Prism toolbar / copy button
+div.code-toolbar > .toolbar {
+    opacity: 1;
+
+    .toolbar-item > button,
+    .toolbar-item > a,
+    .toolbar-item > span {
+        background: color(optionswitch-bg);
+        color: color(body-text);
+        border: 1px solid color(border);
+        box-shadow: none;
+        transition: background-color .15s ease, color .15s ease;
+
+        &:hover {
+            background: color(header-hover-bg);
+            color: color(dark);
+        }
+    }
+}
+
+// Line numbers gutter
+.line-numbers .line-numbers-rows {
+    border-right-color: color(border-strong);
+}
+
+.line-numbers-rows > span:before {
+    color: color(body-text-muted);
 }

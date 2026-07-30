@@ -1,16 +1,15 @@
 body {
-    background:map-get($colors, 'body-bg');
-    color: map-get($colors, 'gray');
+    background: color(body-bg);
     font-family: $body-font-family;
     font-weight: 400;
     line-height: $global-line-height;
-    color: map-get($colors, 'body-text');
+    color: color(body-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: map-get($colors, dark);
+    color: color(dark);
     line-height: 1.3;
     margin-bottom: 2rem;
 }
@@ -52,11 +51,11 @@ h6 {
 
 a {
     text-decoration: none;
-    color: map-get($colors, 'link-color');
+    color: color(link-color);
     transition: color .2s ease-in-out;
 
     &:hover {
-        color: lightendarken(map-get($colors, 'link-color'), 15%);
+        color: color(link-hover);
     }
 
     // Links should look like links
@@ -86,18 +85,32 @@ li {
     max-width: $paragraph-max-width;
 }
 
-code, kbd, samp, pre {
-    background-color: map-get($colors, 'inline-code');
+code, kbd, samp {
+    background-color: color(inline-code);
     padding: 0.1rem 0.25rem;
     font-size: .775rem;
     border-radius: .125rem;
     padding-left: .25rem;
     padding-right: .25rem;
-    color: map-get($colors, sapphire);
+    color: color(inline-code-text);
     font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace !important;
 }
+
+pre {
+    background-color: color(code-block-bg);
+    color: color(code-block-text);
+    padding: 0.1rem 0.25rem;
+    font-size: .775rem;
+    border-radius: .5rem;
+    padding-left: .25rem;
+    padding-right: .25rem;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace !important;
+}
+
 pre > code {
     padding: 0;
+    background: transparent;
+    color: inherit;
 }
 
 code[class*="language-"], pre[class*="language-"] {
@@ -110,11 +123,11 @@ blockquote {
     display: block;
     margin: 0 0 $global-margin;
     padding: rem(15 20);
-    background-color: map-get($colors, 'callout-info-bg');
-    border-left: rem(3) solid map-get($colors, 'callout-info-border');
-    color: map-get($colors, gray);
+    background-color: color(callout-info-bg);
+    border-left: rem(3) solid color(callout-info-border);
+    color: color(gray);
     a{
-        color: map-get($colors, 'link-color');
+        color: color(link-color);
     }
 
     > :last-child {
@@ -132,7 +145,7 @@ iframe, object, video {
     width: 100%;
     padding-bottom: 56.25%; // 16:9 aspect ratio
     margin: 2rem 0;
-    background: #f5f5f5;
+    background: color(video-embed-bg);
     border-radius: 4px;
     overflow: hidden;
 

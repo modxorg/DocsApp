@@ -20,11 +20,11 @@ table {
     }
 
     tr:nth-child(2n) {
-        background: map-get($colors, 'sidebar-bg');
+        background: color(sidebar-bg);
     }
 
     td, th {
-        border: 1px solid lightendarken(map-get($colors, 'border'), 10%);
+        border: 1px solid color(border-strong);
         padding: rem(9 16);
     }
 
@@ -50,11 +50,11 @@ table {
     }
 
     &::-webkit-scrollbar-thumb {
-        box-shadow: inset 0 0 0 1rem rgba(85,108,136,.1);
+        box-shadow: inset 0 0 0 1rem color(scrollbar);
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        box-shadow: inset 0 0 0 1rem rgba(85,108,136,.2);
+        box-shadow: inset 0 0 0 1rem color(scrollbar-hover);
     }
 
     &::-webkit-resizer, &::-webkit-scrollbar-corner {

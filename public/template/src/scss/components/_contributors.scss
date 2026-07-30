@@ -10,7 +10,7 @@
     width: 30px;
     height: 30px;
     margin-left: -10px;
-    border: 2px solid #fff;
+    border: 2px solid color(body-bg);
     border-radius: 15px;
 
     &:first-child {
@@ -23,6 +23,6 @@
     padding-left: 0.5em;
     font-size: 0.9em;
     font-weight: 500;
-    color: #555;
+    color: color(body-text-muted);
     flex: 1; // fixes mobile rendering
 }

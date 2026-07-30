@@ -16,7 +16,7 @@
     }
 
     &__copyright {
-        color: map-get($colors, gray);
+        color: color(gray);
     }
 
     &__nav {
@@ -33,10 +33,10 @@
         display: block;
         font-weight: 700;
         padding: rem(10);
-        color: map-get($colors, gray);
+        color: color(gray);
 
         &:hover {
-            color: map-get($colors, primary);
+            color: color(primary);
         }
     }
 }

@@ -6,11 +6,24 @@
         width: rem(170);
         max-width: 100%;
         height: $header-height;
-        fill: map-get($colors, 'header-text');
+        fill: color(header-text);
 
         @include breakpoint(medium) {
             width: rem(200);
         }
+
+        &--dark {
+            display: none;
+        }
+    }
+}
+
+[data-theme="dark"] {
+    .o-logo__image--light {
+        display: none;
+    }
+    .o-logo__image--dark {
+        display: block;
     }
 }
 
@@ -35,16 +48,8 @@
         display: block;
         width: rem(29);
         height: $header-height;
-        fill: map-get($colors, 'header-text');
+        fill: color(header-text);
     }
-
-    /*
-    &--opened {
-        .o-openmenu__icon {
-            fill: transparent;
-        }
-    }
-    */
 }
 @include breakpoint($sidebar-breakpoint) {
     .o-openmenu {
@@ -80,6 +85,6 @@
         display: block;
         width: rem(30);
         height: rem(30);
-        fill: map-get($colors, 'primary');
+        fill: color(primary);
     }
 }

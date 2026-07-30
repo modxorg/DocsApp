@@ -5,7 +5,7 @@
 }
 
 .l-main-search__result, .l-live-search__result {
-    border-top: 1px solid map_get($colors, 'header-bg');
+    border-top: 1px solid color(border);
     padding-top: 1rem;
     margin-top: 1rem;
 
@@ -28,7 +28,7 @@
 .l-main-search__match, .l-live-search__match {
     summary {
         float: right;
-        color: #777;
+        color: color(body-text-muted);
     }
 }
 
@@ -45,56 +45,53 @@
     cursor: pointer;
     padding: .5rem 1rem;
     line-height: initial;
-    background: #e2e8f0;
-    color: map-get($colors, mirage);
+    background: color(pagination-bg);
+    color: color(mirage);
     border-radius: 0.25rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid color(pagination-bg);
 
     &:hover, &:focus{
-        background: map_get($colors, slateGray);
-        border: 1px solid map_get($colors, #708090);
-        color: map_get($colors, light);
+        background: color(slateGray);
+        border: 1px solid color(slateGray);
+        color: color(light);
     }
 
     &--active {
-        background: map_get($colors, sapphire);
-        border: 1px solid map_get($colors, sapphire);
-        color: map_get($colors, light);
+        background: color(sapphire);
+        border: 1px solid color(sapphire);
+        color: color(light);
     }
 }
 
 .c-searchform--resultspage {
     margin-bottom: 1rem;
     .c-searchform__input {
-        border: 1px solid map_get($colors, 'header-bg');
+        border: 1px solid color(border);
     }
 }
 .l-search__meta {
-    color: map_get($colors, gray);
+    color: color(gray);
 }
 
 
-$ignoredColor: map_get($colors, warning);
 .l-search__ignored {
-    border-left: rem(8) solid $ignoredColor;
+    border-left: rem(8) solid color(warning);
     padding: rem(15 20);
-    background-color: rgba($ignoredColor, 0.3);
-    color: darken($ignoredColor, 50%);
+    background-color: color(callout-warning-bg);
+    color: color(callout-warning-link);
 }
-$tipColor: map_get($colors, primary);
 .l-search__tip {
-    border-left: rem(8) solid $tipColor;
+    border-left: rem(8) solid color(primary);
     padding: rem(15 20);
-    background-color: rgba($tipColor, 0.3);
-    color: darken($tipColor, 50%);
+    background-color: color(callout-info-bg);
+    color: color(link-color);
 }
 
-$errorColor: map_get($colors, alert);
 .l-search__no_results {
-    border-left: rem(4) solid $errorColor;
+    border-left: rem(4) solid color(alert);
     padding: rem(15 20);
-    background-color: rgba($errorColor, 0.3);
-    color: darken($errorColor, 50%);
+    background-color: color(callout-alert-bg);
+    color: color(callout-alert-link);
     max-width: 100%;
 
     &--live {
@@ -107,13 +104,15 @@ $errorColor: map_get($colors, alert);
 }
 .l-live-search__container {
     position: absolute;
-    background: #fff;
+    background: color(live-search-bg);
     width: 100%;
     display: none;
     border-radius: 0 0 5px 5px;
     margin-top: -3px;
     z-index: 4;
     box-shadow: 0 2px 7px 2px rgba(0,0,0,0.5);
+    border: 1px solid color(border);
+    border-top: none;
 
     &--visible {
         display: block;
@@ -126,8 +125,8 @@ $errorColor: map_get($colors, alert);
             display: block;
             padding: 0.5em 0.5em 0.5em 1em;
             border-radius: 5px 5px 0 0;
-            color: map_get($colors, 'header-text');
-            background: map_get($colors, 'header-bg');
+            color: color(header-text);
+            background: color(header-bg);
 
         }
         &:empty::before {
@@ -140,7 +139,7 @@ $errorColor: map_get($colors, alert);
         margin-top: 1em;
         border-radius: 7px;
         box-shadow: none;
-        border: 1px solid #3b68af;
+        border: 1px solid color(live-search-border);
     }
 }
 .l-live-search__results {
@@ -168,14 +167,15 @@ $errorColor: map_get($colors, alert);
     height: 1.6em; // = line-height
     overflow: hidden;
     font-weight: 500;
+    color: color(body-text-muted);
 }
 .c-live-search__result-link, .l-main-search__link {
-    color: map-get($colors, sapphire);
+    color: color(sapphire);
     display: block;
     padding: 2.2rem 1rem 0.7rem;
     font-weight: 500;
     &:hover, &:focus, .l-live-search__result--selected & {
-        background: #f0f6ff;
+        background: color(search-result-hover);
     }
 }
 .l-live-search__search {
@@ -185,8 +185,8 @@ $errorColor: map_get($colors, alert);
         display: block;
         padding: 0.7rem 1rem;
         width: 100%;
-        color: map_get($colors, 'header-text');
-        background: map_get($colors, 'header-bg');
+        color: color(header-text);
+        background: color(header-bg);
         border-radius: 0 0 5px 5px;
     }
 }
@@ -194,18 +194,18 @@ $errorColor: map_get($colors, alert);
     max-width: $paragraph-max-width;
 }
 .l-main-search__title {
-    color: map-get($colors, sapphire);
+    color: color(sapphire);
 }
 .l-main-search__link {
     text-decoration: none !important;
     &:hover, &:focus {
         .l-main-search__title {
-            color: lightendarken(map-get($colors, 'link-color'), 15%);
+            color: color(link-hover);
         }
     }
 }
 .l-main-search__snippet {
-    color: map-get($colors, 'body-text');
+    color: color(body-text);
 }
 .size_code{
     font-size: 1em;
