@@ -49,7 +49,7 @@ class RelativeImageRenderer implements NodeRendererInterface
         $alt = preg_replace('/\<[^>]*alt="([^"]*)"[^>]*\>/', '$1', $alt);
         $attrs['alt'] = preg_replace('/\<[^>]*\>/', '', $alt);
 
-        if ($title = $node->data->get('title', null)) {
+        if (($title = $node->getTitle()) !== null) {
             $attrs['title'] = $title;
         }
 

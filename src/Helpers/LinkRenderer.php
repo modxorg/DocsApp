@@ -39,7 +39,7 @@ class LinkRenderer implements NodeRendererInterface
             $href = substr($href, 0, $hashPosition);
         }
 
-        if (($title = $node->data->get('title', null)) !== null && $title !== '') {
+        if (($title = $node->getTitle()) !== null) {
             $attributes['title'] = $title;
         }
 
