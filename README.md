@@ -39,7 +39,7 @@ For example, create it like this to have a local source for `2.x` and a separate
 }
 ```
 
-(Note that app treats "2.x" the same as "current", so to allow easy switching between versions in a local mirror, you'll want to call it something different. That's why in this example we called it "upstream")
+(Note that the app treats "3.x" the same as "current", so to allow easy switching between versions in a local mirror, you'll want to call it something different. That's why in this example we called it "upstream")
 
 Once you've done that, run `php docs.php sources:init` from the root of the project. (If you've run this previously, deleted the directories in the `/docs/` directory first.) You should see output like this:
 

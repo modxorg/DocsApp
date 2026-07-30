@@ -58,7 +58,7 @@ class NotFound extends Base
             $query = explode(' ', $query);
             // Filter out version/language segments and common old url structures
             $query = array_diff($query, array_merge(
-                ['display', 'revolution20', 'revo', '_legacy', '1.x', '2.x', 'current'],
+                ['display', 'revolution20', 'revo', '_legacy', '1.x', '2.x', '3.x', 'current'],
                 self::SUPPORTED_LANGUAGES
             ));
             $query = trim(implode(' ', $query));

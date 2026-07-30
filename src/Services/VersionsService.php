@@ -8,7 +8,7 @@ use Slim\Interfaces\RouteParserInterface;
 class VersionsService
 {
     private const CURRENT_VERSION = 'current';
-    private const CURRENT_VERSION_BRANCH = '2.x';
+    private const CURRENT_VERSION_BRANCH = '3.x';
     private const DEFAULT_LANGUAGE = 'en';
     private const DEFAULT_PATH = 'index';
 

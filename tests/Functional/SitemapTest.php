@@ -57,8 +57,14 @@ class SitemapTest extends BaseTestCase
 
         $firstLoc = (string) $urlset->url[0]->loc;
         $this->assertStringStartsWith('https://docs.modx.org/', $firstLoc);
-        // Canonical version: 2.x branch must appear as /current/, never /2.x/
-        $this->assertStringNotContainsString('/2.x/', $firstLoc);
+
+        // Current branch must be published under /current/, never the raw branch name
+        $currentBranch = VersionsService::getCurrentVersionBranch();
+        $currentEn = $this->tempDir . '/sitemaps/current-en.xml';
+        $this->assertFileExists($currentEn);
+        $currentXml = file_get_contents($currentEn);
+        $this->assertIsString($currentXml);
+        $this->assertStringNotContainsString('/' . $currentBranch . '/', $currentXml);
 
         // Index lastmod should be the newest lastmod among that child sitemap's URLs
         $newestInChild = null;
@@ -93,10 +99,11 @@ class SitemapTest extends BaseTestCase
             '<loc>https://docs.modx.org/current/en/index</loc>',
             $xml
         );
-        $this->assertStringNotContainsString('/2.x/', $xml);
+        $this->assertStringNotContainsString('/3.x/', $xml);
 
         // Legacy branch alias file must not be generated
-        $this->assertFileDoesNotExist($this->tempDir . '/sitemaps/2.x-en.xml');
+        $this->assertFileDoesNotExist($this->tempDir . '/sitemaps/3.x-en.xml');
+        $this->assertFileExists($this->tempDir . '/sitemaps/2.x-en.xml');
     }
 
     public function testHreflangAlternatesOnTranslatedPages(): void
@@ -146,7 +153,7 @@ class SitemapTest extends BaseTestCase
     {
         $this->assertSame(['en', 'ru', 'nl', 'es'], SitemapService::LANGUAGES);
         $this->assertSame(VersionsService::getCurrentVersion(), 'current');
-        $this->assertSame(VersionsService::getCurrentVersionBranch(), '2.x');
+        $this->assertSame(VersionsService::getCurrentVersionBranch(), '3.x');
     }
 
     private function removeDir(string $dir): void

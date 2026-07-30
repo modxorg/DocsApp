@@ -39,7 +39,7 @@ class ScrapeImages extends Command
         $downloadedRoot = '/Users/mhamstra/Sites/docs.modx.local/download/';
         $targetRoot = $downloadedRoot . '/c/';
 
-        $tree = Tree::get('2.x', 'en');
+        $tree = Tree::get(VersionsService::getCurrentVersionBranch(), 'en');
         $images = [];
         foreach ($tree->getAllItems() as $item) {
             $itemFile = $root . $item['file'];
