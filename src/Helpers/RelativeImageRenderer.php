@@ -11,6 +11,8 @@ use League\CommonMark\Util\RegexHelper;
 
 class RelativeImageRenderer implements NodeRendererInterface
 {
+    private const VIDEO_EXTENSIONS = ['mp4', 'webm', 'ogg'];
+
     private string $relativeFilePath;
 
     public function __construct(string $relativeFilePath)
@@ -43,16 +45,60 @@ class RelativeImageRenderer implements NodeRendererInterface
         if (RegexHelper::isLinkPotentiallyUnsafe($url)) {
             $url = '';
         }
-        $attrs['src'] = $url;
 
         $alt = $childRenderer->renderNodes($node->children());
         $alt = preg_replace('/\<[^>]*alt="([^"]*)"[^>]*\>/', '$1', $alt);
-        $attrs['alt'] = preg_replace('/\<[^>]*\>/', '', $alt);
+        $alt = preg_replace('/\<[^>]*\>/', '', $alt);
 
-        if (($title = $node->getTitle()) !== null) {
+        $title = $node->getTitle();
+
+        if ($this->isVideoUrl($url)) {
+            return $this->renderVideo($url, $alt, $title);
+        }
+
+        $attrs['src'] = $url;
+        $attrs['alt'] = $alt;
+
+        if ($title !== null) {
             $attrs['title'] = $title;
         }
 
         return new HtmlElement('img', $attrs, '', true);
+    }
+
+    private function isVideoUrl(string $url): bool
+    {
+        if ($url === '') {
+            return false;
+        }
+
+        $path = parse_url($url, PHP_URL_PATH);
+        if (!is_string($path) || $path === '') {
+            return false;
+        }
+
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        return in_array($extension, self::VIDEO_EXTENSIONS, true);
+    }
+
+    private function renderVideo(string $url, string $alt, ?string $title): HtmlElement
+    {
+        $videoAttrs = [
+            'controls' => true,
+            'preload' => 'metadata',
+            'src' => $url,
+        ];
+
+        if ($title !== null && $title !== '') {
+            $videoAttrs['title'] = $title;
+        } elseif ($alt !== '') {
+            $videoAttrs['title'] = $alt;
+        }
+
+        $fallback = \htmlspecialchars($alt !== '' ? $alt : 'Video', \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+        $video = new HtmlElement('video', $videoAttrs, $fallback);
+
+        return new HtmlElement('div', ['class' => 'video-embed video-embed--local'], $video);
     }
 }

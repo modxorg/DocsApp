@@ -29,6 +29,18 @@ class DocTest extends BaseTestCase
         $this->assertNotSame('', (string) $response->getBody());
     }
 
+    public function testServesMp4VideosFromDocsTree(): void
+    {
+        $response = $this->runApp(
+            'GET',
+            '/3.x/en/extras/fred/themer/basic-use.mp4'
+        );
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('video/mp4', $response->getHeaderLine('Content-Type'));
+        $this->assertNotSame('', (string) $response->getBody());
+    }
+
     public function testPathTraversalDoesNotServeAppReadmeOutsideDocsTree(): void
     {
         $response = $this->runApp('GET', '/2.x/en/../../../README');

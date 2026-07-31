@@ -77,7 +77,7 @@ class Page
 
         // Parse the markdown
         $environment = new Environment([
-            'html_input' => 'allow',
+            'html_input' => 'strip',
             'max_nesting_level' => 10,
             'allow_unsafe_links' => false,
             'autolink' => [
@@ -90,7 +90,7 @@ class Page
             ],
             'embed' => [
                 'adapter' => new OscaroteroEmbedAdapter(), // See the "Adapter" documentation below
-                'allowed_domains' => ['youtube.com', 'github.com'],
+                'allowed_domains' => ['youtube.com', 'github.com', 'vimeo.com'],
                 'fallback' => 'link',
             ],
         ]);
@@ -124,7 +124,7 @@ class Page
             $content = $converter->convert($this->body)->getContent();
         } catch (CommonMarkException $e) {
             $content = '<p class="error">There was an error parsing this document. Below is the source markdown.</p>';
-            $content .= '<pre><code>' . $this->body . '</code></pre>';
+            $content .= '<pre><code>' . htmlspecialchars($this->body) . '</code></pre>';
         }
 
         $fixer = new MarkupFixer();

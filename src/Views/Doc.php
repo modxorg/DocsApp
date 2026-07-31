@@ -117,8 +117,9 @@ class Doc extends Base
         $mime = finfo_file($finfo, $filePath);
         finfo_close($finfo);
 
-        // If it's an image, allow it
-        if (strpos($mime, 'image/') === 0) {
+        // Allow images and a tight set of video types from the docs tree
+        $allowedVideoMimes = ['video/mp4', 'video/webm', 'video/ogg'];
+        if (str_starts_with($mime, 'image/') || in_array($mime, $allowedVideoMimes, true)) {
             $etag = 'm-' . filemtime($filePath);
             $provided = $request->getHeaderLine('If-None-Match');
             $age = $_ENV['DEV'] ? 10 : 86400;

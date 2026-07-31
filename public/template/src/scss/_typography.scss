@@ -157,4 +157,15 @@ iframe, object, video {
         height: 100%;
         border: 0;
     }
+
+    &--local {
+        padding-bottom: 0;
+
+        video {
+            display: block;
+            width: 100%;
+            height: auto;
+            vertical-align: top;
+        }
+    }
 }
