@@ -7,17 +7,17 @@
         <h1>An error occurred</h1>
         <p>We're sorry, but it appears something critical went wrong and we can't currently show you this page.</p>
 
-        <p>
-            <a href="https://github.com/modxorg/DocsApp/issues/new?title={{ exception_type|url_encode }}+on+{{ current_uri|url_encode }}:+{{ exception.message|url_encode }}&template=bug_report.md" target="_blank" rel="noopener" class="btn">Report issue on GitHub</a>
-        </p>
-
-        <h2>{{ exception_type }}</h2>
-        <blockquote>{{ exception.message }}</blockquote>
         {% if is_dev %}
+            <p>
+                <a href="https://github.com/modxorg/DocsApp/issues/new?title={{ exception_type|url_encode }}+on+{{ current_uri|url_encode }}:+{{ exception.message|url_encode }}&template=bug_report.md" target="_blank" rel="noopener" class="btn">Report issue on GitHub</a>
+            </p>
+            <blockquote>{{ exception.message }}</blockquote>
             <p>Triggered by <code>{{ exception.file }}</code> at line <code>{{ exception.line }}</code></p>
             <pre><code class="language-markup">
                     {{ exception.traceAsString }}
             </code></pre>
+        {% else %}
+            <p>Details have been logged, if the issue persists please post in the community Slack.</p>
         {% endif %}
     </main>
 {% endblock %}

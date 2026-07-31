@@ -2,23 +2,19 @@
 
 namespace MODXDocs\Views\Stats;
 
-use MODXDocs\Containers\DB;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Views\Base;
+use PDO;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 class NotFoundRequests extends Base
 {
-    /**
-     * @var CacheService
-     */
-    private $cache;
-    /** @var DB */
-    private $db;
-    /** @var Router */
+    private CacheService $cache;
+    private PDO $db;
+    /** @var RouteParserInterface */
     private $router;
 
     public function __construct(ContainerInterface $container)
@@ -30,17 +26,17 @@ class NotFoundRequests extends Base
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function get(Request $request, Response $response)
+    public function get(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Page Not Found Errors', // @todo i18n
-            'href' => $this->router->pathFor('stats/page-not-found')
+            'href' => $this->router->urlFor('stats/page-not-found')
         ];
 
         $phs = [
@@ -64,7 +60,7 @@ class NotFoundRequests extends Base
         return $this->render($request, $response, 'stats/not-found-requests.twig', $phs);
     }
 
-    private function getTopRequests()
+    private function getTopRequests(): array
     {
         $results = $this->cache->get('stats/notfoundrequests/top');
         if (is_array($results)) {
@@ -73,7 +69,7 @@ class NotFoundRequests extends Base
         $statement = $this->db->prepare('SELECT url, hit_count, last_seen FROM PageNotFound ORDER BY hit_count DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $requests = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $requests = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($requests as $req) {
                 $results[] = $req;
             }
@@ -83,7 +79,7 @@ class NotFoundRequests extends Base
         return $results;
     }
 
-    private function getRecentRequests()
+    private function getRecentRequests(): array
     {
         $results = $this->cache->get('stats/notfoundrequests/recent');
         if (is_array($results)) {
@@ -92,7 +88,7 @@ class NotFoundRequests extends Base
         $statement = $this->db->prepare('SELECT url, hit_count, last_seen FROM PageNotFound ORDER BY last_seen DESC LIMIT 50');
 
         $results = [];
-        if ($statement->execute() && $requests = $statement->fetchAll(\PDO::FETCH_ASSOC)) {
+        if ($statement->execute() && $requests = $statement->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($requests as $req) {
                 $results[] = $req;
             }

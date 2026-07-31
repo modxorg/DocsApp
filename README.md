@@ -1,6 +1,6 @@
 # DocsApp for MODX
 
-The DocsApp is a Slim application that serves up the [MODX documentation](https://github.com/modxorg/Docs) from markdown format into a fully functional site.
+The DocsApp is a Slim application that serves up the [MODX documentation](https://github.com/modxorg/Docs) from markdown format into a fully functional site. It uses a light MySQL Database for indexing purposes.
 
 Version-specific copies [of the markdown documentation](https://github.com/modxorg/Docs) go into the `/docs` directory. Then point a webserver at the `/public` directory to browse the documentation.
 
@@ -13,9 +13,9 @@ Version-specific copies [of the markdown documentation](https://github.com/modxo
 
 1. Run a [composer install](https://getcomposer.org) in the root: `composer install`
 2. Copy the default settings: `cp .env-dev .env`
-3. Edit `.env` in your favorite file editor to fix the paths.
+3. Edit `.env` in your favorite file editor to fix the paths and configure your MySQL database.
 4. To run the latest version of the documentation (i.e. the version published on the modxorg/Docs repository), initialise the default documentation sources with `php docs.php sources:init`. To run a local clone of the documentation source, allowing you to immediately see your local changes inside the app, see custom sources below.
-5. Point a webserver, running at least PHP 7.1, to the `/public` directory.
+5. Point a webserver, running at least PHP 8.3, to the `/public` directory.
 6. If you use apache, `cp public/ht.access public/.htaccess` and tweak (RewriteBase) as required. For nginx, set up the equivalent rewrites in your configuration.
 
 ### Custom Sources
@@ -39,7 +39,7 @@ For example, create it like this to have a local source for `2.x` and a separate
 }
 ```
 
-(Note that app treats "2.x" the same as "current", so to allow easy switching between versions in a local mirror, you'll want to call it something different. That's why in this example we called it "upstream")
+(Note that the app treats "3.x" the same as "current", so to allow easy switching between versions in a local mirror, you'll want to call it something different. That's why in this example we called it "upstream")
 
 Once you've done that, run `php docs.php sources:init` from the root of the project. (If you've run this previously, deleted the directories in the `/docs/` directory first.) You should see output like this:
 
@@ -118,11 +118,28 @@ git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
 ### Searching / Indexing
 
-To run the **search** locally, you'll first need to create the search index. Run `php docs.php index:init` to create the empty SQLite database, and then `php docs.php index:all` to populate the index. This may take a while (for 2.x + 3.x official documentation, 20-40 minutes depending on computer speed) as that will scan all files in the documentation to index possible search terms, as well as historic contributors (if the source is a git repo) for each file.
+To run the **search** locally, you'll first need a MySQL database and the search index. Configure the `DB_*` environment variables in your `.env` file (see `.env-dev` for defaults), then run `php docs.php index:init` to create the database tables, and `php docs.php index:all` to populate the index. This may take a while (for 2.x + 3.x official documentation, 20-40 minutes depending on computer speed) as that will scan all files in the documentation to index possible search terms, as well as historic contributors (if the source is a git repo) for each file.
 
 For the language switch to work, you also need to index the translations with `php docs.php index:translations`.
 
 **These index actions are done automatically for changed files only (much faster!) as part of `php docs.php sources:update`.** Typically you'd only need to run the full indexing the first time setting up a mirror or clone.
+
+When migrating from the previous SQLite setup, create a fresh MySQL database, run `index:init`, then rebuild the index with `index:all` and `index:translations`. Search analytics (`Searches`, `PageNotFound`) will start fresh.
+
+### Analytics cleanup
+
+Search queries and 404 hits are logged in the `Searches` and `PageNotFound` tables. To keep those tables from growing indefinitely, run `php docs.php stats:cleanup` on a schedule (for example daily via cron). By default this deletes records whose `last_seen` is older than 90 days; override with `--days`:
+
+```bash
+php docs.php stats:cleanup
+php docs.php stats:cleanup --days=30
+```
+
+Example crontab entry (daily at 03:00):
+
+```cron
+0 3 * * * cd /path/to/app && php docs.php stats:cleanup
+```
 
 ## Building assets
 
@@ -136,4 +153,4 @@ When preparing a patch for production, use `npm run release` which will build st
 
 ## Running in a Docker Container
 
-Run `make` and `make install` or use the provided Dockerfile/docker-compose.yml. (see #3)
+Run `make` and `make install` or use the provided Dockerfile/docker-compose.yml. Docker Compose includes a MySQL 8 service; the `docs` container waits for MySQL to be healthy before starting. (see #3)

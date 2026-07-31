@@ -2,26 +2,22 @@
 
 namespace MODXDocs\Containers;
 
-use Monolog\Logger as MonologLogger;
-use Monolog\Processor\UidProcessor;
 use Monolog\Handler\StreamHandler;
-use Slim\Container;
+use Monolog\Level;
+use Monolog\Logger as MonologLogger;
+use Psr\Container\ContainerInterface;
 
 class Logger
 {
-    public static function load(Container $container)
+    public static function load(ContainerInterface $container): void
     {
-        $container['logger'] = function () {
-
-            $logger = new MonologLogger('modx-docs');
-
-            $logger->pushProcessor(new UidProcessor());
+        $container->set('logger', function (ContainerInterface $container) {
+            $logger = new MonologLogger('app');
             $logger->pushHandler(new StreamHandler(
-                isset($_ENV['docker']) ? 'php://stdout' : getenv('BASE_DIRECTORY') . '/logs/app.log',
-                MonologLogger::DEBUG
+                isset($_ENV['docker']) ? 'php://stdout' : $_ENV['BASE_DIRECTORY'] . '/logs/app.log',
+                Level::Debug
             ));
-
             return $logger;
-        };
+        });
     }
 }

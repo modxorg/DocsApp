@@ -3,16 +3,18 @@
 namespace MODXDocs\CLI\Commands\Index;
 
 use MODXDocs\CLI\Application;
+use MODXDocs\Helpers\DbValueGuard;
 use MODXDocs\Navigation\Tree;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Translations extends Command {
-    protected static $defaultName = 'index:translations';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+#[AsCommand(name: 'index:translations')]
+class Translations extends Command
+{
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {
@@ -61,8 +63,10 @@ class Translations extends Command {
             $languageItems = $languageNav->getAllItems();
 
             foreach ($languageItems as $item) {
-                $translationOf = array_key_exists('translation',
-                    $item) ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
+                $translationOf = array_key_exists(
+                    'translation',
+                    $item
+                ) ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
                 if (strpos($translationOf, '/' . $version . '/en/') !== 0) {
                     $translationOf = '/' . $version . '/en/' . trim($translationOf, '/');
                 }
@@ -85,12 +89,15 @@ class Translations extends Command {
         $insert = 'INSERT INTO Translations (en, ru, nl, es) VALUES (:en, :ru, :nl, :es)';
         $insertStmt = $db->prepare($insert);
         foreach ($mapEn as $source => $translations) {
-            $insertStmt->bindValue(':en', $source);
-            $insertStmt->bindValue(':ru', $translations['ru'] ?? '');
-            $insertStmt->bindValue(':nl', $translations['nl'] ?? '');
-            $insertStmt->bindValue(':es', $translations['es'] ?? '');
-
-            $insertStmt->execute();
+            try {
+                $insertStmt->bindValue(':en', DbValueGuard::truncate($source, DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':ru', DbValueGuard::truncate($translations['ru'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':nl', DbValueGuard::truncate($translations['nl'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->bindValue(':es', DbValueGuard::truncate($translations['es'] ?? '', DbValueGuard::TRANSLATION_URI));
+                $insertStmt->execute();
+            } catch (\PDOException $e) {
+                $output->writeln('<comment>Failed to index translation for "' . $source . '": ' . $e->getMessage() . '</comment>');
+            }
         }
     }
 }

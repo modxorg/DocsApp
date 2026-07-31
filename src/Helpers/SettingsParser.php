@@ -6,33 +6,33 @@ use Dotenv\Dotenv;
 
 class SettingsParser
 {
-    const DEFAULT_FILE = '.env';
-    const DEV_FILE = '.env-dev';
+    private const DEFAULT_FILE = '.env';
+    private const DEV_FILE = '.env-dev';
 
     public function __construct()
     {
-        $baseDir = dirname(dirname(__DIR__)) . '/';
+        $baseDir = dirname(__DIR__, 2) . '/';
         $dotFile = static::getDotFile($baseDir);
-        $dotEnv = Dotenv::create($baseDir, $dotFile);
+        $dotEnv = Dotenv::createImmutable($baseDir, $dotFile);
         $dotEnv->load();
     }
 
-    public function getSlimConfig()
+    public function getSlimConfig(): array
     {
         return [
             'settings' => [
-                'displayErrorDetails' => getenv('DEV') === '1',
+                'displayErrorDetails' => $_ENV['DEV'] === '1',
                 'addContentLengthHeader' => false,
             ]
         ];
     }
 
-    private static function getDotFile($baseDir)
+    private static function getDotFile($baseDir): string
     {
-        if (file_exists($baseDir . SettingsParser::DEFAULT_FILE)) {
-            return SettingsParser::DEFAULT_FILE;
+        if (file_exists($baseDir . self::DEFAULT_FILE)) {
+            return self::DEFAULT_FILE;
         }
 
-        return SettingsParser::DEV_FILE;
+        return self::DEV_FILE;
     }
 }

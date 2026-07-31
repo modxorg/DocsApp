@@ -4,18 +4,14 @@ namespace MODXDocs\Navigation;
 
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
+use Slim\Views\Twig;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
-class Tree {
-    private $items;
-    /**
-     * @var string
-     */
-    private $version;
-    /**
-     * @var string
-     */
-    private $language;
+class Tree
+{
+    private array $items;
+    private string $version;
+    private string $language;
 
     public function __construct(string $version, string $language, array $items)
     {
@@ -33,22 +29,22 @@ class Tree {
             return new self($version, $language, $items);
         }
 
-        $root = getenv('DOCS_DIRECTORY');
-        $items = self::_getItems($root, $version, $language);
+        $root = $_ENV['DOCS_DIRECTORY'];
+        $items = self::getItems($root, $version, $language);
 
         $cache->set($cacheKey, $items);
         return new self($version, $language, $items);
     }
 
-    private static function _getItems($root, $version, $language): array
+    private static function getItems($root, $version, $language): array
     {
         $realVersion = $version === VersionsService::getCurrentVersion() ? VersionsService::getCurrentVersionBranch() : $version;
         $directoryPath = $root . $realVersion . '/' . $language;
         $directoryPrefix = $realVersion . '/' . $language . '/';
-        return self::_getNestedItems($root, $directoryPrefix, $directoryPath, $version, $language, 1);
+        return self::getNestedItems($root, $directoryPrefix, $directoryPath, $version, $language, 1);
     }
 
-    private static function _getNestedItems($root, $directoryPrefix, $directoryPath, $version, $language, $level): array
+    private static function getNestedItems($root, $directoryPrefix, $directoryPath, $version, $language, $level): array
     {
         if (!file_exists($directoryPath) || !is_dir($directoryPath)) {
             return [];
@@ -61,7 +57,7 @@ class Tree {
             }
 
 
-            $filePath = str_replace('\\','/',$file->getPathname());
+            $filePath = str_replace('\\', '/', $file->getPathname());
             $relativeFilePath = str_replace($root, '', $filePath);
             $relativeUrl = strpos($relativeFilePath, '.md') !== false ? substr($relativeFilePath, 0, strpos($relativeFilePath, '.md')) : $relativeFilePath;
             $relativeUrl = strpos($relativeUrl, $directoryPrefix) === 0 ? substr($relativeUrl, strlen($directoryPrefix)) : $relativeUrl;
@@ -79,7 +75,7 @@ class Tree {
                     'uri' => '/' . $version . '/' . $language . '/' . $relativeUrl,
                     'classes' => 'c-nav__item',
                     'level' => $level,
-                    'children' => self::_getNestedItems($root, $directoryPrefix, $filePath, $version, $language, $level + 1),
+                    'children' => self::getNestedItems($root, $directoryPrefix, $filePath, $version, $language, $level + 1),
                 ];
                 self::augmentFromMatter($item, $index);
 
@@ -88,9 +84,7 @@ class Tree {
                 }
 
                 $nav[] = $item;
-            }
-
-            elseif ($file->isFile() && $file->getExtension() === 'md') {
+            } elseif ($file->isFile() && $file->getExtension() === 'md') {
                 if ($file->getFilename() === 'index.md') {
                     continue;
                 }
@@ -106,14 +100,13 @@ class Tree {
                 self::augmentFromMatter($item, $filePath);
 
                 if (is_dir($root . $directoryPrefix . $relativeUrl . '/')) {
-                    $item['children'] = self::_getNestedItems($root,  $directoryPrefix, $root . $directoryPrefix . $relativeUrl . '/', $version, $language, $level + 1);
+                    $item['children'] = self::getNestedItems($root, $directoryPrefix, $root . $directoryPrefix . $relativeUrl . '/', $version, $language, $level + 1);
                     if (count($item['children']) > 0) {
                         $item['classes'] .= ' c-nav__item--has-children';
                     }
                 }
                 $nav[] = $item;
             }
-
         }
 
         usort($nav, static function ($item, $item2) {
@@ -141,7 +134,7 @@ class Tree {
         return $nav;
     }
 
-    private static function augmentFromMatter(&$item, $path)
+    private static function augmentFromMatter(&$item, $path): void
     {
         $fileContents = file_get_contents($path);
         $obj = YamlFrontMatter::parse($fileContents);
@@ -171,18 +164,16 @@ class Tree {
         if (array_key_exists('description', $fm)) {
             $item['description'] = $fm['description'];
         }
-
-        return $title;
     }
 
     public function setActivePath($path): void
     {
         foreach ($this->items as &$item) {
-            $this->_setActiveOnItem($item, $path);
+            $this->setActiveOnItem($item, $path);
         }
     }
 
-    private function _setActiveOnItem(&$item, $path): void
+    private function setActiveOnItem(&$item, $path): void
     {
         if ($path === $item['uri']) {
             $item['classes'] .= ' c-nav__item--activepage';
@@ -190,14 +181,15 @@ class Tree {
         if (strpos($path, $item['uri']) === 0) {
             $item['classes'] .= ' c-nav__item--active';
             foreach ($item['children'] as &$childItem) {
-                $this->_setActiveOnItem($childItem, $path);
+                $this->setActiveOnItem($childItem, $path);
             }
         }
     }
 
-    public function renderTree(\Slim\Views\Twig $twig, $template = 'partials/nav.twig'): string
+    public function renderTree(Twig $twig, $template = 'partials/nav.twig'): string
     {
-        return $twig->fetch($template,
+        return $twig->fetch(
+            $template,
             [
                 'language' => $this->language,
                 'version' => $this->version,
@@ -206,7 +198,8 @@ class Tree {
         );
     }
 
-    private function getSelfAndNested(array $item) {
+    private function getSelfAndNested(array $item): array
+    {
         $children = $item['children'];
         unset($item['children']);
         $a = [$item];
@@ -216,13 +209,32 @@ class Tree {
         return $a;
     }
 
-    public function getAllItems()
+    public function getAllItems(): array
     {
         $return = [];
+
+        // Top-level index.md is skipped while building the nav (it is the language home,
+        // not a nav item). Include it here so indexers and sitemap-style walks see it.
+        $realVersion = $this->version === VersionsService::getCurrentVersion()
+            ? VersionsService::getCurrentVersionBranch()
+            : $this->version;
+        $homeRelative = $realVersion . '/' . $this->language . '/index.md';
+        $homeAbsolute = rtrim($_ENV['DOCS_DIRECTORY'], '/') . '/' . $homeRelative;
+        if (is_file($homeAbsolute)) {
+            $return[] = [
+                'file' => $homeRelative,
+                'title' => 'index',
+                'uri' => '/' . $this->version . '/' . $this->language . '/index',
+                'classes' => 'c-nav__item',
+                'level' => 0,
+                'children' => [],
+            ];
+            self::augmentFromMatter($return[0], $homeAbsolute);
+        }
+
         foreach ($this->items as $item) {
             $return = array_merge($return, $this->getSelfAndNested($item));
         }
         return $return;
     }
-
 }

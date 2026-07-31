@@ -8,12 +8,12 @@
         <div class="l-main__contentwrapper">
 
             <div class="l-main__content">
-                <h1>Page not found</h1>
-                <p>Uh oh, you've reached a page that does not exist.</p>
-                <p>It may have gotten lost on <a href="https://community.modx.com/t/improving-the-modx-documentation/379" target="_blank" rel="noopener">the new documentation platform</a> or it was removed because it was no longer relevant. It could also be a really old link from two (or more) documentation systems ago, which is not part of the 2000+ automatic redirects currently in place.</p>
+                <h1>{{ lang.not_found_heading }}</h1>
+                <p>{{ lang.not_found_intro }}</p>
+                <p>{{ lang.not_found_body|raw }}</p>
 
                 {% if search_results|length > 0 %}
-                    <p>Based on your request, this may be what you're looking for:</p>
+                    <p>{{ lang.not_found_suggestions }}</p>
 
                     <ul class="l-main-search__container">
                         {% for result in search_results %}
@@ -25,14 +25,14 @@
                     <div class="l-search__pagination">
                         <ul class="l-search__pagination-holder">
                             <li class="l-search-page l-search-page--active">
-                                <a href="{{ path_for('search', {version: version, language: language}, {q: search_query}) }}" class="l-search-page__link l-search-page__link--active">
-                                    More results for "{{ search_query }}"
+                                <a href="{{ url_for('search', {version: version, language: language}, {q: search_query}) }}" class="l-search-page__link l-search-page__link--active">
+                                    {{ lang.not_found_more_results|format(search_query) }}
                                 </a>
                             </li>
                         </ul>
                     </div>
                 {% else %}
-                    <p>Please use the search at the top to find what you're looking for.</p>
+                    <p>{{ lang.not_found_use_search }}</p>
                 {% endif %}
             </div>
         </div>

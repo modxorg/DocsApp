@@ -10,11 +10,8 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 class DocumentService
 {
-    /**
-     * @var PDO
-     */
-    protected $db;
-    private $filePathService;
+    private FilePathService $filePathService;
+    protected PDO $db;
 
     public function __construct(FilePathService $filePathService, PDO $db)
     {
@@ -27,7 +24,7 @@ class DocumentService
      * @return Page
      * @throws NotFoundException
      */
-    public function load(PageRequest $request) : Page
+    public function load(PageRequest $request): Page
     {
         $path = $this->filePathService->getFilePath($request);
 

@@ -2,77 +2,134 @@
 
 namespace MODXDocs;
 
-use MODXDocs\Containers\DB;
-use MODXDocs\Views\Search;
-use MODXDocs\Views\Stats\NotFoundRequests;
-use MODXDocs\Views\Stats\Searches;
+use DI\Container;
+use DI\ContainerBuilder;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
-
-use MODXDocs\Containers\View;
+use Slim\Factory\AppFactory;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Routing\RouteCollector;
+use Slim\Views\TwigMiddleware;
 use MODXDocs\Containers\ErrorHandlers;
 use MODXDocs\Containers\Logger;
 use MODXDocs\Containers\Services;
+use MODXDocs\Containers\View;
+use MODXDocs\Containers\DB;
+use MODXDocs\Middlewares\NoiseRequestMiddleware;
 use MODXDocs\Middlewares\RequestMiddleware;
-use MODXDocs\Views\Doc;
 
 class DocsApp
 {
-    /** @var App */
-    private $app;
+    private App $app;
+    private Container $container;
 
     public function __construct(array $settings)
     {
-        $this->app = new App($settings);
+        // Create Container using ContainerBuilder
+        $containerBuilder = new ContainerBuilder();
 
-        $this->routes();
-        $this->dependencies();
-        $this->middlewares();
-    }
+        // Define container entries
+        $containerBuilder->addDefinitions([
+            'settings' => $settings,
+            ResponseFactoryInterface::class => function () {
+                return new ResponseFactory();
+            },
+            ServerRequestInterface::class => function () {
+                return (new ServerRequestFactory())->createFromGlobals();
+            },
+            'request' => function (Container $c) {
+                return $c->get(ServerRequestInterface::class);
+            },
+            'response' => function (Container $c) {
+                return $c->get(ResponseFactoryInterface::class)->createResponse();
+            },
+            RouteCollector::class => function (Container $c) {
+                return $c->get(App::class)->getRouteCollector();
+            },
+            RouteParserInterface::class => function (Container $c) {
+                return $c->get(RouteCollector::class)->getRouteParser();
+            },
+            'router' => function (Container $c) {
+                return $c->get(RouteParserInterface::class);
+            }
+        ]);
 
-    private function routes()
-    {
-        $this->app->get('/', Doc::class . ':get')->setName('home');
-        $this->app->get('/stats/searches', Searches::class . ':get')->setName('stats/searches');
-        $this->app->get('/stats/page-not-found', NotFoundRequests::class . ':get')->setName('stats/page-not-found');
-        $this->app->get('/{version}/{language}/search', Search::class . ':get')->setName('search');
-        $this->app->get('/{version}/{language}/{path:.*}', Doc::class . ':get')->setName('documentation');
-    }
+        $this->container = $containerBuilder->build();
 
-    private function middlewares()
-    {
+        // Create App with Container
+        AppFactory::setContainer($this->container);
+        $this->app = AppFactory::create();
+
+        // Store app in container
+        $this->container->set(App::class, $this->app);
+
+        // Register services
+        Services::load($this->container);
+        Logger::load($this->container);
+        View::load($this->container);
+        DB::load($this->container);
+
+        // Add middleware (last added runs first)
         $this->app->add(new RequestMiddleware());
+        $this->app->add(TwigMiddleware::createFromContainer($this->app));
+
+        // Add error handling
+        ErrorHandlers::load($this->container);
+
+        // Outermost: drop scanner noise before routing / fancy 404 / logging
+        $this->app->add(new NoiseRequestMiddleware());
+
+        // Add routes
+        $this->addRoutes();
     }
 
-    private function dependencies()
+    private function addRoutes(): void
     {
-        $containers = [
-            DB::class,
-            View::class,
-            ErrorHandlers::class,
-            Logger::class,
-            Services::class
-        ];
+        $app = $this->app;
+        $container = $this->container;
 
-        foreach ($containers as $container) {
-            call_user_func([$container, 'load'], $this->app->getContainer());
-        }
+        $app->get('/', function ($request, $response) {
+            return $response->withHeader('Location', '/current/en/')->withStatus(301);
+        });
+
+        $app->get('/stats/searches', function ($request, $response) use ($container) {
+            $page = new \MODXDocs\Views\Stats\Searches($container);
+            return $page->get($request, $response);
+        })->setName('stats/searches');
+
+        $app->get('/stats/page-not-found', function ($request, $response) use ($container) {
+            $page = new \MODXDocs\Views\Stats\NotFoundRequests($container);
+            return $page->get($request, $response);
+        })->setName('stats/page-not-found');
+
+        $app->get('/{version}/{language}/search', function ($request, $response, $args) use ($container) {
+            $page = new \MODXDocs\Views\Search($container);
+            return $page->get($request, $response);
+        })->setName('search');
+
+        // Doc handles markdown pages and static assets (e.g. images) from the docs tree.
+        // Missing pages throw HttpNotFoundException, which ErrorHandlers maps to NotFound.
+        $app->get('/{version}/{language}/{path:.*}', function ($request, $response) use ($container) {
+            $page = new \MODXDocs\Views\Doc($container);
+            return $page->get($request, $response);
+        })->setName('documentation');
     }
 
-    public function getContainer()
-    {
-        return $this->app->getContainer();
-    }
-
-    public function run()
+    public function run(): void
     {
         $this->app->run();
     }
 
-    public function process(Request $request, Response $response)
+    public function getApp(): App
     {
-        return $this->app->process($request, $response);
+        return $this->app;
     }
 
+    public function getContainer(): Container
+    {
+        return $this->container;
+    }
 }

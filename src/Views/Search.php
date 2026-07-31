@@ -5,17 +5,15 @@ namespace MODXDocs\Views;
 use MODXDocs\Model\SearchQuery;
 use MODXDocs\Navigation\Tree;
 use MODXDocs\Model\PageRequest;
-use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\SearchService;
-use MODXDocs\Services\VersionsService;
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Router;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+use Slim\Interfaces\RouteParserInterface;
 
 class Search extends Base
 {
-    /** @var Router */
+    /** @var RouteParserInterface */
     private $router;
 
     /** @var SearchService */
@@ -39,32 +37,33 @@ class Search extends Base
         // The PageRequest gives us the version/language/etc.
         $pageRequest = PageRequest::fromRequest($request);
 
-        $query = trim((string)$request->getParam('q', ''));
+        $queryParams = $request->getQueryParams();
+        $query = trim((string)($queryParams['q'] ?? ''));
 
         $title = 'Search the documentation';
-        $live = (bool)$request->getParam('live');
+        $live = (bool)($queryParams['live'] ?? false);
 
         $crumbs = [];
         $crumbs[] = [
             'title' => 'Search ' . $pageRequest->getVersion(), // @todo i18n
-            'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()])
+            'href' => $this->router->urlFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()])
         ];
 
         $searchValues = [];
         if (!empty($query)) {
             $crumbs[] = [
                 'title' => '"' . $query . '"',
-                'href' => $this->router->pathFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query])
+                'href' => $this->router->urlFor('search', ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()], ['q' => $query])
             ];
 
             $startTime = microtime(true);
-            $sq = new SearchQuery($this->searchService, $query, $pageRequest, $live);
+            $sq = new SearchQuery($this->searchService, $query, $pageRequest);
 
             $result = $this->searchService->execute($sq);
             $resultCount = $result->getCount();
 
             $limit = 10;
-            $page = abs((int)$request->getParam('page', 1));
+            $page = abs((int)($queryParams['page'] ?? 1));
             $totalPages = ceil($resultCount / $limit);
             $start = 0 + ($page - 1) * $limit;
 
@@ -76,8 +75,7 @@ class Search extends Base
                 if ($resultCount > 0) {
                     $title = $resultCount . ' results for "' . $query . '"';
                     $pagination = $this->getPagination($page, $pageRequest, $query, $totalPages);
-                }
-                else {
+                } else {
                     $title = 'No results for "' . $query . '"';
                 }
             }
@@ -90,8 +88,7 @@ class Search extends Base
                 'ignored_terms' => $sq->getIgnoredTerms(),
                 'pagination' => $pagination,
             ];
-        }
-        else {
+        } else {
             $resultCount = 0;
             $results = [];
         }
@@ -125,9 +122,11 @@ class Search extends Base
             $looped++;
             $pagination[] = [
                 'page' => $prev,
-                'href' => $this->router->pathFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $prev])
+                    ['q' => $query, 'page' => $prev]
+                )
             ];
             $prev--;
         }
@@ -135,9 +134,11 @@ class Search extends Base
         if ($page > 1) {
             $pagination[] = [
                 'page' => 'First',
-                'href' => $this->router->pathFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query])
+                    ['q' => $query]
+                )
             ];
         }
 
@@ -147,9 +148,11 @@ class Search extends Base
         $pagination[] = [
             'current' => true,
             'page' => $page,
-            'href' => $this->router->pathFor('search',
+            'href' => $this->router->urlFor(
+                'search',
                 ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                ['q' => $query, 'page' => $page])
+                ['q' => $query, 'page' => $page]
+            )
         ];
 
         $looped = 0;
@@ -158,20 +161,23 @@ class Search extends Base
             $looped++;
             $pagination[] = [
                 'page' => $next,
-                'href' => $this->router->pathFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $next])
+                    ['q' => $query, 'page' => $next]
+                )
             ];
             $next++;
         }
 
         if ($next < $totalPages) {
-
             $pagination[] = [
                 'page' => 'Last',
-                'href' => $this->router->pathFor('search',
+                'href' => $this->router->urlFor(
+                    'search',
                     ['version' => $pageRequest->getVersion(), 'language' => $pageRequest->getLanguage()],
-                    ['q' => $query, 'page' => $totalPages])
+                    ['q' => $query, 'page' => $totalPages]
+                )
             ];
         }
 

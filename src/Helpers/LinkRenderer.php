@@ -2,36 +2,34 @@
 
 namespace MODXDocs\Helpers;
 
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
-
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
 use MODXDocs\Exceptions\RedirectNotFoundException;
 use MODXDocs\Services\VersionsService;
 
-class LinkRenderer implements InlineRendererInterface
+class LinkRenderer implements NodeRendererInterface
 {
-    protected $baseUri;
-    protected $currentDoc;
+    protected string $baseUri;
+    protected string $currentDoc;
 
-    public function __construct($baseUri, $currentDoc)
+    public function __construct(string $baseUri, string $currentDoc)
     {
         $this->baseUri = $baseUri;
         $this->currentDoc = $currentDoc;
     }
 
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer): HtmlElement
     {
-        if (!($inline instanceof Link)) {
-            throw new \InvalidArgumentException('Incompatible inline type: ' . \get_class($inline));
+        if (!($node instanceof Link)) {
+            throw new \InvalidArgumentException('Incompatible node type: ' . \get_class($node));
         }
 
-        $href = $this->getHref($inline->getUrl());
-        $attributes = [
-            'href' => $href,
-        ];
+        $href = $this->getHref($node->getUrl());
+        $attributes = $node->data->get('attributes', []);
+        $attributes['href'] = $href;
 
         // Handle hashes in links
         $hash = '';
@@ -41,18 +39,17 @@ class LinkRenderer implements InlineRendererInterface
             $href = substr($href, 0, $hashPosition);
         }
 
-
-        if (isset($inline->attributes['title']) && $inline->attributes['title'] !== '') {
-            $attributes['title'] = $htmlRenderer->escape($inline->data['title'], true);
+        if (($title = $node->getTitle()) !== null) {
+            $attributes['title'] = $title;
         }
 
-        if (static::isExternalUrl($inline->getUrl())) {
+        if (static::isExternalUrl($node->getUrl())) {
             $attributes['class'] = 'is-externallink';
             $attributes['target'] = '_blank';
             $attributes['rel'] = 'noreferrer noopener';
         } else {
             // Check if the link points to somewhere valid
-            $docs = getenv('DOCS_DIRECTORY');
+            $docs = $_ENV['DOCS_DIRECTORY'];
             $href = static::replaceCurrentUrl($href);
             if (!file_exists($docs . $href . '.md') && !file_exists($docs . $href . '/index.md')) {
                 try {
@@ -64,17 +61,17 @@ class LinkRenderer implements InlineRendererInterface
             }
         }
 
-        return new HtmlElement('a', $attributes, $htmlRenderer->renderInlines($inline->children()));
+        return new HtmlElement('a', $attributes, $childRenderer->renderNodes($node->children()));
     }
 
-    private function getHref($url)
+    private function getHref($url): string
     {
         if (static::isExternalUrl($url)) {
             return $url;
         }
 
         if (substr($url, -3) === '.md') {
-            $url = substr($url,0,-3);
+            $url = substr($url, 0, -3);
         }
 
         if (strpos($url, '#') === 0) {
@@ -92,7 +89,7 @@ class LinkRenderer implements InlineRendererInterface
         return $this->baseUri . ltrim($url, '/');
     }
 
-    private static function replaceCurrentUrl($href)
+    private static function replaceCurrentUrl($href): string
     {
         $href = ltrim($href, '/');
         // If the URL starts with `current/`, then replace it with the actual branch name

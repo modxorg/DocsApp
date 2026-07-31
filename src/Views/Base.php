@@ -5,21 +5,17 @@ namespace MODXDocs\Views;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\CacheService;
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
 
 abstract class Base
 {
-    private static $rev = '';
-    /** @var ContainerInterface */
-    protected $container;
-
-    /** @var Twig */
-    protected $view;
-    /** @var VersionsService */
-    protected $versionsService;
+    private static string $rev = '';
+    protected ContainerInterface $container;
+    protected Twig $view;
+    protected VersionsService $versionsService;
 
     public function __construct(ContainerInterface $container)
     {
@@ -28,13 +24,13 @@ abstract class Base
         $this->versionsService = $this->container->get(VersionsService::class);
     }
 
-    protected function render(Request $request, Response $response, $template, array $data = []): \Psr\Http\Message\ResponseInterface
+    protected function render(Request $request, Response $response, $template, array $data = []): Response
     {
         $pageRequest = PageRequest::fromRequest($request);
 
         $initialData = [
             'revision' => static::getRevision(),
-            'canonical_base' => getenv('CANONICAL_BASE_URL'),
+            'canonical_base' => $_ENV['CANONICAL_BASE_URL'],
             'current_uri' => $request->getUri()->getPath(),
             'version' => $pageRequest->getVersion(),
             'version_branch' => $pageRequest->getVersionBranch(),
@@ -43,8 +39,8 @@ abstract class Base
             'locale' => $pageRequest->getLocale(),
             'path' => $pageRequest->getPath(),
             'logo_link' => $pageRequest->getContextUrl() . VersionsService::getDefaultPath(),
-            'is_dev' => (bool) getenv('DEV'),
-            'analytics_id' => (string) getenv('ANALYTICS_ID'),
+            'is_dev' => (bool) ($_ENV['DEV'] ?? false),
+            'analytics_id' => (string) ($_ENV['ANALYTICS_ID'] ?? ''),
             'lang' => $this->getLang($pageRequest->getLanguage()),
             'opencollective' => $this->getOpenCollectiveInfo(),
             'opencollective_members' => $this->getOpenCollectiveMembers(),
@@ -66,7 +62,7 @@ abstract class Base
         );
     }
 
-    protected function render404(Request $request, Response $response, array $data = []): \Psr\Http\Message\ResponseInterface
+    protected function render404(Request $request, Response $response, array $data = []): Response
     {
         return $this->render(
             $request,
@@ -78,14 +74,14 @@ abstract class Base
         );
     }
 
-    public static function getRevision() : string
+    public static function getRevision(): string
     {
         if (!empty(self::$rev)) {
             return self::$rev;
         }
         $revision = 'dev';
 
-        $projectDir = getenv('BASE_DIRECTORY');
+        $projectDir = $_ENV['BASE_DIRECTORY'];
         if (file_exists($projectDir . '.revision')) {
             $revision = trim((string)file_get_contents($projectDir . '.revision'));
         }
@@ -103,8 +99,7 @@ abstract class Base
         }
         if (array_key_exists($language, $lang)) {
             $lang = array_merge($lang['en'], $lang[$language]);
-        }
-        else {
+        } else {
             $lang = $lang['en'];
         }
         return $lang;
@@ -137,7 +132,6 @@ abstract class Base
             $data = @file_get_contents('https://opencollective.com/modx/members.json?limit=50&isActive=1');
             $data = json_decode($data, true);
             if (is_array($data) && count($data) > 0) {
-
                 $merged = [];
                 foreach ($data as $i => $member) {
                     // filter out non-backers (OC itself, admin)

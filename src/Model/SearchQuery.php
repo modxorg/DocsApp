@@ -1,49 +1,29 @@
 <?php
 
-
-
 namespace MODXDocs\Model;
 
 use MODXDocs\Services\SearchService;
 use voku\helper\StopWords;
 
-class SearchQuery {
+class SearchQuery
+{
+    private SearchService $searchService;
+    private string $queryString;
+    private PageRequest $pageRequest;
+    private array $stopWords;
+    private array $exactTerms = [];
+    private array $fuzzyTerms = [];
+    private array $ignoredTerms = [];
 
-    /**
-     * @var SearchService
-     */
-    private $searchService;
-    /**
-     * @var string
-     */
-    private $queryString;
-
-    private $stopwords = [];
-
-    private $exactTerms = [];
-
-    private $fuzzyTerms = [];
-
-    private $ignoredTerms = [];
-    /**
-     * @var PageRequest
-     */
-    private $pageRequest;
-    /**
-     * @var bool
-     */
-    private $isLive;
-
-    public function __construct(SearchService $searchService, $queryString, PageRequest $pageRequest, $isLive = false)
+    public function __construct(SearchService $searchService, $queryString, PageRequest $pageRequest)
     {
         $this->searchService = $searchService;
         $this->pageRequest = $pageRequest;
-        $this->stopwords = (new StopWords())->getStopWordsFromLanguage($pageRequest->getLanguage());
-        $this->isLive = (bool)$isLive;
+        $this->stopWords = (new StopWords())->getStopWordsFromLanguage($pageRequest->getLanguage());
         $this->parseQueryString($queryString);
     }
 
-    private function parseQueryString($queryString)
+    private function parseQueryString($queryString): void
     {
         $this->queryString = $queryString;
 
@@ -81,7 +61,7 @@ class SearchQuery {
         }
 
         // In the stopwords list? Ignore.
-        if (in_array($term, $this->stopwords, true)) {
+        if (in_array($term, $this->stopWords, true)) {
             $this->ignoredTerms[] = $term;
             return;
         }
@@ -103,8 +83,7 @@ class SearchQuery {
         foreach ($references as $ref => $t) {
             if ($t === $term) {
                 $this->exactTerms[$ref] = $t;
-            }
-            else {
+            } else {
                 $this->fuzzyTerms[$ref] = $t;
             }
         }
@@ -119,31 +98,30 @@ class SearchQuery {
         return $this->queryString;
     }
 
-    public function getAllTerms()
+    public function getAllTerms(): array
     {
         return array_unique($this->exactTerms + $this->fuzzyTerms);
     }
 
-    public function getSearchTermReferences()
+    public function getSearchTermReferences(): array
     {
         $all = array_merge(array_keys($this->exactTerms), array_keys($this->fuzzyTerms));
         $all = array_filter(array_unique($all));
         return $all;
     }
 
-    public function getExactTerms()
+    public function getExactTerms(): array
     {
         return $this->exactTerms;
     }
 
-    public function getFuzzyTerms()
+    public function getFuzzyTerms(): array
     {
         return $this->fuzzyTerms;
     }
 
-    public function getIgnoredTerms()
+    public function getIgnoredTerms(): array
     {
         return $this->ignoredTerms;
     }
-
 }

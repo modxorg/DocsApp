@@ -48,22 +48,22 @@
 
             {% if 'en' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Hello! <a href="{{ path_for('documentation', {version: version, language: 'en', path: 'index'}) }}">The MODX documentation is also available in English</a>.
+                Hello! <a href="{{ url_for('documentation', {version: version, language: 'en', path: 'index'}) }}">The MODX documentation is also available in English</a>.
             </div>
             {% endif %}
             {% if 'nl' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Hoi! <a href="{{ path_for('documentation', {version: version, language: 'nl', path: 'index'}) }}">De MODX documentatie is ook (deels) in het Nederlandstalig beschikbaar</a>.
+                Hoi! <a href="{{ url_for('documentation', {version: version, language: 'nl', path: 'index'}) }}">De MODX documentatie is ook (deels) in het Nederlandstalig beschikbaar</a>.
             </div>
             {% endif %}
             {% if 'ru' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                Здравствуй! <a href="{{ path_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
+                Здравствуй! <a href="{{ url_for('documentation', {version: version, language: 'ru', path: 'index'}) }}">Документация MODX также доступна на русском языке</a>.
             </div>
             {% endif %}
             {% if 'es' in suggested_languages %}
             <div class="c-callout c-callout--info">
-                ¡Hola! <a href="{{ path_for('documentation', {version: version, language: 'es', path: 'index'}) }}">La documentación MODX también está (parcialmente) disponible en español.</a>
+                ¡Hola! <a href="{{ url_for('documentation', {version: version, language: 'es', path: 'index'}) }}">La documentación MODX también está (parcialmente) disponible en español.</a>
             </div>
             {% endif %}
 
@@ -77,8 +77,8 @@
 
         <div class="l-main__contentwrapper">
 
-            {% if toc is not empty %}
-                <div class="l-main__toc">
+            <div class="l-main__toc">
+                {% if toc is not empty %}
                     <nav class="c-toc" aria-labelledby="toc-title">
                         <div class="c-toc__wrapper">
                             <span class="c-toc__title" id="toc-title">
@@ -87,32 +87,32 @@
                             {{ toc|raw }}
                         </div>
                     </nav>
+                {% endif %}
 
-                    <a class="l-main__oc" href="https://opencollective.com/modx" target="_blank" rel="noopener">
-                        {{ icon('opencollective', 'Open COllective', 'c-oc__logo') }}
-                        <p class="c-oc__text">Support the team building MODX with a monthly donation.</p>
+                <a class="l-main__oc" href="https://opencollective.com/modx" target="_blank" rel="noopener">
+                    {{ icon('opencollective', 'Open COllective', 'c-oc__logo') }}
+                    <p class="c-oc__text">Support the team building MODX with a monthly donation.</p>
 
 
-                        <p class="c-oc__text">The budget raised through OpenCollective is transparent, including payouts, and any contributor can apply to be paid for their work on MODX.</p>
+                    <p class="c-oc__text">The budget raised through OpenCollective is transparent, including payouts, and any contributor can apply to be paid for their work on MODX.</p>
 
-                        <p class="c-oc__subtitle">Backers</p>
+                    <p class="c-oc__subtitle">Backers</p>
 
-                        <ul class="c-oc__members">
-                            {% apply spaceless %}
-                            {% for member in opencollective_members %}
-                                <li class="c-oc__member">
-                                    <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.parentNode.style.display = 'none';" class="c-oc__member_image" loading="lazy" title="{{ member.name }} has contributed ${{ (member.totalAmountDonated)|number_format }} to MODX">
-                                </li>
-                            {% endfor %}
-                            {% endapply %}
-                        </ul>
-                        <p class="c-oc__subtitle">Budget</p>
-                        <p class="c-oc__text">${{ (opencollective.yearlyIncome / 12 / 100)|number_format }} per month&mdash;let's make that $500!</p>
-                    </a>
+                    <ul class="c-oc__members">
+                        {% apply spaceless %}
+                        {% for member in opencollective_members %}
+                            <li class="c-oc__member">
+                                <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.parentNode.style.display = 'none';" class="c-oc__member_image" loading="lazy" title="{{ member.name }} has contributed ${{ (member.totalAmountDonated)|number_format }} to MODX">
+                            </li>
+                        {% endfor %}
+                        {% endapply %}
+                    </ul>
+                    <p class="c-oc__subtitle">Budget</p>
+                    <p class="c-oc__text">${{ (opencollective.yearlyIncome / 12 / 100)|number_format }} per month&mdash;let's make that $500!</p>
+                </a>
 
-                    <a href="/current/en/contribute/funding" class="c-oc__more" title="Learn more about funding MODX">Learn more</a>
-                </div>
-            {% endif %}
+                <a href="/current/en/contribute/funding" class="c-oc__more" title="Learn more about funding MODX">Learn more</a>
+            </div>
 
             <div class="l-main__content">
                 {% if meta.note %}

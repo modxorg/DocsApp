@@ -7,7 +7,7 @@ use MODXDocs\Services\VersionsService;
 
 class Redirector
 {
-    public static function findNewURI($uri)
+    public static function findNewURI($uri): string
     {
         $uri = static::cleanRequestUri($uri);
 
@@ -16,7 +16,7 @@ class Redirector
         $redirects = [];
 
         // Start by collecting the available redirects per version
-        $dir = new \DirectoryIterator(getenv('DOCS_DIRECTORY'));
+        $dir = new \DirectoryIterator($_ENV['DOCS_DIRECTORY']);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDir() || $fileinfo->isDot()) {
                 continue;

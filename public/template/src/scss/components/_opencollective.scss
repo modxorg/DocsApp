@@ -14,11 +14,11 @@
 .l-main__oc {
     margin-top: 5em;
 
-    background: map-get($colors, 'sidebar-bg');
-    color: map-get($colors, 'sidebar-text');
+    background: color(sidebar-bg);
+    color: color(sidebar-text);
     padding: 1em;
     border-radius: 1em;
-    border: 1px solid transparent;
+    border: 1px solid color(border);
     transition: background-color .5s ease-in-out;
     text-decoration: none !important;
     max-width: rem(400);
@@ -31,11 +31,11 @@
         transition: border .5s ease-in-out;
     }
     &:hover {
-        color: map-get($colors, 'sidebar-text');
-        background: #e3efff;
+        color: color(sidebar-text);
+        background: color(search-result-hover);
 
         .c-oc__member_image {
-            border-color: #e3efff;
+            border-color: color(search-result-hover);
         }
 
     }
@@ -76,7 +76,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    border: 5px solid map-get($colors, 'sidebar-bg');
+    border: 5px solid color(sidebar-bg);
     background: #00B5DE;
 }
 
@@ -86,7 +86,7 @@
         height: 60px;
         background: #00B5DE;
         border-radius: 30px;
-        border: 5px solid map-get($colors, 'sidebar-bg');
+        border: 5px solid color(sidebar-bg);
         color: #fff;
         padding: 0.7em 1em;
         font-weight: 600;

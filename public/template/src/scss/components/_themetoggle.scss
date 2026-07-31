@@ -1,0 +1,40 @@
+.c-themetoggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(36);
+    height: rem(36);
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: $global-radius;
+    background: transparent;
+    color: color(header-text);
+    cursor: pointer;
+    transition: background-color .2s ease-in-out;
+
+    &:hover,
+    &:focus {
+        background: color(header-hover-bg);
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid color(link-color);
+        outline-offset: 2px;
+    }
+
+    &__icon {
+        display: none;
+        width: rem(20);
+        height: rem(20);
+        fill: currentColor;
+    }
+}
+
+// Show icon for the *next* action / current preference
+[data-theme-preference="system"] .c-themetoggle__icon--system,
+[data-theme-preference="light"] .c-themetoggle__icon--light,
+[data-theme-preference="dark"] .c-themetoggle__icon--dark {
+    display: block;
+}

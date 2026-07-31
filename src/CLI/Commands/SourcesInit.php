@@ -4,16 +4,17 @@ namespace MODXDocs\CLI\Commands;
 
 use MODXDocs\CLI\Application;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class SourcesInit extends Command {
-    protected static $defaultName = 'sources:init';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+#[AsCommand(name: 'sources:init')]
+class SourcesInit extends Command
+{
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {
@@ -43,14 +44,13 @@ class SourcesInit extends Command {
             switch ($info['type']) {
                 case 'git':
                     $this->initRepository($output, $key, $info['url'], $info['branch']);
-                break;
+                    break;
 
                 case 'local':
                     $root = VersionsService::getDocsRoot();
                     if (file_exists($root . $key) && is_dir($root . $key)) {
                         $output->writeln('Source ' . $key . ' is of type local, and the directory exists.');
-                    }
-                    else {
+                    } else {
                         $output->writeln('<comment>Source ' . $key . ' is of type local, so you have to initialise it manually.</comment>');
                     }
                     break;
@@ -81,8 +81,7 @@ class SourcesInit extends Command {
 
         if (file_exists($fullPath) && is_dir($fullPath) && is_dir($fullPath . '.git/')) {
             $output->writeln('<error>Already a git repository: ' . $fullPath . '</error>');
-        }
-        else {
+        } else {
             $output->writeln('Cloning ' . $url . ' on branch ' . $branch . ' into docs directory ' . $version . '...');
             $clone = new Process(['git', 'clone', '-b', $branch, '--single-branch', $url, $version]);
             $clone->setWorkingDirectory($root);

@@ -2,6 +2,23 @@
 <html lang="{{ language }}" class="no-js">
     <head>
         <meta charset="utf-8">
+        <script>
+            (function () {
+                try {
+                    var key = 'modx-docs-theme';
+                    var prefs = { system: 1, light: 1, dark: 1 };
+                    var pref = localStorage.getItem(key);
+                    if (!prefs[pref]) pref = 'system';
+                    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var theme = pref === 'system' ? (dark ? 'dark' : 'light') : pref;
+                    document.documentElement.setAttribute('data-theme-preference', pref);
+                    document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                    document.documentElement.setAttribute('data-theme-preference', 'system');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            })();
+        </script>
         <title>{% block title %}{{ lang.home }}{% endblock %} | {{ lang.title }}</title>
         <meta name="description" content="{{ meta.description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,12 +48,19 @@
         <meta property="og:description" content="{{ meta.description }}">
         <meta property="og:url" content="{{ canonical_url }}">
         <meta property="og:locale" content="{{ locale }}">
-        <meta name="twitter:card" content="summary">
         <meta name="twitter:title" content="{{ block('title') }} | {{ lang.title }}">
         <meta name="twitter:description" content="{{ meta.description }}">
         <meta name="twitter:url" content="{{ canonical_url }}">
         <meta name="twitter:domain" content="{{ canonical_base }}">
         <meta name="twitter:site" content="@modx">
+
+        {% if social_image %}
+            <meta property="og:image" content="{{ base_url()|trim('/', 'right') }}{{ social_image }}">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:image" content="{{ base_url()|trim('/', 'right') }}{{ social_image }}">
+        {% endif %}
 
         <link rel="stylesheet" href="/template/dist/app.css?v={{ revision }}">
 
@@ -72,14 +96,14 @@
                 </a>
 
                 <a href="{{ logo_link }}" title="MODX Documentation" class="l-header__logo o-logo">
-{#                    {{ icon('logo', 'MODX Docs', 'o-logo__image') }}#}
-                    <img src="/images/logo.svg" alt="MODX Documentation" role="presentation"  class="o-logo__image">
+                    <img src="/images/logo.svg" alt="MODX Documentation" role="presentation" class="o-logo__image o-logo__image--light">
+                    <img src="/images/logo-dark.svg" alt="" role="presentation" class="o-logo__image o-logo__image--dark" aria-hidden="true">
                 </a>
                 <a href="#searchform" title="Open Search" class="o-search">
                     {{ icon('search', 'Search', 'o-search__icon', null, 'aria-hidden="true"') }}
                 </a>
                 <div class="l-header__search" id="searchform">
-                    <form method="get" action="{{ path_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
+                    <form method="get" action="{{ url_for('search', {language: language, version: version}) }}" class="c-searchform c-searchform--header">
                         <label class="c-searchform__label" for="search"><span class="u-show-for-sr">Enter a search term</span></label>
                         <input class="c-searchform__input" id="search" type="search" name="q" placeholder="{{ lang.search }}" autocomplete="off" required>
                         <button class="c-searchform__button" type="submit" value="Search" aria-label="Search">
@@ -91,6 +115,11 @@
                 </div>
 
                 <div class="l-header__versionswitch">
+                    <button type="button" class="c-themetoggle" data-theme-toggle aria-label="Theme: system (click for light)" title="Theme: system (click for light)">
+                        {{ icon('system', 'System theme', 'c-themetoggle__icon c-themetoggle__icon--system', null, 'aria-hidden="true"') }}
+                        {{ icon('sun', 'Light theme', 'c-themetoggle__icon c-themetoggle__icon--light', null, 'aria-hidden="true"') }}
+                        {{ icon('moon', 'Dark theme', 'c-themetoggle__icon c-themetoggle__icon--dark', null, 'aria-hidden="true"') }}
+                    </button>
                     <nav class="c-optionswitch" arial-label="Language and version settings">
                         {% set _languages = {
                             "en": {
@@ -120,7 +149,7 @@
                             {% set showPageNote = false %}
                             <ul class="c-optionswitch__list" aria-label="Languages">
                                 {% for langKey, langInfo in _languages %}
-                                    {% set link = translations[langKey] ?? path_for('documentation', { version: version, language: langKey, path: 'index'}) %}
+                                    {% set link = translations[langKey] ?? url_for('documentation', { version: version, language: langKey, path: 'index'}) %}
                                     <li class="c-optionswitch__item {% if langKey == language %}c-optionswitch__item--active{% endif %}">
                                         <a class="c-optionswitch__link" hreflang="{{ langKey }}" rel="alternate" href="{{ link }}">
                                             <span class="" lang="{{ langKey }}" aria-describedby="lang-{{ langKey }}-en">{{ langInfo.local }}</span>

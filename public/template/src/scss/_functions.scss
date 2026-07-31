@@ -172,6 +172,11 @@
     }
 }
 
+/// Returns a CSS custom property for a theme color token.
+@function color($key) {
+    @return var(--color-#{"" + $key});
+}
+
 
 @mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
   $u1: unit($min-vw);

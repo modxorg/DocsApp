@@ -8,20 +8,18 @@ use MODXDocs\Services\DocumentService;
 use MODXDocs\Services\IndexService;
 use MODXDocs\Services\SearchService;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'index:all',
+    description: 'Completely re-indexes the documentation for the search and file history. Run after `index:init`. For selectively updating changed sources, `sources:update` automatically runs the indexer for changed files, or you can call `index:file` with specific file names.'
+)]
 class All extends Command
 {
-    protected static $defaultName = 'index:all';
-
-    public function getDescription()
-    {
-        return 'Completely re-indexes the documentation for the search and file history. Run after `index:init`. For selectively updating changed sources, `sources:update` automatically runs the indexer for changed files, or you can call `index:file` with specific file names.';
-    }
-
     /** @var DocumentService */
     protected $docService;
     /** @var SearchService */
@@ -29,7 +27,7 @@ class All extends Command
     /** @var IndexService */
     protected $indexService;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {
@@ -57,8 +55,7 @@ class All extends Command
         $this->indexService->setIndexOptions($search, $history);
         if (!$search) {
             $output->writeln('<comment>- Will not index search terms.</comment>');
-        }
-        else {
+        } else {
             $db->exec('DELETE FROM Search_Terms');
             $db->exec('DELETE FROM Search_Pages');
             $db->exec('DELETE FROM Search_Terms_Occurrences');

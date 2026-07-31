@@ -6,24 +6,23 @@ use MODXDocs\CLI\Application;
 use MODXDocs\Model\PageRequest;
 use MODXDocs\Services\IndexService;
 use MODXDocs\Services\VersionsService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class SourcesUpdate extends Command {
-    protected static $defaultName = 'sources:update';
-
-    public function getDescription()
-    {
-        return 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), and reindexes translations (`index:translations`). Meant to be run in response to git hooks.';
-    }
-
+#[AsCommand(
+    name: 'sources:update',
+    description: 'Updates defined remote sources, updating affected search index, refreshes cache (`cache:refresh`), reindexes translations (`index:translations`), and regenerates sitemaps (`sitemap:generate`). Meant to be run in response to git hooks.'
+)]
+class SourcesUpdate extends Command
+{
     /** @var IndexService */
     private $indexService;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $app = $this->getApplication();
         if (!$app instanceof Application) {
@@ -54,14 +53,13 @@ class SourcesUpdate extends Command {
             switch ($info['type']) {
                 case 'git':
                     $this->updateRepository($output, $key, $info['url'], $info['branch']);
-                break;
+                    break;
 
                 case 'local':
                     $root = VersionsService::getDocsRoot();
                     if (!file_exists($root . $key) || !is_dir($root . $key)) {
                         $output->writeln('<error>Local source "' . $key . '" does not seem to exist.</error>');
-                    }
-                    else {
+                    } else {
                         $output->writeln('Local sources require manual updates.');
                     }
                     break;
@@ -80,8 +78,17 @@ class SourcesUpdate extends Command {
 
         // Index translations
         $command = $this->getApplication()->find('index:translations');
-        return $command->run(new ArrayInput([
+        $result = $command->run(new ArrayInput([
             'command' => 'index:translations',
+        ]), $output);
+        if ($result !== 0) {
+            return $result;
+        }
+
+        // Regenerate static sitemaps
+        $command = $this->getApplication()->find('sitemap:generate');
+        return $command->run(new ArrayInput([
+            'command' => 'sitemap:generate',
         ]), $output);
     }
 
@@ -108,8 +115,7 @@ class SourcesUpdate extends Command {
         $reset->run(function ($type, $buffer) use ($output) {
             if ($type === 'err') {
                 $output->writeln("<error> {$buffer} </error>");
-            }
-            else {
+            } else {
                 $output->writeln($buffer);
             }
         });
@@ -144,8 +150,7 @@ class SourcesUpdate extends Command {
                 $this->updateIndexFor($output, '/' . $version . '/' . $changedFile);
             }
             $output->writeln('Done.');
-        }
-        else {
+        } else {
             $output->writeln('Done, no changed files.');
         }
 
@@ -158,7 +163,8 @@ class SourcesUpdate extends Command {
         });
     }
 
-    private function getCommitHash($path) {
+    private function getCommitHash($path)
+    {
         $process = new Process(['git', 'rev-parse', 'HEAD']);
         $process->setWorkingDirectory($path);
         $process->run();

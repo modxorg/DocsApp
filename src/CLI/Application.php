@@ -2,7 +2,6 @@
 
 namespace MODXDocs\CLI;
 
-
 use MODXDocs\CLI\Commands\CacheNavigation;
 use MODXDocs\CLI\Commands\CacheRefresh;
 use MODXDocs\CLI\Commands\Index\File;
@@ -10,12 +9,14 @@ use MODXDocs\CLI\Commands\Index\Init;
 use MODXDocs\CLI\Commands\Index\All;
 use MODXDocs\CLI\Commands\Index\Translations;
 use MODXDocs\CLI\Commands\ScrapeImages;
+use MODXDocs\CLI\Commands\SitemapGenerate;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
+use MODXDocs\CLI\Commands\StatsCleanup;
 use MODXDocs\DocsApp;
 
-class Application extends \Symfony\Component\Console\Application {
-
+class Application extends \Symfony\Component\Console\Application
+{
     protected $app;
     protected $container;
 
@@ -42,7 +43,7 @@ class Application extends \Symfony\Component\Console\Application {
         return $this->container;
     }
 
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         $cmds = parent::getDefaultCommands();
         $cmds[] = new SourcesInit();
@@ -54,6 +55,8 @@ class Application extends \Symfony\Component\Console\Application {
         $cmds[] = new Translations();
         $cmds[] = new All();
         $cmds[] = new ScrapeImages();
+        $cmds[] = new SitemapGenerate();
+        $cmds[] = new StatsCleanup();
         return $cmds;
     }
 }

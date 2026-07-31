@@ -2,17 +2,15 @@
 
 namespace MODXDocs\Services;
 
+use PDO;
+use MODXDocs\Helpers\DbValueGuard;
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
 
 class TranslationService
 {
-    /**
-     * @var \PDO
-     */
-    private $db;
+    private PDO $db;
 
-    public function __construct(\PDO $db, Router $router)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
@@ -38,7 +36,7 @@ class TranslationService
         try {
             $q = 'SELECT * FROM Translations WHERE ' . $language . ' = :uri';
             $stmt = $this->db->prepare($q);
-            $stmt->bindValue(':uri', $request->getActualContextUrl() . $request->getPath());
+            $stmt->bindValue(':uri', DbValueGuard::truncate($request->getActualContextUrl() . $request->getPath(), DbValueGuard::TRANSLATION_URI));
 
             if ($stmt->execute() && $row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
                 $stmt->closeCursor();

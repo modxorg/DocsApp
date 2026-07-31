@@ -15,16 +15,23 @@
         line-height: 1.5!important;
         font-family: inherit;
         font-size: 100%;
+        color: color(body-text);
         transition: all .1s ease-in;
-        background-color: #edf2f7;
+        background-color: color(search-input-bg);
+
+        &::placeholder {
+            color: color(body-text-muted);
+        }
 
         &:focus{
-            border-color: #e2e8f0;
-            background-color: #fff;
+            border-color: color(border);
+            background-color: color(search-input-focus-bg);
+            outline: 2px solid color(link-color);
+            outline-offset: 1px;
         }
 
         @include breakpoint(small only) {
-            border: 1px solid map_get($colors, 'header-bg');
+            border: 1px solid color(header-bg);
         }
     }
 
@@ -42,7 +49,7 @@
     &__icon {
         width: rem(24);
         height: rem(20);
-        fill: #717171;
+        fill: color(search-icon);
         vertical-align: middle;
     }
 }

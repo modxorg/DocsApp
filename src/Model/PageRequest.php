@@ -1,16 +1,16 @@
 <?php
 
-
 namespace MODXDocs\Model;
 
 use MODXDocs\Services\VersionsService;
-use Slim\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-class PageRequest {
-    private $version;
-    private $versionBranch;
-    private $language;
-    private $path;
+class PageRequest
+{
+    private string $version;
+    private string $versionBranch;
+    private string $language;
+    private string $path;
 
     public function __construct(string $version, string $language, string $path)
     {

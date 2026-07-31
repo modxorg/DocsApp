@@ -1,4 +1,11 @@
 @media print {
+    :root,
+    [data-theme="dark"],
+    [data-theme="light"] {
+        color-scheme: light;
+        @include theme-properties($light-colors);
+    }
+
     .l-app > * {
         display: none;
     }

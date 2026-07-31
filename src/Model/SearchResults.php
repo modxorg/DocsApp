@@ -1,31 +1,18 @@
 <?php
 
-
-
 namespace MODXDocs\Model;
 
 use MODXDocs\Services\DocumentService;
 
-class SearchResults {
+class SearchResults
+{
+    private array $resultDetails = [];
+    private array $results = [];
+    private array $exactTerms;
 
-    /**
-     * @var DocumentService
-     */
-    private $documentService;
-    /**
-     * @var SearchQuery
-     */
-    private $query;
-
-    private $resultDetails = [];
-    private $results = [];
-
-    public function __construct(DocumentService $documentService, SearchQuery $query)
+    public function __construct(SearchQuery $query)
     {
-        $this->documentService = $documentService;
-        $this->query = $query;
         $this->exactTerms = $query->getExactTerms();
-        $this->fuzzyTerms = $query->getFuzzyTerms();
     }
 
     public function addMatch($termId, $page, $weight): void
@@ -74,7 +61,7 @@ class SearchResults {
         return count($this->results);
     }
 
-    public function getResults($offset, $limit = 10)
+    public function getResults($offset, $limit = 10): array
     {
         return array_slice($this->results, $offset, $limit, true);
     }

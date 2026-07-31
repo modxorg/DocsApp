@@ -1,12 +1,12 @@
 .c-callout {
-    color: map-get($colors, gray);
+    color: color(gray);
     display: block;
     margin: 0 0 $global-margin;
     padding: rem(15 20);
-    background-color: map-get($colors, 'callout-info-bg');
-    border-left: rem(3) solid map-get($colors, 'callout-info-border');
+    background-color: color(callout-info-bg);
+    border-left: rem(3) solid color(callout-info-border);
     a{
-        color: map-get($colors, 'link-color');
+        color: color(link-color);
     }
 
     &__title {
@@ -16,38 +16,38 @@
         letter-spacing: 1.1;
     }
     a:hover{
-        color: lightendarken(map-get($colors, 'link-color'), 15%);
+        color: color(link-hover);
     }
 
     &--info{
-        background-color: map-get($colors, 'callout-info-bg');
-        border-color: map-get($colors, 'callout-info-border');
+        background-color: color(callout-info-bg);
+        border-color: color(callout-info-border);
         a{
-            color: map-get($colors, 'link-color');
+            color: color(link-color);
         }
     }
 
     &--warning {
-        background-color: map-get($colors, 'callout-warning-bg');
-        border-color: map-get($colors, 'callout-warning-border');
+        background-color: color(callout-warning-bg);
+        border-color: color(callout-warning-border);
         a{
-            color: #d09c13;
+            color: color(callout-warning-link);
         }
     }
 
     &--alert {
-        background-color: map-get($colors, 'callout-alert-bg');
-        border-color: map-get($colors, 'callout-alert-border');
+        background-color: color(callout-alert-bg);
+        border-color: color(callout-alert-border);
         a{
-            color: #d26d69;
+            color: color(callout-alert-link);
         }
     }
 
     &--success {
-        background-color: map-get($colors, 'callout-success-bg');
-        border-color: map-get($colors, 'callout-success-border');
+        background-color: color(callout-success-bg);
+        border-color: color(callout-success-border);
         a{
-            color:#3e8554;
+            color: color(callout-success-link);
         }
     }
 }

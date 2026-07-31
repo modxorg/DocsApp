@@ -5,7 +5,10 @@
 .DS_Store
 cache/*
 !cache/.gitkeep
+.phpunit.cache/
 public/.htaccess
+public/sitemap.xml
+public/sitemaps/
 node_modules/
 .env
 sources.json

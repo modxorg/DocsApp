@@ -13,7 +13,14 @@
         "note": "Note:",
         "community_forum": "Community Forums",
         "slack": "Slack",
-        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Designed, built</a> and <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">written</a> with all the love in the world by the MODX Community."
+        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Designed, built</a> and <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">written</a> with all the love in the world by the MODX Community.",
+        "not_found_title": "Oops, page not found.",
+        "not_found_heading": "Page not found",
+        "not_found_intro": "Uh oh, you've reached a page that does not exist.",
+        "not_found_body": "It may have gotten lost on <a href=\"https://community.modx.com/t/improving-the-modx-documentation/379\" target=\"_blank\" rel=\"noopener\">the new documentation platform</a> or it was removed because it was no longer relevant. It could also be a really old link from two (or more) documentation systems ago, which is not part of the 2000+ automatic redirects currently in place.",
+        "not_found_suggestions": "Based on your request, this may be what you're looking for:",
+        "not_found_more_results": "More results for \"%s\"",
+        "not_found_use_search": "Please use the search at the top to find what you're looking for."
     },
     "ru": {
         "title": "MODX документация",
@@ -29,7 +36,14 @@
         "note": "Заметка:",
         "community_forum": "Community Forums",
         "slack": "Slack",
-        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Разработано, построено</a> и <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">написано</a> со всей любовью в мире от сообщества MODX."
+        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Разработано, построено</a> и <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">написано</a> со всей любовью в мире от сообщества MODX.",
+        "not_found_title": "Упс, страница не найдена.",
+        "not_found_heading": "Страница не найдена",
+        "not_found_intro": "К сожалению, вы попали на страницу, которой не существует.",
+        "not_found_body": "Возможно, она потерялась на <a href=\"https://community.modx.com/t/improving-the-modx-documentation/379\" target=\"_blank\" rel=\"noopener\">новой платформе документации</a> или была удалена, так как больше не актуальна. Это также может быть очень старая ссылка из двух (или более) предыдущих систем документации, которая не входит в число 2000+ автоматических перенаправлений.",
+        "not_found_suggestions": "Исходя из вашего запроса, возможно, вы ищете следующее:",
+        "not_found_more_results": "Больше результатов по запросу «%s»",
+        "not_found_use_search": "Воспользуйтесь поиском вверху страницы, чтобы найти нужную информацию."
     },
     "nl": {
         "title": "MODX Documentatie",
@@ -45,7 +59,14 @@
         "note": "Opmerking:",
         "community_forum": "Community Forums",
         "slack": "Slack",
-        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Ontworpen, gebouwd</a> en <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">geschreven</a> met alle liefde in de wereld door de MODX Community."
+        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Ontworpen, gebouwd</a> en <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">geschreven</a> met alle liefde in de wereld door de MODX Community.",
+        "not_found_title": "Oeps, pagina niet gevonden.",
+        "not_found_heading": "Pagina niet gevonden",
+        "not_found_intro": "Helaas, je hebt een pagina bereikt die niet bestaat.",
+        "not_found_body": "Hij is mogelijk zoekgeraakt op <a href=\"https://community.modx.com/t/improving-the-modx-documentation/379\" target=\"_blank\" rel=\"noopener\">het nieuwe documentatieplatform</a> of verwijderd omdat hij niet langer relevant was. Het kan ook een heel oude link zijn van twee (of meer) documentatiesystemen geleden, die niet tot de 2000+ automatische redirects behoort die momenteel actief zijn.",
+        "not_found_suggestions": "Op basis van je verzoek zou dit kunnen zijn wat je zoekt:",
+        "not_found_more_results": "Meer resultaten voor \"%s\"",
+        "not_found_use_search": "Gebruik de zoekfunctie bovenaan om te vinden wat je zoekt."
     },
     "es": {
         "title": "MODX Documentation",
@@ -61,6 +82,13 @@
         "note": "Nota:",
         "community_forum": "Community Forums",
         "slack": "Slack",
-        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Designed, built</a> and <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">written</a> with all the love in the world by the MODX Community."
+        "credit": "<a href=\"https://github.com/modxorg/DocsApp/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">Designed, built</a> and <a href=\"https://github.com/modxorg/Docs/graphs/contributors\" rel=\"noopener noreferrer\" target=\"_blank\">written</a> with all the love in the world by the MODX Community.",
+        "not_found_title": "Vaya, página no encontrada.",
+        "not_found_heading": "Página no encontrada",
+        "not_found_intro": "Oh no, has llegado a una página que no existe.",
+        "not_found_body": "Puede que se haya perdido en <a href=\"https://community.modx.com/t/improving-the-modx-documentation/379\" target=\"_blank\" rel=\"noopener\">la nueva plataforma de documentación</a> o que se haya eliminado porque ya no era relevante. También podría ser un enlace muy antiguo de hace dos (o más) sistemas de documentación, que no forma parte de las más de 2000 redirecciones automáticas actuales.",
+        "not_found_suggestions": "Según tu solicitud, esto podría ser lo que buscas:",
+        "not_found_more_results": "Más resultados para \"%s\"",
+        "not_found_use_search": "Usa la búsqueda de arriba para encontrar lo que buscas."
     }
 }

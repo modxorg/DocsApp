@@ -3,18 +3,18 @@
 namespace MODXDocs\Services;
 
 use MODXDocs\Model\PageRequest;
-use Slim\Router;
+use Slim\Interfaces\RouteParserInterface;
 
 class VersionsService
 {
     private const CURRENT_VERSION = 'current';
-    private const CURRENT_VERSION_BRANCH = '2.x';
+    private const CURRENT_VERSION_BRANCH = '3.x';
     private const DEFAULT_LANGUAGE = 'en';
     private const DEFAULT_PATH = 'index';
 
-    private $router;
+    private RouteParserInterface $router;
 
-    public function __construct(Router $router)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
     }
@@ -23,13 +23,17 @@ class VersionsService
     {
         $versions = [];
 
-        $base = getenv('BASE_DIRECTORY');
+        $base = $_ENV['BASE_DIRECTORY'];
         $config = null;
         $files = ['sources.dist.json', 'sources.json'];
         foreach ($files as $file) {
             $path = $base . $file;
             if (file_exists($path)) {
-                $config = json_decode(file_get_contents($path), true);
+                try {
+                    $config = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    $config = null;
+                }
             }
         }
 
@@ -41,18 +45,20 @@ class VersionsService
             $versions[$versionKey] = $details;
         }
 
-        if ($includeCurrent
+        if (
+            $includeCurrent
             && !array_key_exists(self::getCurrentVersion(), $versions)
-            && array_key_exists(self::getCurrentVersionBranch(), $versions)) {
+            && array_key_exists(self::getCurrentVersionBranch(), $versions)
+        ) {
             $versions[self::getCurrentVersion()] = $versions[self::getCurrentVersionBranch()];
         }
 
         return $versions;
     }
 
-    public function getVersions(PageRequest $request)
+    public function getVersions(PageRequest $request): array
     {
-        $dir = new \DirectoryIterator(getenv('DOCS_DIRECTORY'));
+        $dir = new \DirectoryIterator($_ENV['DOCS_DIRECTORY']);
 
         $versions = [];
 
@@ -82,7 +88,7 @@ class VersionsService
             'title' => static::getVersionTitle($fileInfo->getFilename()),
             'active' => $versionKey === $request->getVersion(),
             'key' => $versionKey,
-            'uri' => $this->router->pathFor('documentation', [
+            'uri' => $this->router->urlFor('documentation', [
                 'version' => $versionKey,
                 'language' => $request->getLanguage(),
                 'path' => $request->getPath(),
@@ -112,26 +118,26 @@ class VersionsService
 
     public static function getCurrentVersion(): string
     {
-        return static::CURRENT_VERSION;
+        return self::CURRENT_VERSION;
     }
 
     public static function getCurrentVersionBranch(): string
     {
-        return static::CURRENT_VERSION_BRANCH;
+        return self::CURRENT_VERSION_BRANCH;
     }
 
     public static function getDefaultLanguage(): string
     {
-        return static::DEFAULT_LANGUAGE;
+        return self::DEFAULT_LANGUAGE;
     }
 
     public static function getDefaultPath(): string
     {
-        return static::DEFAULT_PATH;
+        return self::DEFAULT_PATH;
     }
 
     public static function getDocsRoot(): string
     {
-        return getenv('DOCS_DIRECTORY');
+        return $_ENV['DOCS_DIRECTORY'];
     }
 }
