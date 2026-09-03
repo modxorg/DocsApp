@@ -11,3 +11,4 @@ node_modules/
 sources.json
 markdown/
 public/template/package-lock.json
+.phpunit.result.cache

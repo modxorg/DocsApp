@@ -124,6 +124,31 @@ For the language switch to work, you also need to index the translations with `p
 
 **These index actions are done automatically for changed files only (much faster!) as part of `php docs.php sources:update`.** Typically you'd only need to run the full indexing the first time setting up a mirror or clone.
 
+## Markdown alerts
+
+GitHub-style alert blockquotes render as the existing `.c-callout` boxes:
+
+```markdown
+> [!NOTE]
+> Extra detail for the reader.
+
+> [!TIP]
+> A shortcut or recommended approach.
+
+> [!IMPORTANT]
+> Something easy to miss.
+
+> [!WARNING]
+> Risk or breaking change.
+
+> [!CAUTION]
+> Stronger warning than WARNING.
+```
+
+Spaces inside the marker (`[! NOTE]`) are accepted. Tables and other CommonMark features are unchanged.
+
+Page-level git history (last change and contributors) is already shown on documentation pages from the search/history index. A separate site-wide docs changelog UI is not part of this feature.
+
 ## Building assets
 
 From the `public/template/` directory, first load the dependencies with `npm install`.

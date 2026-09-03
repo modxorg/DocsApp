@@ -30,7 +30,8 @@
         "voku/stop-words": "^2.0"
     },
     "require-dev": {
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {

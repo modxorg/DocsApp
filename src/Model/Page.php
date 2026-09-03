@@ -8,6 +8,7 @@ use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use League\CommonMark\Extension\Table\TableExtension;
 use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Helpers\AlertCalloutFixer;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\MarkupFixer;
 use MODXDocs\Helpers\RelativeImageRenderer;
@@ -112,6 +113,9 @@ class Page {
         ], $environment);
 
         $content = $markdown->convertToHtml($this->body);
+
+        $alertFixer = new AlertCalloutFixer();
+        $content = $alertFixer->fix($content);
 
         $fixer = new MarkupFixer();
         $this->renderedBody = $fixer->fix($content);
