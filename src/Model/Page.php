@@ -17,6 +17,7 @@ use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Renderer\HtmlDecorator;
 use MODXDocs\Exceptions\NotFoundException;
+use MODXDocs\Helpers\AlertCalloutFixer;
 use MODXDocs\Helpers\LinkRenderer;
 use MODXDocs\Helpers\MarkupFixer;
 use MODXDocs\Helpers\RelativeImageRenderer;
@@ -126,6 +127,9 @@ class Page
             $content = '<p class="error">There was an error parsing this document. Below is the source markdown.</p>';
             $content .= '<pre><code>' . htmlspecialchars($this->body) . '</code></pre>';
         }
+
+        $alertFixer = new AlertCalloutFixer();
+        $content = $alertFixer->fix($content);
 
         $fixer = new MarkupFixer();
         $this->renderedBody = $fixer->fix($content);
