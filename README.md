@@ -141,6 +141,29 @@ Example crontab entry (daily at 03:00):
 0 3 * * * cd /path/to/app && php docs.php stats:cleanup
 ```
 
+## Markdown alerts
+
+GitHub-style alert blockquotes render as the existing `.c-callout` boxes:
+
+```markdown
+> [!NOTE]
+> Extra detail for the reader.
+
+> [!TIP]
+> A shortcut or recommended approach.
+
+> [!IMPORTANT]
+> Something easy to miss.
+
+> [!WARNING]
+> Risk or breaking change.
+
+> [!CAUTION]
+> Stronger warning than WARNING.
+```
+
+Spaces inside the marker (`[! NOTE]`) are accepted. Tables and other CommonMark features are unchanged.
+
 ## Building assets
 
 From the `public/template/` directory, first load the dependencies with `npm install`.
