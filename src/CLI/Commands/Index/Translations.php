@@ -63,16 +63,19 @@ class Translations extends Command
             $languageItems = $languageNav->getAllItems();
 
             foreach ($languageItems as $item) {
-                $translationOf = array_key_exists(
+                $hasTranslation = array_key_exists(
                     'translation',
                     $item
-                ) ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
+                );
+                $translationOf = $hasTranslation ? $item['translation'] : str_replace('/' . $language . '/', '/en/', $item['uri']);
                 if (strpos($translationOf, '/' . $version . '/en/') !== 0) {
                     $translationOf = '/' . $version . '/en/' . trim($translationOf, '/');
                 }
+
                 if (array_key_exists($translationOf, $mapEn)) {
                     $mapEn[$translationOf][$language] = $item['uri'];
-                } else {
+                }
+                elseif ($hasTranslation) {
                     $output->writeln('<comment>Original path "' . $translationOf . '" not found for "' . $item['file'] . '"</comment>');
                 }
             }
