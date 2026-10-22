@@ -74,8 +74,7 @@ class Translations extends Command
 
                 if (array_key_exists($translationOf, $mapEn)) {
                     $mapEn[$translationOf][$language] = $item['uri'];
-                }
-                elseif ($hasTranslation) {
+                } elseif ($hasTranslation) {
                     $output->writeln('<comment>Original path "' . $translationOf . '" not found for "' . $item['file'] . '"</comment>');
                 }
             }
