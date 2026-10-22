@@ -13,6 +13,7 @@ use MODXDocs\CLI\Commands\SitemapGenerate;
 use MODXDocs\CLI\Commands\SourcesInit;
 use MODXDocs\CLI\Commands\SourcesUpdate;
 use MODXDocs\CLI\Commands\StatsCleanup;
+use MODXDocs\CLI\Commands\ValidateFrontMatter;
 use MODXDocs\DocsApp;
 
 class Application extends \Symfony\Component\Console\Application
@@ -57,6 +58,7 @@ class Application extends \Symfony\Component\Console\Application
         $cmds[] = new ScrapeImages();
         $cmds[] = new SitemapGenerate();
         $cmds[] = new StatsCleanup();
+        $cmds[] = new ValidateFrontMatter();
         return $cmds;
     }
 }
