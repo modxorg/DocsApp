@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
 
     steps:
       -   uses: actions/checkout@v4
@@ -41,3 +41,64 @@ jobs:
 
       -   name: phpcs
           run: composer run phpcs -- --runtime-set testVersion ${{ matrix.php-version }}
+
+  phpunit:
+    name: 'phpunit (PHP ${{ matrix.php-version }})'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['8.3', '8.4', '8.5']
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: modxdocs
+          MYSQL_USER: modxdocs
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: rootsecret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: pdo, pdo_mysql, zip, mysqli, gd, intl, mbstring, dom, fileinfo
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Configure environment
+        run: |
+          cat > .env <<EOF
+          DEV="1"
+          SSL="0"
+          CACHE_ENABLED="0"
+          CANONICAL_BASE_URL="https://docs.modx.org/"
+          BASE_DIRECTORY="${{ github.workspace }}/"
+          DOCS_DIRECTORY="${{ github.workspace }}/docs/"
+          TEMPLATE_DIRECTORY="${{ github.workspace }}/templates/"
+          CACHE_DIRECTORY="${{ github.workspace }}/cache"
+          UPDATE_SECRET="ci-secret"
+          DB_HOST="127.0.0.1"
+          DB_PORT="3306"
+          DB_NAME="modxdocs"
+          DB_USER="modxdocs"
+          DB_PASSWORD="secret"
+          EOF
+
+      - name: Initialise documentation sources
+        run: php docs.php sources:init
+
+      - name: phpunit
+        run: composer run test
